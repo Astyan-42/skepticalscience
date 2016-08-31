@@ -2,7 +2,7 @@
 
 {% load bootstrap3 %}
 {% bootstrap_css %}
-{% bootstrap_javascript %}
+<!--{% bootstrap_javascript %}-->
 {% bootstrap_messages %}
 
 {% load staticfiles %}
@@ -14,45 +14,65 @@
 <head>
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
     <title>{% block title %}User test{% endblock %}</title>
-    <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
 
 <body>
     <div id="header">
-        <div class="section menubar">
-            <div class="container">
-                <div class="col-md-12">
-                    {% block header %}
-
-                    <ul class="nav navbar-nav navbar-left">
-                            <li>
-                                <a href="{% url 'auth_logout' %}">{% trans "Log out" %}</a>
-                            </li>
-                            <li>
-                                <a href="{% url 'auth_password_change' %}">{% trans "Change password" %}</a>
-                            </li>
-                    </ul>
-
-                    <ul class="nav navbar-nav navbar-right">
-                        {% if user.is_authenticated %}
-                            <li>
-                                <a href="{% url 'auth_logout' %}">{% trans "Log out" %}</a>
-                            </li>
-                            <li>
-                                <a href="{% url 'auth_password_change' %}">{% trans "Change password" %}</a>
-                            </li>
-                        {% else %}
-                            <li>
-                                <a href="{% url 'auth_login' %}">{% trans "Log in" %}</a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                    {% endblock %}
-                </div>
+        <div class="navbar navbar-default navbar-static-top">
+          <div class="container">
+            <div class="navbar-header">
+              <a href="../" class="navbar-brand">Bootswatch</a>
+              <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
             </div>
+            <div class="navbar-collapse collapse" id="navbar-main">
+              <ul class="nav navbar-nav">
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#" >Themes <span class="caret"></span></a>
+                  <ul class="dropdown-menu" >
+                    <li><a href="#">Default</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Cerulean</a></li>
+                    <li><a href="#">Cosmo</a></li>
+                    <li><a href="#">Cyborg</a></li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="#">Help</a>
+                </li>
+                <li>
+                  <a href="http://news.bootswatch.com">Blog</a>
+                </li>
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Flatly <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="http://jsfiddle.net/bootswatch/jmg3gykg/">Open Sandbox</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">bootstrap.min.css</a></li>
+                    <li><a href="#">bootstrap.css</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">variables.less</a></li>
+                    <li><a href="#">bootswatch.less</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">_variables.scss</a></li>
+                    <li><a href="#">_bootswatch.scss</a></li>
+                  </ul>
+                </li>
+              </ul>
+
+              <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://builtwithbootstrap.com/" target="_blank">Built With Bootstrap</a></li>
+                <li><a href="https://wrapbootstrap.com/?ref=bsw" target="_blank">WrapBootstrap</a></li>
+              </ul>
+
+            </div>
+          </div>
         </div>
-        <hr>
     </div>
 
     <div id="content">

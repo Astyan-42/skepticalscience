@@ -145,9 +145,9 @@ BOOTSTRAP3 = {
     # The complete URL to the Bootstrap JavaScript file (None means derive it from base_url)
     'javascript_url': None,
     # Put JavaScript in the HEAD section of the HTML document (only relevant if you use bootstrap3.html)
-    'javascript_in_head': False,
+    'javascript_in_head': True,
     # Include jQuery with Bootstrap JavaScript (affects django-bootstrap3 template tags)
-    'include_jquery': False,
+    'include_jquery': True,
     # Label class to use in horizontal forms
     'horizontal_label_class': 'col-md-3',
     # Field class to use in horizontal forms
