@@ -11,7 +11,7 @@
     {% csrf_token %} 
     {% bootstrap_form form %}
     {% buttons %}
-        <input type="submit" value="{% trans 'Log in' %}" />
+        <input class="btn btn-primary" type="submit" value="{% trans 'Log in' %}" />
         <input type="hidden" name="next" value="{{ next }}" />
     {% endbuttons %}
     </form>
