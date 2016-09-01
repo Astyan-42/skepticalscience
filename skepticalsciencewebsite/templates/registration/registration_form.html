@@ -7,6 +7,7 @@
 {% bootstrap_messages %}
 
 {% block content %}
+    <h1>{% trans "Register" %}</h1>
     <form method="post" action=".">
     {% csrf_token %}
     {% bootstrap_form form %}
