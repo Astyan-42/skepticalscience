@@ -135,7 +135,7 @@ LOGIN_URL = '/accounts/login/'  # The page users are directed to if they are not
 # Bootstrap3 module setting
 BOOTSTRAP3 = {
     # The URL to the jQuery JavaScript file
-    'jquery_url': "//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js",
+    'jquery_url': "//code.jquery.com/jquery.min.js",
     # The Bootstrap base URL
     'base_url': "//netdna.bootstrapcdn.com/bootstrap/3.3.6",
     # The complete URL to the Bootstrap CSS file (None means derive it from base_url)
@@ -145,7 +145,7 @@ BOOTSTRAP3 = {
     # The complete URL to the Bootstrap JavaScript file (None means derive it from base_url)
     'javascript_url': None,
     # Put JavaScript in the HEAD section of the HTML document (only relevant if you use bootstrap3.html)
-    'javascript_in_head': True,
+    'javascript_in_head': False,
     # Include jQuery with Bootstrap JavaScript (affects django-bootstrap3 template tags)
     'include_jquery': True,
     # Label class to use in horizontal forms
