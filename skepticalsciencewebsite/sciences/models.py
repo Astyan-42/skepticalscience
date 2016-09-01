@@ -8,8 +8,10 @@ class Science(models.Model):
     description = models.CharField(verbose_name="Description",
                                    max_length=2048,
                                    unique=True)
-    subscience = models.ManyToManyField("self",
-                                        blank=True)
+    primary_science = models.BooleanField(default=False)
+    sub_science = models.ManyToManyField("self",
+                                         blank=True,
+                                         symmetrical=False)
 
     def __str__(self):
         return self.name
