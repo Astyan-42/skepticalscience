@@ -1,6 +1,7 @@
 from django.db import models
-
 # Create your models here.
+
+
 class Science(models.Model):
     """
     The Science model

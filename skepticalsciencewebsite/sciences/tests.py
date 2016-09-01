@@ -1,7 +1,8 @@
 from django.test import TestCase
 from sciences.models import Science
-
 # Create your tests here.
+
+
 class ScienceTestCase(TestCase):
     """
     Test the Science model
@@ -29,5 +30,3 @@ class ScienceTestCase(TestCase):
         self.assertEqual(computerscience.sub_science.all()[0], dataanalysis)
         # test dataanalysis have no subscience
         self.assertEqual(len(dataanalysis.sub_science.all()), 0)
-
-
