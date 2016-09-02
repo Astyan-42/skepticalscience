@@ -87,3 +87,5 @@ ENV/
 
 # Rope project settings
 .ropeproject
+/skepticalsciencewebsite/db.sqlite3
+/skepticalsciencewebsite/dumpauth
