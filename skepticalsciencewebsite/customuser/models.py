@@ -1,6 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User
 from sciences.models import Science
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 # Create your models here.
 
 
@@ -10,8 +10,36 @@ class MinMaxFloat(models.FloatField):
         super(MinMaxFloat, self).__init__(*args, **kwargs)
 
 
-class Skeptic(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+class UserManager(BaseUserManager):
+
+    def create_user(self, username, password, **kwargs):
+        user = self.model(
+            username=self.normalize_username(username),
+            is_active=True,
+            **kwargs
+        )
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, username, password, **kwargs):
+        user = self.model(
+            username=username,
+            is_staff=True,
+            is_superuser=True,
+            is_active=True,
+            **kwargs
+        )
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+
+class User(AbstractBaseUser, PermissionsMixin):
+    username = models.CharField(max_length=255, unique=True, verbose_name="Username")
+    email = models.EmailField(unique=True)
+    is_active = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
     first_name = models.CharField(max_length=255, blank=True, verbose_name="First Name")
     middle_name = models.CharField(max_length=255, blank=True, verbose_name="Middle Name")
     last_name = models.CharField(max_length=255, blank=True, verbose_name="Last Name")
@@ -33,3 +61,5 @@ class Skeptic(models.Model):
     mean_impact_factor = MinMaxFloat(min_value=0.0, max_value=1000.0, default=0.0, verbose_name="Mean impact factor")
     # estimator score (when estimate the impact factor of a publication make good estimation)
     estimator_score = MinMaxFloat(min_value=0.0, max_value=1.0, default=0.0, verbose_name="Estimator Score")
+    USERNAME_FIELD = 'username'
+    object = UserManager()

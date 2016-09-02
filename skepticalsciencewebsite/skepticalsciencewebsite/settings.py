@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap3',
     'sciences',
+    'customuser',
 ]
 
 MIDDLEWARE = [
@@ -102,6 +103,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Auth user model
+AUTH_USER_MODEL = "customuser.User"
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
