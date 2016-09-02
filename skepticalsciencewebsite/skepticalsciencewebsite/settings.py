@@ -135,10 +135,10 @@ LOGIN_URL = '/accounts/login/'  # The page users are directed to if they are not
 
 # Email
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-EMAIL_FILE_PATH = '/tmp/django-email-dev'
+EMAIL_FILE_PATH = '/tmp/djangomail/'
 EMAIL_SUBJECT_PREFIX = "[DjangoTest] "
-
-
+EMAIL_TIMEOUT = 3
+EMAIL_HOST_USER = "fakeuser@fakeemail.com"
 
 # Bootstrap3 module setting
 BOOTSTRAP3 = {
