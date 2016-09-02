@@ -13,12 +13,21 @@ from customuser.models import User
 
 
 class UserTestCase(TestCase):
+    """
+    Test Our User model
+    """
 
     def setUp(self):
+        """
+        Store an user
+        """
         jesus = User.objects.create(username="testuser", password="azerty123", phd=True, first_name="Jesus",
                                     middle_name="Our Savior", last_name="Raptor")
 
     def test_saving(self):
+        """
+        Get and test the user we store
+        """
         jesus = User.objects.get(username="testuser")
         self.assertEqual(jesus.phd, True)
         self.assertEqual(jesus.first_name, "Jesus")

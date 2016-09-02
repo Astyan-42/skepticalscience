@@ -5,14 +5,38 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseU
 
 
 class MinMaxFloat(models.FloatField):
+    """
+    Change the parameter of FloatField to be able to use limit
+    """
     def __init__(self, min_value=None, max_value=None, *args, **kwargs):
+        """
+        The init fuction of our MinMaxFloat
+        :param min_value: the minimal value
+        :type min_value: float
+        :param max_value: the maximal value
+        :type max_value: float
+        :param args: the rest of the arguments to pass to the FloatField
+        :param kwargs: the rest of the named arguments to pass to the FloatField
+        """
         self.min_value, self.max_value = min_value, max_value
         super(MinMaxFloat, self).__init__(*args, **kwargs)
 
 
 class UserManager(BaseUserManager):
+    """
+    Our UserManager to handle create_superuser and create_user from manage.py file and the django-registration
+    """
 
     def create_user(self, username, password, **kwargs):
+        """
+        Create an user
+        :param username: The username of the user
+        :type username: str
+        :param password: The password wanted for the user
+        :type password: str
+        :param kwargs: The rest of the arguments
+        :return: the user created
+        """
         user = self.model(
             username=self.normalize_username(username),
             is_active=True,
@@ -23,6 +47,15 @@ class UserManager(BaseUserManager):
         return user
 
     def create_superuser(self, username, password, **kwargs):
+        """
+        Create a superuser
+        :param username: The username of the superuser
+        :type username: str
+        :param password: The password wanted for the superuser
+        :type password: str
+        :param kwargs: The rest of the arguments
+        :return: the superuser created
+        """
         user = self.model(
             username=username,
             is_staff=True,
@@ -36,6 +69,9 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    """
+    Our User class, can represent a skeptic, a great skeptic or a researcher
+    """
     username = models.CharField(max_length=255, unique=True, verbose_name="Username")
     email = models.EmailField(unique=True)
     is_active = models.BooleanField(default=False)
@@ -66,7 +102,13 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     # temporary to avoid any problem. Should contain the real name
     def get_full_name(self):
+        """
+        :return: should return first_name+middle_name+last_name
+        """
         return self.get_username()
 
     def get_short_name(self):
+        """
+        :return: should return first_name+last_name
+        """
         return self.get_username()
