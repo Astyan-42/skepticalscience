@@ -10,7 +10,7 @@ class SendEmailTest(TestCase):
         send_mail(
             'Test of mail configuration with send_mail function',
             'Reading is useless.',
-            'DjangoTest42@hotmail.com',
-            ['vareu@hotmail.fr'],
+            'localhost',
+            ['localhost'],
             fail_silently=False,
         )

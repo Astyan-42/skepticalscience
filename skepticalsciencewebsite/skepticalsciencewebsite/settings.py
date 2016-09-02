@@ -134,12 +134,10 @@ LOGIN_REDIRECT_URL = '/accounts/login/'  # The page you want users to arrive at 
 LOGIN_URL = '/accounts/login/'  # The page users are directed to if they are not logged in,
 
 # Email
-EMAIL_HOST = "smtp.live.com"
-EMAIL_HOST_PASSWORD = "DjangoTest42"
-EMAIL_HOST_USER = "DjangoTest42@hotmail.com"
-EMAIL_PORT = 587
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = '/tmp/django-email-dev'
 EMAIL_SUBJECT_PREFIX = "[DjangoTest] "
-EMAIL_USE_TLS = True
+
 
 
 # Bootstrap3 module setting
