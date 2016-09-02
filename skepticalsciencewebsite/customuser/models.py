@@ -11,9 +11,9 @@ class MinMaxFloat(models.FloatField):
 
 class Skeptic(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=255, blank=True, verbose_name="First Name")
+    # first_name = models.CharField(max_length=255, blank=True, verbose_name="First Name")
     middle_name = models.CharField(max_length=255, blank=True, verbose_name="Middle Name")
-    last_name = models.CharField(max_length=255, blank=True, verbose_name="Last Name")
+    # last_name = models.CharField(max_length=255, blank=True, verbose_name="Last Name")
     phd = models.BooleanField(default=False)
     country = models.CharField(max_length=255, blank=True, verbose_name="Country")
     register_date = models.DateField(auto_now_add=True)
