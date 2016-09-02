@@ -63,3 +63,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     estimator_score = MinMaxFloat(min_value=0.0, max_value=1.0, default=0.0, verbose_name="Estimator Score")
     USERNAME_FIELD = 'username'
     object = UserManager()
+
+    # temporary to avoid any problem. Should contain the real name
+    def get_full_name(self):
+        return self.get_username()
+
+    def get_short_name(self):
+        return self.get_username()
