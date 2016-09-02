@@ -9,6 +9,7 @@ class MinMaxFloat(models.FloatField):
         self.min_value, self.max_value = min_value, max_value
         super(MinMaxFloat, self).__init__(*args, **kwargs)
 
+
 class Skeptic(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     # first_name = models.CharField(max_length=255, blank=True, verbose_name="First Name")
@@ -21,14 +22,14 @@ class Skeptic(models.Model):
     description = models.CharField(max_length=1024, blank=True, verbose_name="Personnal description")
     job_title = models.CharField(max_length=255, blank=True, verbose_name="Job title")
     sciences = models.ManyToManyField(Science, blank=True, symmetrical=False, verbose_name="Sciences")
-    #finding biais in publication : or number of valid biais foud and number of ivalid biais found ?
+    # finding biais in publication : or number of valid biais foud and number of ivalid biais found ?
     valid_biais_found = models.IntegerField(default=0, verbose_name="Valid biais found")
     invalid_biais_found = models.IntegerField(default=0, verbose_name="Invalid biais found")
     skeptic_score = MinMaxFloat(min_value=0.0, max_value=10.0, default=0.0, verbose_name="Skeptic score")
-    #publish without biais
+    # publish without biais
     mean_publication_score = MinMaxFloat(min_value=0.0, max_value=10.0, default=0.0,
                                          verbose_name="Mean publication score")
-    #mean estimated impact factor
+    # mean estimated impact factor
     mean_impact_factor = MinMaxFloat(min_value=0.0, max_value=1000.0, default=0.0, verbose_name="Mean impact factor")
-    #estimator score (when estimate the impact factor of a publication make good estimation)
+    # estimator score (when estimate the impact factor of a publication make good estimation)
     estimator_score = MinMaxFloat(min_value=0.0, max_value=1.0, default=0.0, verbose_name="Estimator Score")
