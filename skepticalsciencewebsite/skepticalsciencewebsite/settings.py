@@ -133,6 +133,14 @@ REGISTRATION_SALT = "github"
 LOGIN_REDIRECT_URL = '/accounts/login/'  # The page you want users to arrive at after they successful log in
 LOGIN_URL = '/accounts/login/'  # The page users are directed to if they are not logged in,
 
+# Email
+EMAIL_HOST = "smtp.live.com"
+EMAIL_HOST_PASSWORD = "DjangoTest42"
+EMAIL_HOST_USER = "DjangoTest42@hotmail.com"
+EMAIL_PORT = 587
+EMAIL_SUBJECT_PREFIX = "[DjangoTest] "
+EMAIL_USE_TLS = True
+
 
 # Bootstrap3 module setting
 BOOTSTRAP3 = {
@@ -167,7 +175,7 @@ BOOTSTRAP3 = {
     # Class to indicate success, meaning the field has valid input (better to set this in your Django form)
     'success_css_class': 'has-success',
     # Renderers (only set these if you have studied the source and understand the inner workings)
-    'formset_renderers':{
+    'formset_renderers': {
         'default': 'bootstrap3.renderers.FormsetRenderer',
     },
     'form_renderers': {
