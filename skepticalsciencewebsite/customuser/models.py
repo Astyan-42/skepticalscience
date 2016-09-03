@@ -31,7 +31,7 @@ class User(AbstractUser):
     """
     # all user name except if it start with skeptic, author or researcher
     username = models.CharField(max_length=255, unique=True, verbose_name=_("Username"),
-                                validators=[ RegexValidator(regex="^(skeptic|author|researcher).*$",
+                                validators=[ RegexValidator(regex="^(skeptic|author|researcher|reviewer).*$",
                                                             message=_("Use a valid username \
                                                             (not skepic, author, researcher)"),
                                                             inverse_match=True,
