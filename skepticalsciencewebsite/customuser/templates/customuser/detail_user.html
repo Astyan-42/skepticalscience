@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+
+{% block content %}
+    <h1>{% trans "User profile" %}</h1>
+    <h2>{{ user_detail.email }}</h2>
+{% endblock %}
