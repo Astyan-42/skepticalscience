@@ -1,6 +1,7 @@
 from django.db import models
 from sciences.models import Science
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.core.mail import send_mail
 # Create your models here.
 
 
@@ -113,5 +114,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         """
         return self.first_name
 
-    def email_user(self):
-        pass
+    def email_user(self, subject, message, from_email=None, **kwargs):
+        """
+        Same as the one of AbstractUser (django
+        """
+        send_mail(subject, message, from_email, [self.email], **kwargs)
