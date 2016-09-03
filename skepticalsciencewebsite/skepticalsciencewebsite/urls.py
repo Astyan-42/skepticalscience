@@ -27,6 +27,7 @@ urlpatterns = [
         ),
         name='registration_register',
         ),
+    # https://github.com/incuna/django-registration/blob/master/registration/urls.py under accounts
     url(r'^accounts/', include('registration.backends.hmac.urls')),
     url(r'^$', TemplateView.as_view(template_name='index.html'), name="index"),
 ]
