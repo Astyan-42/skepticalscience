@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.views.generic import TemplateView
 from registration.backends.hmac.views import RegistrationView
 from customuser.forms import CustomUserForm
+from customuser.views import UserUpdateView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -27,6 +28,7 @@ urlpatterns = [
         ),
         name='registration_register',
         ),
+    url(r'accounts/edit_profile/(?P<pk>\d)', UserUpdateView.as_view(), name='edit_profile'),
     # https://github.com/incuna/django-registration/blob/master/registration/urls.py under accounts
     url(r'^accounts/', include('registration.backends.hmac.urls')),
     url(r'^$', TemplateView.as_view(template_name='index.html'), name="index"),
