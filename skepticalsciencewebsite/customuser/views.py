@@ -10,6 +10,7 @@ class UserDetailView(DetailView):
     model = User
     template_name = 'customuser/detail_user.html'
 
+
 class UserUpdateView(UpdateView):
     model = User
     fields = ["email", "first_name", "middle_name", "last_name", "phd", "country", "workplace", "description",
