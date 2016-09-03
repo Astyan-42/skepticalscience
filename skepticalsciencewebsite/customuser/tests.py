@@ -33,3 +33,5 @@ class UserTestCase(TestCase):
         self.assertEqual(jesus.first_name, "Jesus")
         self.assertEqual(jesus.middle_name, "Our Savior")
         self.assertEqual(jesus.last_name, "Raptor")
+        self.assertEqual(jesus.get_full_name(), "Jesus Raptor")
+        self.assertEqual(jesus.get_short_name(), "Jesus")

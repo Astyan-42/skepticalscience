@@ -103,12 +103,15 @@ class User(AbstractBaseUser, PermissionsMixin):
     # temporary to avoid any problem. Should contain the real name
     def get_full_name(self):
         """
-        :return: should return first_name+middle_name+last_name
+        :return: should return first_name+last_name
         """
-        return self.get_username()
+        return self.first_name+" "+self.last_name
 
     def get_short_name(self):
         """
-        :return: should return first_name+last_name
+        :return: should return first_name
         """
-        return self.get_username()
+        return self.first_name
+
+    def email_user(self):
+        pass
