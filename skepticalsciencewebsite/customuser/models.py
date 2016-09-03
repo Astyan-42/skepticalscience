@@ -2,6 +2,8 @@ from django.db import models
 from sciences.models import Science
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import ugettext_lazy as _
+from django.core.validators import RegexValidator
+import re
 # Create your models here.
 
 
@@ -27,7 +29,13 @@ class User(AbstractUser):
     """
     Our User class, can represent a skeptic, a great skeptic or a researcher
     """
-    username = models.CharField(max_length=255, unique=True, verbose_name=_("Username"))
+    # all user name except if it start with skeptic, author or researcher
+    username = models.CharField(max_length=255, unique=True, verbose_name=_("Username"),
+                                validators=[ RegexValidator(regex="^(skeptic|author|researcher).*$",
+                                                            message=_("Use a valid username \
+                                                            (not skepic, author, researcher)"),
+                                                            inverse_match=True,
+                                                            flags=re.IGNORECASE)])
     email = models.EmailField(unique=True, verbose_name=_("Email Address"))
     # is_active to True during the test to don't have the email registration
     is_active = models.BooleanField(default=True)

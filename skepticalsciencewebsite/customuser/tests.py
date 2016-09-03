@@ -1,15 +1,7 @@
 from django.test import TestCase
 from customuser.models import User
-# from django.core.mail import send_mail
+from django.core.exceptions import ValidationError
 # Create your tests here.
-
-# doesnt work
-# class SendEmailTest(TestCase):
-#
-#     def test_send_mail(self):
-#         res = send_mail('test', 'core', 'localhost', ['localhost'], fail_silently=False)
-#         # One message send
-#         self.assertEqual(res, 1)
 
 
 class UserTestCase(TestCase):
@@ -35,3 +27,8 @@ class UserTestCase(TestCase):
         self.assertEqual(jesus.last_name, "Raptor")
         self.assertEqual(jesus.get_full_name(), "Jesus Raptor")
         self.assertEqual(jesus.get_short_name(), "Jesus")
+
+    def test_ban_username(self):
+        userres = User.objects.create(username="Skeptic 42", password="azerty123", phd=True, first_name="Jesus",
+                                      middle_name="Our Savior", last_name="Raptor", email="testbanusername@test.com")
+        self.assertRaises(ValidationError, userres.full_clean)
