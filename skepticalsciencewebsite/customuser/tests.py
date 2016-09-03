@@ -29,6 +29,9 @@ class UserTestCase(TestCase):
         self.assertEqual(jesus.get_short_name(), "Jesus")
 
     def test_ban_username(self):
+        """
+        Test if non wanted name are banned
+        """
         userres = User.objects.create(username="Skeptic 42", password="azerty123", phd=True, first_name="Jesus",
                                       middle_name="Our Savior", last_name="Raptor", email="testbanusername@test.com")
         self.assertRaises(ValidationError, userres.full_clean)
