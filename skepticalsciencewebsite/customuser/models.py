@@ -29,7 +29,8 @@ class User(AbstractUser):
     """
     username = models.CharField(max_length=255, unique=True, verbose_name=_("Username"))
     email = models.EmailField(unique=True, verbose_name=_("Email Address"))
-    is_active = models.BooleanField(default=False)
+    # is_active to True during the test to don't have the email registration
+    is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     first_name = models.CharField(max_length=255, blank=True, verbose_name=_("First Name"))
     middle_name = models.CharField(max_length=255, blank=True, verbose_name=_("Middle Name"))
