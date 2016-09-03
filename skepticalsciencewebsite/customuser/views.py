@@ -10,5 +10,6 @@ class UserDetailView(DetailView):
 
 class UserUpdateView(UpdateView):
     model = User
-    # form_class = UserUpdateForm
+    # fields = ["email", "first_name", "middle_name", "last_name", "phd", "country", "workplace", "description",
+    #           "job_title", "sciences"]
     # template_name = 'customuser/update_user.html'
