@@ -28,8 +28,8 @@ urlpatterns = [
         ),
         name='registration_register',
         ),
-    url(r'accounts/edit_profile/(?P<pk>\d)', UserUpdateView.as_view(), name='edit_profile'),
-    url(r'accounts/user_profile/(?P<pk>\d)', UserDetailView.as_view(), name='view_profile'),
+    url(r'^accounts/edit_profile/(?P<pk>\d)', UserUpdateView.as_view(), name='edit_profile'),
+    url(r'^accounts/user_profile/(?P<pk>\d)', UserDetailView.as_view(), name='view_profile'),
     # https://github.com/incuna/django-registration/blob/master/registration/urls.py under accounts
     url(r'^accounts/', include('registration.backends.hmac.urls')),
     url(r'^$', TemplateView.as_view(template_name='index.html'), name="index"),

@@ -4,12 +4,12 @@
 {% load bootstrap3 %}
 
 {% block content %}
-    <h1>{% trans "Edit profile" %}</h1>
-    <form method="post" action=".">
-    {% csrf_token %}
-    {% bootstrap_form form %}
-    {% buttons %}
-        <input class="btn btn-primary" type="submit" value="{% trans 'Submit' %}" />
-    {% endbuttons %}
-    </form>
+        <h1>{% trans "Edit profile" %}</h1>
+        <form method="post" action=".">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% buttons %}
+            <input class="btn btn-primary" type="submit" value="{% trans 'Submit' %}" />
+        {% endbuttons %}
+        </form>
 {% endblock %}
