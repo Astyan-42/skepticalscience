@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views.generic import UpdateView, DetailView
 from customuser.models import User
 from django.core.urlresolvers import reverse_lazy
+from customuser.forms import CustomUserUpdateForm
 # Create your views here.
 
 
@@ -13,7 +14,6 @@ class UserDetailView(DetailView):
 
 class UserUpdateView(UpdateView):
     model = User
-    fields = ["email", "first_name", "middle_name", "last_name", "phd", "country", "workplace", "description",
-              "job_title", "sciences"]
+    form_class = CustomUserUpdateForm
     template_name = 'customuser/update_user.html'
     success_url = reverse_lazy('view_profile')
