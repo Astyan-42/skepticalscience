@@ -19,6 +19,7 @@ class Publication(models.Model):
     # publication score
     # status = choice
     # tags
+    # licence
 
 
 class Comment(models.Model):
@@ -31,6 +32,7 @@ class Comment(models.Model):
     # constrainte : must be on the same publication
     validators = models.ManyToManyField(Reviewer, blank=True, verbose_name=_("Validator"))
     # corrected = choice (yes, no)
+    # same licence as publication (forced ?)
 
 
 class Reviewer(models.Model):
