@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse_lazy
 from customuser.forms import CustomUserUpdateForm
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.shortcuts import get_object_or_404
 # Create your views here.
 
 
@@ -20,3 +21,6 @@ class UserUpdateView(UpdateView):
     form_class = CustomUserUpdateForm
     template_name = 'customuser/update_user.html'
     success_url = reverse_lazy('view_profile')
+
+    def get_object(self):
+        return get_object_or_404(User, pk=self.request.session['_auth_user_id'])
