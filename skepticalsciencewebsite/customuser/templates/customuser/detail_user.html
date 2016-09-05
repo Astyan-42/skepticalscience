@@ -6,4 +6,11 @@
 {% block content %}
     <h1>{% trans "User profile" %}</h1>
     <h2>{{ user_detail.email }}</h2>
+
+
+    {% if user.id == user_detail.pk %}
+        <p>{% trans "Wrong informations " %}? <a href="{% url 'edit_profile' %}">{% trans "Edit your profile " %}</a>!</p>
+        <p>{% trans "Unable to publish " %}? <a href="{% url 'auth_password_reset' %}">{% trans "Upgrade your account " %}</a>!</p>
+    {% endif %}
+
 {% endblock %}
