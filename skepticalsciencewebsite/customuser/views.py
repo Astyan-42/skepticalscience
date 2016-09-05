@@ -23,7 +23,9 @@ class UserUpdateView(UpdateView):
     model = User
     form_class = CustomUserUpdateForm
     template_name = 'customuser/update_user.html'
-    success_url = reverse_lazy('edit_profile')
 
     def get_object(self, queryset=None):
         return get_object_or_404(User, pk=self.request.session['_auth_user_id'])
+
+    def get_success_url(self):
+        return reverse_lazy('view_profile', args=(self.request.session['_auth_user_id'],))
