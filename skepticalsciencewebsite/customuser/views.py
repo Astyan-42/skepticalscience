@@ -6,7 +6,6 @@ from customuser.forms import CustomUserUpdateForm
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.shortcuts import get_object_or_404
-from django.utils.translation import ugettext_lazy as _
 # Create your views here.
 
 
