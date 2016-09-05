@@ -89,3 +89,5 @@ ENV/
 .ropeproject
 /skepticalsciencewebsite/db.sqlite3
 /skepticalsciencewebsite/dumpauth
+/minimalproduct
+/planing.ods
