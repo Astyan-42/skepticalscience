@@ -46,7 +46,7 @@ class User(AbstractUser):
     phd = models.BooleanField(default=False, verbose_name=_("Own a PHD"))
     country = models.CharField(max_length=255, blank=True, verbose_name=_("Country"))
     workplace = models.CharField(max_length=255, blank=True, verbose_name=_("Workplace"))
-    description = models.CharField(max_length=1024, blank=True, verbose_name=_("Personnal description"))
+    description = models.CharField(max_length=1024, blank=True, verbose_name=_("Personal description"))
     job_title = models.CharField(max_length=255, blank=True, verbose_name=_("Job title"))
     sciences = models.ManyToManyField(Science, blank=True, symmetrical=False, verbose_name=_("Sciences"))
     # finding biais in publication : or number of valid biais foud and number of ivalid biais found ?

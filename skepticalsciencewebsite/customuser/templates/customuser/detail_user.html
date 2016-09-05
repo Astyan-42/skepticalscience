@@ -4,11 +4,29 @@
 {% load bootstrap3 %}
 
 {% block content %}
-    <h1>{% trans "User profile" %}</h1>
-    <h2>{{ user_detail.email }}</h2>
-
+    <h1>{{ user_detail.username }}{% trans "'s profile" %}</h1>
+    <p>{% trans "First Name " %}: {{ user_detail.first_name|default:"Not filled yet" }} </p>
+    <p>{% trans "Middle Name " %}: {{ user_detail.middle_name|default:"Not filled yet" }} </p>
+    <p>{% trans "Last Name " %}: {{ user_detail.last_name|default:"Not filled yet" }} </p>
+    <p>{% trans "Personal description " %}: {{ user_detail.description|default:"Not filled yet" }} </p>
+    <p>{% trans "Phd " %}: {{ user_detail.phd|yesno:"Yes,No,Unknown" }} </p>
+    <p>{% trans "Country " %}: {{ user_detail.country|default:"Not filled yet" }} </p>
+    <p>{% trans "Workplace " %}: {{ user_detail.workplace|default:"Not filled yet" }} </p>
+    <p>{% trans "Job title " %}: {{ user_detail.job_title|default:"Not filled yet" }} </p>
+    <p>{% trans "Sciences " %}: {% for science in user_detail.sciences.all %}
+                                    {% if forloop.last %}
+                                        {{ science }}
+                                    {% else %}
+                                        {{ science }},
+                                    {% endif %}
+                                {% endfor %}</p>
+    <p>{% trans "Skeptic score " %}: {{ user_detail.skeptic_score }} </p>
+    <p>{% trans "Mean publication score " %}: {{ user_detail.mean_publication_score }} </p>
+    <p>{% trans "Mean impact factor " %}: {{ user_detail.mean_impact_factor }} </p>
+    <p>{% trans "Estimator score " %}: {{ user_detail.estimator_score }} </p>
 
     {% if user.id == user_detail.pk %}
+        <hr>
         <p>{% trans "Wrong informations " %}? <a href="{% url 'edit_profile' %}">{% trans "Edit your profile " %}</a>!</p>
         <p>{% trans "Unable to publish " %}? <a href="{% url 'auth_password_reset' %}">{% trans "Upgrade your account " %}</a>!</p>
     {% endif %}
