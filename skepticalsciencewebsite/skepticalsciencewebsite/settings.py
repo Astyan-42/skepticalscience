@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'bootstrap3',
     'sciences',
     'customuser',
-    'publication',
+    'publications',
 ]
 
 MIDDLEWARE = [

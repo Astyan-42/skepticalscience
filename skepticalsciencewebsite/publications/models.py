@@ -33,16 +33,6 @@ class Licence(models.Model):
         return self.short_name
 
 
-class EstimatedImpactFactor(models.Model):
-    #must be in researcher group and have a related sciences
-    scientist = models.OneToOneField(User)
-    publication = models.OneToOneField(Publication)
-    estimated_impact_factor = MinMaxFloat(min_value=0.0, max_value=1000.0, verbose_name=_("Estimated impact factor"))
-
-    def __str__(self):
-        return self.scientist
-
-
 class KeyWord(models.Model):
     tag = models.CharField(max_length=64, blank=False, verbose_name=_("Keyword"))
 
@@ -77,6 +67,23 @@ class Publication(models.Model):
         return self.title
 
 
+class EstimatedImpactFactor(models.Model):
+    #must be in researcher group and have a related sciences
+    scientist = models.OneToOneField(User)
+    publication = models.OneToOneField(Publication)
+    estimated_impact_factor = MinMaxFloat(min_value=0.0, max_value=1000.0, verbose_name=_("Estimated impact factor"))
+
+    def __str__(self):
+        return self.scientist
+
+
+class Reviewer(models.Model):
+    scientist = models.OneToOneField(User)
+    publication = models.OneToOneField(Publication)
+
+    def __str__(self):
+        return self.scientist
+
 class Comment(models.Model):
     publication = models.OneToOneField(Publication)
     author = models.OneToOneField(User)
@@ -94,11 +101,3 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.title
-
-
-class Reviewer(models.Model):
-    scientist = models.OneToOneField(User)
-    publication = models.OneToOneField(Publication)
-
-    def __str__(self):
-        return self.scientist
