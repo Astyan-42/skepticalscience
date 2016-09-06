@@ -55,8 +55,8 @@ class Publication(models.Model):
 class Comment(models.Model):
     publication = models.OneToOneField(Publication)
     author = models.OneToOneField(User)
-    # type = choice (content, form)
-    # seriousness = choice (major, minor, critical)
+    comment_type = models.CharField(choices=COMMENT_ON, max_length=100, db_index=True)
+    seriousness = models.CharField(choices=SERIOUSNESS_STATUS, max_length=100, db_index=True)
     content = models.CharField(max_length=8192, blank=False, verbose_name=_("Publication comment"))
     #is validate by the 4 reviewers
     validated = models.BooleanField(default=False)
