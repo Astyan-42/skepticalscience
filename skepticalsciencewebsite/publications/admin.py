@@ -49,3 +49,8 @@ class ReviewerAdmin(admin.ModelAdmin):
     search_fields = ['scientist', 'publication']
 
 admin.site.register(Licence, LicenceAdmin)
+admin.site.register(EstimatedImpactFactor, EstimatedImpactFactorAdmin)
+admin.site.register(KeyWord, KeyWordAdmin)
+admin.site.register(Publication, PublicationAdmin)
+admin.site.register(Comment, CommentAdmin)
+admin.site.register(Reviewer, ReviewerAdmin)
