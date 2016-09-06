@@ -22,15 +22,8 @@ from customuser.views import UserUpdateView, UserDetailView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^accounts/register/$',
-        RegistrationView.as_view(
-            form_class=CustomUserForm
-        ),
-        name='registration_register',
-        ),
-    url(r'^accounts/edit_profile', UserUpdateView.as_view(), name='edit_profile'),
-    url(r'^accounts/user_profile/(?P<pk>\d)', UserDetailView.as_view(), name='view_profile'),
-    # https://github.com/incuna/django-registration/blob/master/registration/urls.py under accounts
+    url(r'^accounts/', include('customuser.urls')),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
+    # url(r'^publications/', include('publication.urls')),
     url(r'^$', TemplateView.as_view(template_name='index.html'), name="index"),
 ]
