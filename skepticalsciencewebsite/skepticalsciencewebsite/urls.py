@@ -21,6 +21,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('customuser.urls')),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
-    # url(r'^publications/', include('publications.urls')),
+    url(r'^publications/', include('publications.urls')),
     url(r'^$', TemplateView.as_view(template_name='index.html'), name="index"),
 ]

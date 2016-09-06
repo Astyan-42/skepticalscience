@@ -85,6 +85,7 @@ class Reviewer(models.Model):
     def __str__(self):
         return self.scientist
 
+
 class Comment(models.Model):
     publication = models.OneToOneField(Publication, verbose_name=_("Publication"))
     author = models.OneToOneField(User, verbose_name=_("Author"))
