@@ -13,6 +13,15 @@ PUBLICATION_STATUS = [("adding_peer", "Adding peer"),
                       ("published", "Published")]
 
 
+SERIOUSNESS_STATUS = [("minor", "Minor"),
+                      ("major", "Major"),
+                      ("critical", "Critical")]
+
+
+COMMENT_ON = [("form", "Form"),
+              ("content", "Content")]
+
+
 class Licence(models.Model):
     short_name = models.CharField(max_length=64, blank=False, verbose_name=_("Short name"))
     full_name = models.CharField(max_length=255, blank=False, verbose_name=_("Full name"))
