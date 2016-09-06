@@ -37,6 +37,10 @@ class EstimatedImpactFactor(models.Model):
     estimated_impact_factor = MinMaxFloat(min_value=0.0, max_value=1000.0, verbose_name=_("Estimated impact factor"))
 
 
+class KeyWord(models.Model):
+    tag = models.CharField(max_length=64, blank=False, verbose_name=_("Keyword"))
+
+
 class Publication(models.Model):
     # other author problem ? What to do if no account, if account ?
     editor = models.OneToOneField(User)
@@ -50,13 +54,14 @@ class Publication(models.Model):
                                     verbose_name=_("Publication score"))
     estimated_impact_factor = MinMaxFloat(min_value=0.0, max_value=1000.0, default=None,
                                           verbose_name=_("Estimated impact factor"))
-    
+    # authors
+    # resume
     # the pdf file at the creation
     # the source file at the creation
     # the pdf file after validation
     # the source file after validation
     status = models.CharField(choices=SERIOUSNESS_STATUS, max_length=100, db_index=True, default="pending_payment")
-    # tags
+    tags = models.ManyToManyField(KeyWord, blank= False, symmetrical=False)
     licence = models.OneToOneField(Licence)
 
 
