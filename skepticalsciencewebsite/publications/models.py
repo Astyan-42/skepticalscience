@@ -29,6 +29,9 @@ class Licence(models.Model):
     full_name = models.CharField(max_length=255, blank=False, verbose_name=_("Full name"))
     url = models.URLField(max_length=255, blank=False, verbose_name=_("URL"))
 
+    def __str__(self):
+        return self.short_name
+
 
 class EstimatedImpactFactor(models.Model):
     #must be in researcher group and have a related sciences
@@ -36,9 +39,15 @@ class EstimatedImpactFactor(models.Model):
     publication = models.OneToOneField(Publication)
     estimated_impact_factor = MinMaxFloat(min_value=0.0, max_value=1000.0, verbose_name=_("Estimated impact factor"))
 
+    def __str__(self):
+        return self.scientist
+
 
 class KeyWord(models.Model):
     tag = models.CharField(max_length=64, blank=False, verbose_name=_("Keyword"))
+
+    def __str__(self):
+        return self.tag
 
 
 class Publication(models.Model):
@@ -64,6 +73,9 @@ class Publication(models.Model):
     tags = models.ManyToManyField(KeyWord, blank= False, symmetrical=False)
     licence = models.OneToOneField(Licence)
 
+    def __str__(self):
+        return self.title
+
 
 class Comment(models.Model):
     publication = models.OneToOneField(Publication)
@@ -71,6 +83,7 @@ class Comment(models.Model):
     comment_type = models.CharField(choices=COMMENT_ON, max_length=100, db_index=True)
     seriousness = models.CharField(choices=SERIOUSNESS_STATUS, max_length=100, db_index=True)
     content = models.CharField(max_length=8192, blank=False, verbose_name=_("Publication comment"))
+    title = models.CharField(max_length=255, blank=False, verbose_name=_("Title"))
     #is validate by the 4 reviewers
     validated = models.BooleanField(default=False)
     # constrainte : must be on the same publication
@@ -79,7 +92,13 @@ class Comment(models.Model):
     corrected = models.BooleanField(default=False)
     licence = models.OneToOneField(Licence)
 
+    def __str__(self):
+        return self.title
+
 
 class Reviewer(models.Model):
     scientist = models.OneToOneField(User)
     publication = models.OneToOneField(Publication)
+
+    def __str__(self):
+        return self.scientist
