@@ -11,10 +11,10 @@ class LicenceAdmin(admin.ModelAdmin):
 
 
 class EstimatedImpactFactorAdmin(admin.ModelAdmin):
-    list_display = ['scientist', 'publication', 'estimated_impact_factor']
-    list_filter = ['scientist', 'publication', 'estimated_impact_factor']
-    ordering = ['scientist', 'publication', 'estimated_impact_factor']
-    search_fields = ['scientist', 'publication', 'estimated_impact_factor']
+    list_display = ['estimator', 'publication', 'estimated_impact_factor']
+    list_filter = ['estimator', 'publication', 'estimated_impact_factor']
+    ordering = ['estimator', 'publication', 'estimated_impact_factor']
+    search_fields = ['estimator', 'publication', 'estimated_impact_factor']
 
 
 class KeyWordAdmin(admin.ModelAdmin):
