@@ -5,9 +5,30 @@ from customuser.models import User, MinMaxFloat
 # Create your models here.
 
 
+PUBLICATION_STATUS = [("adding_peer", "Adding peer"),
+                      ("peer_review", "Peer review"),
+                      ("correction", "Correction"),
+                      ("validation", "Validation"),
+                      ("evaluation", "Evaluation"),
+                      ("published", "Published")]
+
+
+class Licence(models.Model):
+    short_name = models.CharField(max_length=64, blank=False, verbose_name=_("Short name"))
+    full_name = models.CharField(max_length=255, blank=False, verbose_name=_("Full name"))
+    url = models.URLField(max_length=255, blank=False, verbose_name=_("URL"))
+
+
+class EstimatedImpactFactor(models.Model):
+    #must be in researcher group and have a related sciences
+    scientist = models.OneToOneField(User)
+    publication = models.OneToOneField(Publication)
+    estimated_impact_factor = MinMaxFloat(min_value=0.0, max_value=1000.0, verbose_name=_("Estimated impact factor"))
+
+
 class Publication(models.Model):
     # other author problem ? What to do if no account, if account ?
-    first_author = models.OneToOneField(User) # or editor ?
+    editor = models.OneToOneField(User) # or editor ?
     creation_date = models.DateTimeField()
     validation_date = models.DateTimeField()
     sciences = models.ManyToManyField(Science, blank=False, symmetrical=False, verbose_name=_("Sciences"))
@@ -19,7 +40,7 @@ class Publication(models.Model):
     # publication score
     # status = choice
     # tags
-    # licence
+    licence = models.OneToOneField(Licence)
 
 
 class Comment(models.Model):
@@ -28,11 +49,13 @@ class Comment(models.Model):
     # type = choice (content, form)
     # seriousness = choice (major, minor, critical)
     content = models.CharField(max_length=8192, blank=False, verbose_name=_("Publication comment"))
+    #is validate by the 4 reviewers
     validated = models.BooleanField(default=False)
     # constrainte : must be on the same publication
     validators = models.ManyToManyField(Reviewer, blank=True, verbose_name=_("Validator"))
-    # corrected = choice (yes, no)
-    # same licence as publication (forced ?)
+    # if the mistake pointed by the comment has been corrected
+    corrected = models.BooleanField(default=False)
+    licence = models.OneToOneField(Licence)
 
 
 class Reviewer(models.Model):
