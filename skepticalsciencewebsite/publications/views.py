@@ -7,4 +7,4 @@ from publications.models import Publication
 
 class PublicationCreate(CreateView):
     model = Publication
-    fields = ["sciences", "title", "tags", "licence"]
+    fields = ["title", "sciences", "tags", "licence"]
