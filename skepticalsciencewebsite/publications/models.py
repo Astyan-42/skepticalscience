@@ -5,12 +5,14 @@ from customuser.models import User, MinMaxFloat
 # Create your models here.
 
 
-PUBLICATION_STATUS = [("adding_peer", "Adding peer"),
+PUBLICATION_STATUS = [("waiting_payment", "Waiting payment"),
+                      ("adding_peer", "Adding peer"),
                       ("peer_review", "Peer review"),
                       ("correction", "Correction"),
                       ("validation", "Validation"),
                       ("evaluation", "Evaluation"),
-                      ("published", "Published")]
+                      ("published", "Published"),
+                      ("aborted", "Aborted")]
 
 
 SERIOUSNESS_STATUS = [("minor", "Minor"),
@@ -37,17 +39,23 @@ class EstimatedImpactFactor(models.Model):
 
 class Publication(models.Model):
     # other author problem ? What to do if no account, if account ?
-    editor = models.OneToOneField(User) # or editor ?
+    editor = models.OneToOneField(User)
+    #create the publication before paying for
     creation_date = models.DateTimeField()
+    payment_date = models.DateTimeField()
     validation_date = models.DateTimeField()
     sciences = models.ManyToManyField(Science, blank=False, symmetrical=False, verbose_name=_("Sciences"))
+    title = models.CharField(max_length=255, blank=False, verbose_name=_("Title"))
+    publication_score = MinMaxFloat(min_value=0.0, max_value=10.0, default=None,
+                                    verbose_name=_("Publication score"))
+    estimated_impact_factor = MinMaxFloat(min_value=0.0, max_value=1000.0, default=None,
+                                          verbose_name=_("Estimated impact factor"))
+    
     # the pdf file at the creation
     # the source file at the creation
     # the pdf file after validation
     # the source file after validation
-    # estimated impact factor
-    # publication score
-    # status = choice
+    status = models.CharField(choices=SERIOUSNESS_STATUS, max_length=100, db_index=True, default="pending_payment")
     # tags
     licence = models.OneToOneField(Licence)
 
