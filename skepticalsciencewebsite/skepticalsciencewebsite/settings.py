@@ -188,3 +188,5 @@ BOOTSTRAP3 = {
         'inline': 'bootstrap3.renderers.InlineFieldRenderer',
     },
 }
+
+SELECT2_CSS = '/static/css/select2.css'

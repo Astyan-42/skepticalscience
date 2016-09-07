@@ -21,4 +21,4 @@ class CustomUserUpdateForm(forms.ModelForm):
         model = User
         fields = ["email", "first_name", "middle_name", "last_name", "phd", "country", "workplace", "description",
                   "job_title", "sciences"]
-        widgets = {'sciences': Select2MultipleWidget}
+        widgets = {'sciences': Select2MultipleWidget(attrs={'class': 'form-control'})}
