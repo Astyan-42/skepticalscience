@@ -61,6 +61,7 @@ class Publication(models.Model):
     # the source file after validation
     status = models.CharField(choices=PUBLICATION_STATUS, max_length=100, db_index=True, default="pending_payment",
                               verbose_name=_('Status'))
+    # or just resume ?
     tags = models.ManyToManyField(KeyWord, blank= False, symmetrical=False, verbose_name=_("Keywords"))
     licence = models.OneToOneField(Licence, verbose_name=_("Licence"))
 
