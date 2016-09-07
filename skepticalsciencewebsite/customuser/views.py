@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from django.views.generic import UpdateView, DetailView
-from customuser.models import User
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.shortcuts import get_object_or_404
+from customuser.models import User
+from customuser.forms import CustomUserUpdateForm
 # Create your views here.
 
 
@@ -26,9 +27,9 @@ class UserUpdateView(UpdateView):
     UpdateView made available only for logged user (the decorator). The user will change is own profile (get_object)
     """
     model = User
-    # form_class = CustomUserUpdateForm
-    fields = ["email", "first_name", "middle_name", "last_name", "phd", "country", "workplace", "description",
-              "job_title", "sciences"]
+    form_class = CustomUserUpdateForm
+    # fields = ["email", "first_name", "middle_name", "last_name", "phd", "country", "workplace", "description",
+    #           "job_title", "sciences"]
     template_name = 'customuser/update_user.html'
 
     def get_object(self, queryset=None):
