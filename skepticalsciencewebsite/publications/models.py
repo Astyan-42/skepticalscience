@@ -49,6 +49,7 @@ class Publication(models.Model):
     # authors
     # resume
     # the pdf file at the creation
+    pdf_creation = models.FileField(verbose_name=_("Publication draft (PDF)"))
     # the source file at the creation
     # the pdf file after validation
     # the source file after validation
