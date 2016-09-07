@@ -53,7 +53,7 @@ class Publication(models.Model):
     # the pdf file after validation
     # the source file after validation
     resume_creation = models.CharField(max_length=1024, blank=False, verbose_name=_("Resume at creation"))
-    resume_creation = models.CharField(max_length=1024, blank=True, verbose_name=_("Resume at validation"))
+    resume_validation = models.CharField(max_length=1024, blank=True, verbose_name=_("Resume at validation"))
     status = models.CharField(choices=PUBLICATION_STATUS, max_length=100, db_index=True, default="pending_payment",
                               verbose_name=_('Status'))
     # or just resume ?
