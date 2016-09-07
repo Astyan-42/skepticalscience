@@ -1,5 +1,5 @@
 from django.contrib import admin
-from publications.models import Licence, EstimatedImpactFactor, KeyWord, Publication, Comment, Reviewer
+from publications.models import Licence, EstimatedImpactFactor, Publication, Comment, Reviewer
 # Register your models here.
 
 
@@ -50,7 +50,6 @@ class ReviewerAdmin(admin.ModelAdmin):
 
 admin.site.register(Licence, LicenceAdmin)
 admin.site.register(EstimatedImpactFactor, EstimatedImpactFactorAdmin)
-admin.site.register(KeyWord, KeyWordAdmin)
 admin.site.register(Publication, PublicationAdmin)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(Reviewer, ReviewerAdmin)

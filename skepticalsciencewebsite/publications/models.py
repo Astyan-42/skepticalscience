@@ -33,13 +33,6 @@ class Licence(models.Model):
         return self.short_name
 
 
-class KeyWord(models.Model):
-    tag = models.CharField(max_length=64, blank=False, verbose_name=_("Keyword"))
-
-    def __str__(self):
-        return self.tag
-
-
 class Publication(models.Model):
     # other author problem ? What to do if no account, if account ?
     editor = models.OneToOneField(User, verbose_name=_('Editor'))
@@ -59,10 +52,12 @@ class Publication(models.Model):
     # the source file at the creation
     # the pdf file after validation
     # the source file after validation
+    resume_creation = models.CharField(max_length=1024, blank=False, verbose_name=_("Resume at creation"))
+    resume_creation = models.CharField(max_length=1024, blank=True, verbose_name=_("Resume at validation"))
     status = models.CharField(choices=PUBLICATION_STATUS, max_length=100, db_index=True, default="pending_payment",
                               verbose_name=_('Status'))
     # or just resume ?
-    tags = models.ManyToManyField(KeyWord, blank= False, symmetrical=False, verbose_name=_("Keywords"))
+    # tags = models.ManyToManyField(KeyWord, blank= False, symmetrical=False, verbose_name=_("Keywords"))
     licence = models.OneToOneField(Licence, verbose_name=_("Licence"))
 
     def __str__(self):
