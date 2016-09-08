@@ -50,14 +50,16 @@ class Publication(models.Model):
                                     verbose_name=_("Publication score"))
     estimated_impact_factor = MinMaxFloat(min_value=0.0, max_value=1000.0, default=None, null=True, blank=True,
                                           verbose_name=_("Estimated impact factor"))
-    # authors
-    # resume
+    # authors ????
     # the pdf file at the creation
-    pdf_creation = models.FileField(upload_to="pdf/%Y/%m/%d", storage=sendfile_storage,
+    pdf_creation = models.FileField(upload_to="pdf_creation/%Y/%m/%d", storage=sendfile_storage,
                                     verbose_name=_("Publication draft (PDF)"))
-    # the source file at the creation
-    # the pdf file after validation
-    # the source file after validation
+    source_creation = models.FileField(upload_to="source_creation/%Y/%m/%d", storage=sendfile_storage,
+                                       verbose_name=_("Publication draft (sources)"))
+    pdf_final = models.FileField(upload_to="pdf_final/%Y/%m/%d", storage=sendfile_storage, null=True, blank=True,
+                                 verbose_name=_("Publication final (pdf)"))
+    source_final = models.FileField(upload_to="source_final/%Y/%m/%d", storage=sendfile_storage, null=True, blank=True,
+                                    verbose_name=_("Publication final (sources)"))
     resume_creation = models.CharField(max_length=1024, blank=False, verbose_name=_("Resume at creation"))
     resume_validation = models.CharField(max_length=1024, blank=True, verbose_name=_("Resume at validation"))
     status = models.CharField(choices=PUBLICATION_STATUS, max_length=100, db_index=True, default="pending_payment",

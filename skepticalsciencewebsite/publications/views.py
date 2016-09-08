@@ -12,8 +12,15 @@ from publications.forms import PublicationCreateForm
 
 def download(request, field_name, publication_id):
     dl = get_object_or_404(Publication, pk=publication_id)
+    # not using eval for security reasons
     if field_name == "pdf_creation":
         return sendfile(request, dl.pdf_creation.path)
+    elif field_name == "source_creation":
+        return sendfile(request, dl.source_creation.path)
+    elif field_name == "pdf_final":
+        return sendfile(request, dl.pdf_final.path)
+    elif field_name == "source_final":
+        return sendfile(request, dl.source_final.path)
 
 
 @method_decorator(login_required, name='dispatch')
