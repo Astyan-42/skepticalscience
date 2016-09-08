@@ -9,5 +9,6 @@ class PublicationCreateForm(forms.ModelForm):
     """
     class Meta:
         model = Publication
-        fields = ["title", "resume_creation",  "pdf_creation", "sciences", "licence"]
-        widgets = {'sciences': Select2MultipleWidget}
+        fields = ["title", "resume_creation", "pdf_creation", "sciences", "editor", "licence"]
+        widgets = {'sciences': Select2MultipleWidget,
+                   'resume_creation': forms.Textarea(attrs={'class': 'form-control'})}

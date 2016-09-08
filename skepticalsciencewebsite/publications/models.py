@@ -35,16 +35,16 @@ class Licence(models.Model):
 
 class Publication(models.Model):
     # other author problem ? What to do if no account, if account ?
-    editor = models.OneToOneField(User, verbose_name=_('Editor'))
+    editor = models.ForeignKey(User, verbose_name=_('Editor'))
     #create the publication before paying for
     creation_date = models.DateTimeField(auto_now_add=True, verbose_name=_('Creation date'))
     payment_date = models.DateTimeField(null=True, default=None, verbose_name=_('Payment date'))
     validation_date = models.DateTimeField(null=True, default=None, verbose_name=_('Validation date'))
     sciences = models.ManyToManyField(Science, blank=False, symmetrical=False, verbose_name=_("Sciences"))
     title = models.CharField(max_length=255, blank=False, verbose_name=_("Title"))
-    publication_score = MinMaxFloat(min_value=0.0, max_value=10.0, default=None,
+    publication_score = MinMaxFloat(min_value=0.0, max_value=10.0, default=None, null=True,
                                     verbose_name=_("Publication score"))
-    estimated_impact_factor = MinMaxFloat(min_value=0.0, max_value=1000.0, default=None,
+    estimated_impact_factor = MinMaxFloat(min_value=0.0, max_value=1000.0, default=None, null=True,
                                           verbose_name=_("Estimated impact factor"))
     # authors
     # resume
@@ -59,7 +59,7 @@ class Publication(models.Model):
                               verbose_name=_('Status'))
     # or just resume ?
     # tags = models.ManyToManyField(KeyWord, blank= False, symmetrical=False, verbose_name=_("Keywords"))
-    licence = models.OneToOneField(Licence, verbose_name=_("Licence"))
+    licence = models.ForeignKey(Licence, verbose_name=_("Licence"))
 
     def __str__(self):
         return self.title

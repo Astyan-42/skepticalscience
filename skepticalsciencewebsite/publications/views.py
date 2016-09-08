@@ -9,3 +9,4 @@ from publications.forms import PublicationCreateForm
 class PublicationCreate(CreateView):
     model = Publication
     form_class = PublicationCreateForm
+    success_url = reverse_lazy("index")
