@@ -6,7 +6,7 @@ from sciences.forms import ScienceModelForm
 
 class PublicationCreateForm(ScienceModelForm):
     """
-    create an user form with restricted field (the field could be directly in the view, used the for
+    create an publication form with restricted field
     """
     class Meta:
         model = Publication

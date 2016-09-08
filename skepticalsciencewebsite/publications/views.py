@@ -32,11 +32,14 @@ class PublicationCreate(CreateView):
     form_class = PublicationCreateForm
     success_url = reverse_lazy("index")
 
+    # form valid break the science
     def form_valid(self, form):
-        obj = form.save(commit=False)
-        obj.editor = self.request.user
-        obj.save()
-        print(obj.sciences.all())
+        object = form.save(commit=False)
+        # print(object.title)
+        # print(object.sciences.all())
+        # print(object.sciences)
+        object.editor = self.request.user
+        object.save()
         return HttpResponseRedirect(self.success_url)
 
     def get_context_data(self, **kwargs):

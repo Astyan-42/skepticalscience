@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.shortcuts import get_object_or_404
+from django.http import HttpResponseRedirect
 from customuser.models import User
 from customuser.forms import CustomUserUpdateForm
 # Create your views here.
