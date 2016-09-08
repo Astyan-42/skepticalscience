@@ -3,7 +3,6 @@ from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
-from django.http import HttpResponseRedirect
 from sendfile import sendfile
 from publications.models import Publication
 from publications.forms import PublicationCreateForm
