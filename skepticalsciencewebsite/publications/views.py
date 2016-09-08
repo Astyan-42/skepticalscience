@@ -32,15 +32,13 @@ class PublicationCreate(CreateView):
     form_class = PublicationCreateForm
     success_url = reverse_lazy("index")
 
-    # form valid break the science
     def form_valid(self, form):
-        object = form.save(commit=False)
-        # print(object.title)
-        # print(object.sciences.all())
-        # print(object.sciences)
-        object.editor = self.request.user
-        object.save()
-        return HttpResponseRedirect(self.success_url)
+        # get the object from the form
+        self.object = form.save(commit=False)
+        # add the editor in object
+        self.object.editor = self.request.user
+        # call the parent to save correctly the ManyToManyField (sciences)
+        return super(CreateView, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super(PublicationCreate, self).get_context_data(**kwargs)
