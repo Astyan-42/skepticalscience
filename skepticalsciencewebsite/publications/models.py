@@ -29,6 +29,9 @@ COMMENT_ON = [("form", "Form"),
 
 
 class Licence(models.Model):
+    """
+    Legal licence Model
+    """
     short_name = models.CharField(max_length=64, blank=False, verbose_name=_("Short name"))
     full_name = models.CharField(max_length=255, blank=False, verbose_name=_("Full name"))
     url = models.URLField(max_length=255, blank=False, verbose_name=_("URL"))
@@ -38,6 +41,9 @@ class Licence(models.Model):
 
 
 class Publication(models.Model):
+    """
+    Publication Model. Need the author
+    """
     # other author problem ? What to do if no account, if account ?
     editor = models.ForeignKey(User, verbose_name=_('Editor'))
     #create the publication before paying for
@@ -73,6 +79,9 @@ class Publication(models.Model):
 
 
 class EstimatedImpactFactor(models.Model):
+    """
+    EstimatedImpactFactor Model
+    """
     #must be in researcher group and have a related sciences
     estimator = models.ForeignKey(User, verbose_name=_('Estimator'))
     publication = models.ForeignKey(Publication, verbose_name=_('Publication'))
@@ -83,6 +92,9 @@ class EstimatedImpactFactor(models.Model):
 
 
 class Reviewer(models.Model):
+    """
+    Reviewer Model
+    """
     scientist = models.ForeignKey(User, verbose_name=_("Reviewer"))
     publication = models.ForeignKey(Publication, verbose_name=_("Publication"))
 
@@ -91,6 +103,9 @@ class Reviewer(models.Model):
 
 
 class Comment(models.Model):
+    """
+    Comment model
+    """
     publication = models.ForeignKey(Publication, verbose_name=_("Publication"))
     author = models.ForeignKey(User, verbose_name=_("Author"))
     # fake pseudo when reviewer must be reviewer (fake pseudo given automatically between: Reviewer, Scientist, Skeptic)
