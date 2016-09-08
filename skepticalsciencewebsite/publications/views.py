@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
 from django.http import HttpResponseRedirect
 from sendfile import sendfile
@@ -24,6 +24,8 @@ def download(request, field_name, publication_id):
 
 
 @method_decorator(login_required, name='dispatch')
+@method_decorator(permission_required('publications.publication.can_add_publication', raise_exception=True),
+                  name='dispatch')
 class PublicationCreate(CreateView):
     model = Publication
     form_class = PublicationCreateForm
