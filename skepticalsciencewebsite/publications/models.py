@@ -67,8 +67,8 @@ class Publication(models.Model):
 
 class EstimatedImpactFactor(models.Model):
     #must be in researcher group and have a related sciences
-    estimator = models.OneToOneField(User, verbose_name=_('Estimator'))
-    publication = models.OneToOneField(Publication, verbose_name=_('Publication'))
+    estimator = models.ForeignKey(User, verbose_name=_('Estimator'))
+    publication = models.ForeignKey(Publication, verbose_name=_('Publication'))
     estimated_impact_factor = MinMaxFloat(min_value=0.0, max_value=1000.0, verbose_name=_("Estimated impact factor"))
 
     def __str__(self):
@@ -76,16 +76,16 @@ class EstimatedImpactFactor(models.Model):
 
 
 class Reviewer(models.Model):
-    scientist = models.OneToOneField(User, verbose_name=_("Reviewer"))
-    publication = models.OneToOneField(Publication, verbose_name=_("Publication"))
+    scientist = models.ForeignKey(User, verbose_name=_("Reviewer"))
+    publication = models.ForeignKey(Publication, verbose_name=_("Publication"))
 
     def __str__(self):
         return self.scientist
 
 
 class Comment(models.Model):
-    publication = models.OneToOneField(Publication, verbose_name=_("Publication"))
-    author = models.OneToOneField(User, verbose_name=_("Author"))
+    publication = models.ForeignKey(Publication, verbose_name=_("Publication"))
+    author = models.ForeignKey(User, verbose_name=_("Author"))
     # fake pseudo when reviewer must be reviewer (fake pseudo given automatically between: Reviewer, Scientist, Skeptic)
     author_fake_pseudo = models.CharField(max_length=100, default=None, verbose_name=_('Fake Pseudo'))
     creation_date = models.DateTimeField(auto_now_add=True, verbose_name=_('Creation date'))
@@ -100,7 +100,7 @@ class Comment(models.Model):
     validators = models.ManyToManyField(Reviewer, blank=True, verbose_name=_("Validator"))
     # if the mistake pointed by the comment has been corrected
     corrected = models.BooleanField(default=False, verbose_name=_("Corrected"))
-    licence = models.OneToOneField(Licence, verbose_name=_("Licence"))
+    licence = models.ForeignKey(Licence, verbose_name=_("Licence"))
 
     def __str__(self):
         return self.title
