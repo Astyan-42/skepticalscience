@@ -28,6 +28,7 @@ def download(request, field_name, publication_id):
                   name='dispatch')
 class PublicationCreate(CreateView):
     model = Publication
+    name = "Submit publication"
     form_class = PublicationCreateForm
     success_url = reverse_lazy("index")
 
@@ -37,3 +38,8 @@ class PublicationCreate(CreateView):
         obj.save()
         print(obj.sciences.all())
         return HttpResponseRedirect(self.success_url)
+
+    def get_context_data(self, **kwargs):
+        context = super(PublicationCreate, self).get_context_data(**kwargs)
+        context['name'] = self.name
+        return context
