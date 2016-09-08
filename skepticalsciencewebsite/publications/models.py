@@ -1,7 +1,11 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
 from sciences.models import Science
 from customuser.models import User, MinMaxFloat
+
+sendfile_storage = FileSystemStorage(location=settings.SENDFILE_ROOT)
 # Create your models here.
 
 
@@ -49,7 +53,8 @@ class Publication(models.Model):
     # authors
     # resume
     # the pdf file at the creation
-    pdf_creation = models.FileField(upload_to="pdf/%Y/%m/%d", verbose_name=_("Publication draft (PDF)"))
+    pdf_creation = models.FileField(upload_to="pdf/%Y/%m/%d", storage=sendfile_storage,
+                                    verbose_name=_("Publication draft (PDF)"))
     # the source file at the creation
     # the pdf file after validation
     # the source file after validation

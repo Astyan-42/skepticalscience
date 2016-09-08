@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap3',
     'django_select2',
+    'sendfile',
     'sciences',
     'customuser',
     'publications',
@@ -128,6 +129,10 @@ STATICFILES_DIRS = (
 )
 
 STATIC_URL = '/static/'
+
+SENDFILE_BACKEND = 'sendfile.backends.development'
+SENDFILE_ROOT = os.path.join(BASE_DIR, 'media')
+SENDFILE_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
