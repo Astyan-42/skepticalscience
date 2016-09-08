@@ -130,11 +130,10 @@ STATICFILES_DIRS = (
 
 STATIC_URL = '/static/'
 
+#sendfile settings
 SENDFILE_BACKEND = 'sendfile.backends.development'
 SENDFILE_ROOT = os.path.join(BASE_DIR, 'media')
 SENDFILE_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
 
 # Registration settings
 REGISTRATION_OPEN = True                # If True, users can register
