@@ -33,6 +33,7 @@ class PublicationAdmin(admin.ModelAdmin):
                 'title', 'publication_score', 'estimated_impact_factor', 'status', 'licence']
     search_fields = ['editor', 'creation_date', 'payment_date', 'validation_date',
                      'title', 'publication_score', 'estimated_impact_factor', 'status', 'licence']
+    filter_horizontal = ['sciences']
 
 
 class CommentAdmin(admin.ModelAdmin):

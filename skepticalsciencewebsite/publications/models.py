@@ -38,13 +38,13 @@ class Publication(models.Model):
     editor = models.ForeignKey(User, verbose_name=_('Editor'))
     #create the publication before paying for
     creation_date = models.DateTimeField(auto_now_add=True, verbose_name=_('Creation date'))
-    payment_date = models.DateTimeField(null=True, default=None, verbose_name=_('Payment date'))
-    validation_date = models.DateTimeField(null=True, default=None, verbose_name=_('Validation date'))
+    payment_date = models.DateTimeField(null=True, blank=True, default=None, verbose_name=_('Payment date'))
+    validation_date = models.DateTimeField(null=True, blank=True, default=None, verbose_name=_('Validation date'))
     sciences = models.ManyToManyField(Science, blank=False, symmetrical=False, verbose_name=_("Sciences"))
     title = models.CharField(max_length=255, blank=False, verbose_name=_("Title"))
-    publication_score = MinMaxFloat(min_value=0.0, max_value=10.0, default=None, null=True,
+    publication_score = MinMaxFloat(min_value=0.0, max_value=10.0, default=None, null=True, blank=True,
                                     verbose_name=_("Publication score"))
-    estimated_impact_factor = MinMaxFloat(min_value=0.0, max_value=1000.0, default=None, null=True,
+    estimated_impact_factor = MinMaxFloat(min_value=0.0, max_value=1000.0, default=None, null=True, blank=True,
                                           verbose_name=_("Estimated impact factor"))
     # authors
     # resume

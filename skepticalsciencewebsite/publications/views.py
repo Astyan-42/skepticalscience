@@ -16,7 +16,8 @@ class PublicationCreate(CreateView):
     success_url = reverse_lazy("index")
 
     def form_valid(self, form):
-        self.object = form.save(commit=False)
-        self.object.editor = self.request.user
-        self.object.save()
+        obj = form.save(commit=False)
+        obj.editor = self.request.user
+        obj.save()
+        print(obj.sciences.all())
         return HttpResponseRedirect(self.success_url)
