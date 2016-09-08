@@ -10,9 +10,10 @@ from publications.forms import PublicationCreateForm
 # Create your views here.
 
 
-def download(request, publication_id):
+def download(request, field_name, publication_id):
     dl = get_object_or_404(Publication, pk=publication_id)
-    return sendfile(request, dl.pdf_creation.path)
+    if field_name == "pdf_creation":
+        return sendfile(request, dl.pdf_creation.path)
 
 
 @method_decorator(login_required, name='dispatch')
