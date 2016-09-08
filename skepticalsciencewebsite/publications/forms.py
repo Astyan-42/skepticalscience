@@ -13,4 +13,3 @@ class PublicationCreateForm(ScienceModelForm):
         fields = ["title", "resume_creation", "pdf_creation", "source_creation", "sciences", "licence"]
         widgets = {'sciences': Select2MultipleWidget,
                    'resume_creation': forms.Textarea(attrs={'class': 'form-control'})}
-
