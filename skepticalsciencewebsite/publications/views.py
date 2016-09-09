@@ -79,8 +79,8 @@ class PublicationFilteredTableView(SingleTableView):
 
     def get_table(self, **kwargs):
         table = super(PublicationFilteredTableView, self).get_table()
-        PublicationFilteredTableView(self.request, paginate={'page': self.kwargs['page'],
-                            "per_page": self.paginate_by}).configure(table)
+        # PublicationFilteredTableView(self.request, paginate={'page': self.kwargs['page'],
+        #                     "per_page": self.paginate_by}).configure(table)
         return table
 
     def get_context_data(self, **kwargs):
@@ -93,6 +93,6 @@ class PublicationTableView(PublicationFilteredTableView):
     model = Publication
     table_class = PublicationTable
     template_name = 'publication/publication_list.html'
-    paginate_by = 50
+    paginate_by = 20
     filter_class = PublicationFilter
     formhelper_class = PublicationFilterFormHelper
