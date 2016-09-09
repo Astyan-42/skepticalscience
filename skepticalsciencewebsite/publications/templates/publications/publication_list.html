@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% load bootstrap3 %}
+{% load django_tables2 crispy_forms_tags %}
+
+{% block content %}
+    <h1>{% trans "Publications" %}</h1>
+    {% crispy filter.form filter.form.helper %}
+    {% render_table table %}
+{% endblock %}

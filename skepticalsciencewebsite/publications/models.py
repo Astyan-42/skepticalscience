@@ -2,6 +2,9 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
+import django_filters
+import django_tables2 as tables
+from crispy_forms.helper import FormHelper
 from sciences.models import Science
 from customuser.models import User, MinMaxFloat
 
@@ -78,6 +81,24 @@ class Publication(models.Model):
         return self.title
 
 
+class PublicationFilter(django_filters.FilterSet):
+
+    class Meta:
+        model = Publication
+        fields = ["editor", "sciences", "title", "status", "estimated_impact_factor", "publication_score"]
+
+
+class PublicationTable(tables.Table):
+
+    class Meta:
+        model = Publication
+        fields = ["editor", "sciences", "title", "status", "estimated_impact_factor", "publication_score"]
+
+
+class PublicationFilterFormHelper(FormHelper):
+    model = Publication
+
+
 class EstimatedImpactFactor(models.Model):
     """
     EstimatedImpactFactor Model
@@ -126,3 +147,5 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.title
+
+

@@ -4,7 +4,8 @@ from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
 from sendfile import sendfile
-from publications.models import Publication
+from django_tables2 import SingleTableView
+from publications.models import Publication, PublicationFilter, PublicationFilterFormHelper, PublicationTable
 from publications.forms import PublicationCreateForm
 # Create your views here.
 
@@ -63,3 +64,35 @@ class PublicationCreate(CreateView):
         context = super(PublicationCreate, self).get_context_data(**kwargs)
         context['name'] = self.name
         return context
+
+
+class PublicationFilteredTableView(SingleTableView):
+    filter_class = None
+    formhelper_class = None
+    context_filter_name = 'filter'
+
+    def get_queryset(self, **kwargs):
+        qs = super(PublicationFilteredTableView, self).get_queryset()
+        self.filter = self.filter_class(self.request.GET, queryset=qs)
+        self.filter.form.helper = self.formhelper_class()
+        return self.filter.qs
+
+    def get_table(self, **kwargs):
+        table = super(PublicationFilteredTableView, self).get_table()
+        PublicationFilteredTableView(self.request, paginate={'page': self.kwargs['page'],
+                            "per_page": self.paginate_by}).configure(table)
+        return table
+
+    def get_context_data(self, **kwargs):
+        context = super(PublicationFilteredTableView, self).get_context_data()
+        context[self.context_filter_name] = self.filter
+        return context
+
+
+class PublicationTableView(PublicationFilteredTableView):
+    model = Publication
+    table_class = PublicationTable
+    template_name = 'publication/publication_list.html'
+    paginate_by = 50
+    filter_class = PublicationFilter
+    formhelper_class = PublicationFilterFormHelper
