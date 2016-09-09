@@ -89,7 +89,16 @@ class PublicationFilter(django_filters.FilterSet):
         fields = ["editor", "sciences", "title", "status", "estimated_impact_factor", "publication_score"]
 
 
+class GoodScience(tables.Column):
+    
+    def render(self, value):
+        sciences = sorted([science.name for science in value.all()])
+        sciences = "-".join(sciences)
+        return sciences
+
+
 class PublicationTable(tables.Table):
+    sciences = GoodScience()
 
     class Meta:
         model = Publication
