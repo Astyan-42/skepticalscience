@@ -8,6 +8,7 @@ from crispy_forms.helper import FormHelper
 from sciences.models import Science
 from customuser.models import User, MinMaxFloat
 
+
 sendfile_storage = FileSystemStorage(location=settings.SENDFILE_ROOT)
 # Create your models here.
 
@@ -93,6 +94,7 @@ class PublicationTable(tables.Table):
     class Meta:
         model = Publication
         fields = ["editor", "sciences", "title", "status", "estimated_impact_factor", "publication_score"]
+        attrs = {"class": "table table-responsive paleblue"}
 
 
 class PublicationFilterFormHelper(FormHelper):
