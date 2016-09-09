@@ -39,6 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap3',
     'django_select2',
+    'crispy_forms',
+    'django_filters',
+    'django_tables2',
     'sendfile',
     'sciences',
     'customuser',
@@ -196,3 +199,6 @@ BOOTSTRAP3 = {
 }
 
 SELECT2_CSS = '/static/css/select2.css'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
+

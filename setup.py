@@ -64,7 +64,8 @@ setup(
     # project is installed. For an analysis of "install_requires" vs pip's
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
-    install_requires=['django', 'django-bootstrap3', 'django-registration', 'django-select2', 'django-sendfile'],
+    install_requires=['django', 'django-bootstrap3', 'django-registration', 'django-select2', 'django-sendfile',
+                      'django_tables2', 'django-filter', 'django-crispy-forms'],
 
     # List additional groups of dependencies here (e.g. development dependencies).
     # You can install these using the following syntax, for example:
