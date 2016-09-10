@@ -7,7 +7,7 @@ import django_tables2 as tables
 from crispy_forms.helper import FormHelper
 from crispy_forms.bootstrap import StrictButton, FormActions
 from crispy_forms.layout import Layout, Submit, Button, Field
-from django_select2.forms import Select2MultipleWidget
+from django_select2.forms import Select2MultipleWidget, Select2Widget
 from sciences.models import Science
 from customuser.models import User, MinMaxFloat
 
@@ -102,9 +102,9 @@ class PublicationTable(tables.Table):
 
 
 class PublicationFilter(django_filters.FilterSet):
-    sciences = django_filters.ModelChoiceFilter(
+    sciences = django_filters.ModelMultipleChoiceFilter(
         queryset=Science.objects.all(),
-        widget=Select2MultipleWidget()
+        widget=Select2MultipleWidget
     )
     estimated_impact_factor = django_filters.NumberFilter(lookup_expr='gte')
     publication_score = django_filters.NumberFilter(lookup_expr='gte')
@@ -124,10 +124,9 @@ class PublicationFilter(django_filters.FilterSet):
 class PublicationFilterFormHelper(FormHelper):
     model = Publication
     # form_class = 'form-inline' # this stupid shit change the size of science
-    # field_template = 'bootstrap3/layout/inline_field.html'
+    field_template = 'bootstrap3/layout/inline_field.html'
     form_id = 'id_filterForm'
     form_method = 'get'
-    # form_action = 'submit_filter'
     layout = Layout("editor", "sciences", "title", "status", "estimated_impact_factor", "publication_score",
                     FormActions(Submit('submit_filter', 'Filter'),
                                 # Button('clear', 'Clear')
