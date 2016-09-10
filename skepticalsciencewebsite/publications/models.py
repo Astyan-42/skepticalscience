@@ -72,7 +72,7 @@ class Publication(models.Model):
                                     verbose_name=_("Publication final (sources)"))
     resume_creation = models.CharField(max_length=1024, blank=False, verbose_name=_("Resume at creation"))
     resume_validation = models.CharField(max_length=1024, blank=True, verbose_name=_("Resume at validation"))
-    status = models.CharField(choices=PUBLICATION_STATUS, max_length=100, db_index=True, default="pending_payment",
+    status = models.CharField(choices=PUBLICATION_STATUS, max_length=100, db_index=True, default="waiting_payment",
                               verbose_name=_('Status'))
     # or just resume ?
     # tags = models.ManyToManyField(KeyWord, blank= False, symmetrical=False, verbose_name=_("Keywords"))
@@ -90,7 +90,7 @@ class PublicationFilter(django_filters.FilterSet):
 
 
 class GoodScience(tables.Column):
-    
+
     def render(self, value):
         sciences = sorted([science.name for science in value.all()])
         sciences = "-".join(sciences)
@@ -99,6 +99,7 @@ class GoodScience(tables.Column):
 
 class PublicationTable(tables.Table):
     sciences = GoodScience()
+
 
     class Meta:
         model = Publication
