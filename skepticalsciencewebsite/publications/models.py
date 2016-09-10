@@ -15,7 +15,7 @@ sendfile_storage = FileSystemStorage(location=settings.SENDFILE_ROOT)
 # Create your models here.
 
 
-PUBLICATION_STATUS = [("", "---------"),
+PUBLICATION_STATUS = [("", "All Status"),
                       ("waiting_payment", "Waiting payment"),
                       ("adding_peer", "Adding peer"),
                       ("peer_review", "Peer review"),
@@ -119,14 +119,15 @@ class PublicationFilter(django_filters.FilterSet):
 class PublicationFilterFormHelper(FormHelper):
     model = Publication
     form_class = 'form-inline' # this stupid shit change the size of science
-    # field_template = 'bootstrap3/layout/formactions.html'
+    field_template = 'bootstrap3/layout/inline_field.html'
     help_text_inline = True
     form_id = 'id_filterForm'
     form_method = 'get'
     layout = Layout("title", "status", "editor",
-                    Field("sciences"),
-                    Field("estimated_impact_factor", placeholder="(Minimal)", min=0., value=""),
-                    Field("publication_score", placeholder="(Minimal)", min=0, value=""),
+                    Field("sciences", style="min-width: 320px;", template=field_template),
+                    Field("estimated_impact_factor", placeholder="(Minimal)", min=0., value="",
+                          template=field_template),
+                    Field("publication_score", placeholder="(Minimal)", min=0, value="", template=field_template),
                     FormActions(Submit('submit_filter', 'Filter'),
                                 #Reset('reset_filter', 'Reset')
                                 # Button('clear', 'Clear')
