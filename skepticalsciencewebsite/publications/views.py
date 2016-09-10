@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
 from sendfile import sendfile
-from django_tables2 import SingleTableView
+from django_tables2 import SingleTableView, RequestConfig
 from publications.models import Publication, PublicationFilter, PublicationFilterFormHelper, PublicationTable
 from publications.forms import PublicationCreateForm
 # Create your views here.
@@ -79,8 +79,8 @@ class PublicationFilteredTableView(SingleTableView):
 
     def get_table(self, **kwargs):
         table = super(PublicationFilteredTableView, self).get_table()
-        # PublicationFilteredTableView(self.request, paginate={'page': self.kwargs['page'],
-        #                     "per_page": self.paginate_by}).configure(table)
+        RequestConfig(self.request, paginate={'page': self.page_kwarg,
+                      "per_page": self.paginate_by}).configure(table)
         return table
 
     def get_context_data(self, **kwargs):

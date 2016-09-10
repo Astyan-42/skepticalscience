@@ -5,9 +5,11 @@ from django.core.files.storage import FileSystemStorage
 import django_filters
 import django_tables2 as tables
 from crispy_forms.helper import FormHelper
+from crispy_forms.bootstrap import StrictButton
+from crispy_forms.layout import Layout
+from django_select2.forms import Select2MultipleWidget
 from sciences.models import Science
 from customuser.models import User, MinMaxFloat
-
 
 sendfile_storage = FileSystemStorage(location=settings.SENDFILE_ROOT)
 # Create your models here.
@@ -83,10 +85,21 @@ class Publication(models.Model):
 
 
 class PublicationFilter(django_filters.FilterSet):
+    sciences = django_filters.ModelChoiceFilter(
+        queryset=Science.objects.all(),
+        widget=Select2MultipleWidget
+    )
 
     class Meta:
         model = Publication
-        fields = ["editor", "sciences", "title", "status", "estimated_impact_factor", "publication_score"]
+        fields  = ["editor", "sciences", "title", "status", "estimated_impact_factor", "publication_score"]
+        # fields = {"editor" : ["exact"],
+        #           "sciences" : ["contains"],
+        #           "title" : ["icontains"],
+        #           "status" : ["exact"],
+        #           "estimated_impact_factor" : ["lte", "gte"],
+        #           "publication_score" : ["lte", "gte"]
+        #           }
 
 
 class GoodScience(tables.Column):
@@ -109,6 +122,8 @@ class PublicationTable(tables.Table):
 
 class PublicationFilterFormHelper(FormHelper):
     model = Publication
+    form_class = 'form-inline'
+    layout = Layout("editor", "sciences", "title", "status", "estimated_impact_factor", "publication_score")
 
 
 class EstimatedImpactFactor(models.Model):
