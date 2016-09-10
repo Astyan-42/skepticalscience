@@ -5,8 +5,8 @@ from django.core.files.storage import FileSystemStorage
 import django_filters
 import django_tables2 as tables
 from crispy_forms.helper import FormHelper
-from crispy_forms.bootstrap import StrictButton
-from crispy_forms.layout import Layout
+from crispy_forms.bootstrap import StrictButton, FormActions
+from crispy_forms.layout import Layout, Submit, Button, Field
 from django_select2.forms import Select2MultipleWidget
 from sciences.models import Science
 from customuser.models import User, MinMaxFloat
@@ -84,11 +84,30 @@ class Publication(models.Model):
         return self.title
 
 
+class GoodScience(tables.Column):
+
+    def render(self, value):
+        sciences = sorted([science.name for science in value.all()])
+        sciences = ", ".join(sciences)
+        return sciences
+
+
+class PublicationTable(tables.Table):
+    sciences = GoodScience()
+
+    class Meta:
+        model = Publication
+        fields = ["editor", "sciences", "title", "status", "estimated_impact_factor", "publication_score"]
+        attrs = {"class": "table table-responsive paleblue"}
+
+
 class PublicationFilter(django_filters.FilterSet):
     sciences = django_filters.ModelChoiceFilter(
         queryset=Science.objects.all(),
-        widget=Select2MultipleWidget
+        widget=Select2MultipleWidget()
     )
+    estimated_impact_factor = django_filters.NumberFilter(lookup_expr='gte')
+    publication_score = django_filters.NumberFilter(lookup_expr='gte')
 
     class Meta:
         model = Publication
@@ -102,28 +121,17 @@ class PublicationFilter(django_filters.FilterSet):
         #           }
 
 
-class GoodScience(tables.Column):
-
-    def render(self, value):
-        sciences = sorted([science.name for science in value.all()])
-        sciences = ", ".join(sciences)
-        return sciences
-
-
-class PublicationTable(tables.Table):
-    sciences = GoodScience()
-
-
-    class Meta:
-        model = Publication
-        fields = ["editor", "sciences", "title", "status", "estimated_impact_factor", "publication_score"]
-        attrs = {"class": "table table-responsive paleblue"}
-
-
 class PublicationFilterFormHelper(FormHelper):
     model = Publication
-    form_class = 'form-inline'
-    layout = Layout("editor", "sciences", "title", "status", "estimated_impact_factor", "publication_score")
+    # form_class = 'form-inline' # this stupid shit change the size of science
+    # field_template = 'bootstrap3/layout/inline_field.html'
+    form_id = 'id_filterForm'
+    form_method = 'get'
+    # form_action = 'submit_filter'
+    layout = Layout("editor", "sciences", "title", "status", "estimated_impact_factor", "publication_score",
+                    FormActions(Submit('submit_filter', 'Filter'),
+                                # Button('clear', 'Clear')
+                    ))
 
 
 class EstimatedImpactFactor(models.Model):

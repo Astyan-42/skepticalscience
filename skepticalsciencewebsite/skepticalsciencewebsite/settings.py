@@ -201,4 +201,3 @@ BOOTSTRAP3 = {
 SELECT2_CSS = '/static/css/select2.css'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
-
