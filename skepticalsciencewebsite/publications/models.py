@@ -5,9 +5,9 @@ from django.core.files.storage import FileSystemStorage
 import django_filters
 import django_tables2 as tables
 from crispy_forms.helper import FormHelper
-from crispy_forms.bootstrap import StrictButton, FormActions
-from crispy_forms.layout import Layout, Submit, Button, Field
-from django_select2.forms import Select2MultipleWidget, Select2Widget
+from crispy_forms.bootstrap import FormActions, Field
+from crispy_forms.layout import Layout, Submit
+from django_select2.forms import Select2MultipleWidget
 from sciences.models import Science
 from customuser.models import User, MinMaxFloat
 
@@ -108,17 +108,11 @@ class PublicationFilter(django_filters.FilterSet):
     )
     estimated_impact_factor = django_filters.NumberFilter(lookup_expr='gte')
     publication_score = django_filters.NumberFilter(lookup_expr='gte')
+    title = django_filters.CharFilter(lookup_expr='icontains')
 
     class Meta:
         model = Publication
         fields  = ["editor", "sciences", "title", "status", "estimated_impact_factor", "publication_score"]
-        # fields = {"editor" : ["exact"],
-        #           "sciences" : ["contains"],
-        #           "title" : ["icontains"],
-        #           "status" : ["exact"],
-        #           "estimated_impact_factor" : ["lte", "gte"],
-        #           "publication_score" : ["lte", "gte"]
-        #           }
 
 
 class PublicationFilterFormHelper(FormHelper):
@@ -127,8 +121,14 @@ class PublicationFilterFormHelper(FormHelper):
     field_template = 'bootstrap3/layout/inline_field.html'
     form_id = 'id_filterForm'
     form_method = 'get'
-    layout = Layout("editor", "sciences", "title", "status", "estimated_impact_factor", "publication_score",
+    layout = Layout("editor",
+                    Field("sciences", template=field_template),
+                    "title", "status",
+                    Field("estimated_impact_factor", placeholder="(Minimal)", min=0., value="",
+                          template=field_template),
+                    Field("publication_score", placeholder="(Minimal)", min=0, value="", template=field_template),
                     FormActions(Submit('submit_filter', 'Filter'),
+                                #Reset('reset_filter', 'Reset')
                                 # Button('clear', 'Clear')
                     ))
 
