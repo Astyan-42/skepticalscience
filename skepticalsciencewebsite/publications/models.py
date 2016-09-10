@@ -93,7 +93,7 @@ class GoodScience(tables.Column):
 
     def render(self, value):
         sciences = sorted([science.name for science in value.all()])
-        sciences = "-".join(sciences)
+        sciences = ", ".join(sciences)
         return sciences
 
 
