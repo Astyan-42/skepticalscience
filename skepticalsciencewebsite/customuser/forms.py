@@ -4,6 +4,7 @@ from customuser.models import User
 from django_select2.forms import Select2MultipleWidget
 from sciences.forms import ScienceModelForm
 
+
 class CustomUserForm(RegistrationForm):
     """
     Registration for, using, username and email (password is automaticaly add)

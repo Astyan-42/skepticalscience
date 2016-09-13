@@ -7,6 +7,7 @@ from sciences.models import Science
 from customuser.models import User
 from publications.models import Publication
 
+
 class PublicationFilter(django_filters.FilterSet):
     sciences = django_filters.ModelMultipleChoiceFilter(
         queryset=Science.objects.all(),
