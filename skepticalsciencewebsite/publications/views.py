@@ -1,10 +1,11 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
 from sendfile import sendfile
 from django_tables2 import SingleTableView, RequestConfig
+from customuser.models import User
 from publications.models import Publication
 from publications.forms import PublicationCreateForm
 from publications.tables import PublicationTable
@@ -103,10 +104,18 @@ class PublicationTableView(PublicationFilteredTableView):
 class PublicationSpecialTableView(SingleTableView):
     filter_class = None
     context_filter_name = 'filter'
+    filter_dict = {}
+
+    def fill_user_science(self):
+        user = User.objects.get(pk=self.request.session['_auth_user_id'])
+        sciences = [sid.pk for sid in user.sciences.all()]
+        self.filter_dict["sciences"] = sciences
 
     def get_queryset(self, **kwargs):
         qs = super(PublicationSpecialTableView, self).get_queryset()
-        self.filter = self.filter_class(self.request.GET, queryset=qs)
+        # filter from the user information
+        self.fill_user_science()
+        self.filter = self.filter_class(self.filter_dict, queryset=qs)
         return self.filter.qs
 
     def get_table(self, **kwargs):
@@ -124,6 +133,7 @@ class PublicationSpecialTableView(SingleTableView):
 class PublicationReviewTableView(PublicationSpecialTableView):
     model = Publication
     table_class = PublicationTable
-    template_name = 'publications/publication_special_list.html' # why this template isn't use !!!!
+    template_name = 'publications/publication_special_list.html'
     paginate_by = 25
     filter_class = PublicationFilter
+    filter_dict = {'status' : ''}
