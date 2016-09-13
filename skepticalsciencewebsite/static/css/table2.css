@@ -1,3 +1,4 @@
+/*
 .table-container th.asc:after {
   content: '\0000a0\0025b2';
 }
@@ -7,7 +8,7 @@
 .pagination {
   text-align: center;
 }
-
+*/
 
 
 table.paleblue {
@@ -27,9 +28,6 @@ table.paleblue +  ul.pagination {
 table.paleblue a:link,
 table.paleblue a:visited,
 table.paleblue + ul.pagination > li > a {
-    /*
-    color: #5B80B2;
-    */
     text-decoration: none;
     font-weight: bold;
 }
@@ -44,7 +42,7 @@ table.paleblue th {
     padding: 5px;
     line-height: 13px;
     border-bottom: 1px solid #EEE;
-    border-left: 1px solid #DDD;
+    border-left: 1px solid #DDD !important;
     text-align: left;
 }
 
@@ -57,7 +55,8 @@ table.paleblue thead td:first-child {
 table.paleblue thead th,
 table.paleblue thead td {
     background: #FCFCFC left bottom repeat-x;
-    border-bottom: 1px solid #DDD;
+    border-bottom: 1px solid #EEE;
+    border-left: 1px solid #DDD;
     padding: 2px 5px;
     font-size: 18px;
     vertical-align: middle;
@@ -69,7 +68,6 @@ table.paleblue thead th > a:link,
 table.paleblue thead th > a:visited {
     color: #666;
 }
-
 
 table.paleblue thead th.orderable > a {
     padding-right: 20px;
@@ -137,6 +135,8 @@ table.paleblue > tbody > tr > td > .missing {
 table.paleblue > tbody > tr > td > .missing:hover {
     color: #333;
 }
+
+
 /*
 commented to get responsive table
 

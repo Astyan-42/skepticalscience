@@ -7,8 +7,8 @@ import django_tables2 as tables
 from crispy_forms.helper import FormHelper
 from crispy_forms.bootstrap import FormActions, Field
 from crispy_forms.layout import Layout, Submit
-from django_select2.forms import Select2MultipleWidget, Select2Widget
-from django import forms
+from django_select2.forms import Select2MultipleWidget
+from django_tables2.utils import A
 from sciences.models import Science
 from customuser.models import User, MinMaxFloat
 
@@ -96,6 +96,9 @@ class GoodScience(tables.Column):
 
 class PublicationTable(tables.Table):
     sciences = GoodScience()
+    # temporary use the futur view of the publication
+    link = tables.LinkColumn("download_publication", text="publication", kwargs={"field_name" : "pdf_creation",
+                                                                                 "publication_id" : A('pk')})
 
     class Meta:
         model = Publication
@@ -106,7 +109,7 @@ class PublicationTable(tables.Table):
 class PublicationFilter(django_filters.FilterSet):
     sciences = django_filters.ModelMultipleChoiceFilter(
         queryset=Science.objects.all(),
-        widget=Select2MultipleWidget,
+        widget=Select2MultipleWidget
     )
     editor = django_filters.ModelChoiceFilter(
         queryset=User.objects.all(),
