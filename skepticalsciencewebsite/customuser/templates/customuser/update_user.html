@@ -2,15 +2,10 @@
 {% load i18n %}
 
 {% load bootstrap3 %}
+{% load crispy_forms_tags %}
 
 {% block content %}
     <h1>{% trans "Edit profile" %}</h1>
-    <form method="post" action=".">
-        {% csrf_token %}
-        {% bootstrap_form form %}
-        {% buttons %}
-            <input class="btn btn-primary" type="submit" value="{% trans 'Submit' %}" />
-        {% endbuttons %}
-    </form>
+    {% crispy form %}
     {{ form.media.js }}
 {% endblock %}
