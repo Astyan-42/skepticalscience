@@ -98,3 +98,32 @@ class PublicationTableView(PublicationFilteredTableView):
     paginate_by = 20
     filter_class = PublicationFilter
     formhelper_class = PublicationFilterFormHelper
+
+
+class PublicationSpecialTableView(SingleTableView):
+    filter_class = None
+    context_filter_name = 'filter'
+
+    def get_queryset(self, **kwargs):
+        qs = super(PublicationSpecialTableView, self).get_queryset()
+        self.filter = self.filter_class(self.request.GET, queryset=qs)
+        return self.filter.qs
+
+    def get_table(self, **kwargs):
+        table = super(PublicationSpecialTableView, self).get_table()
+        RequestConfig(self.request, paginate={'page': self.page_kwarg,
+                      "per_page": self.paginate_by}).configure(table)
+        return table
+
+    def get_context_data(self, **kwargs):
+        context = super(PublicationSpecialTableView, self).get_context_data()
+        context[self.context_filter_name] = self.filter
+        return context
+
+
+class PublicationReviewTableView(PublicationSpecialTableView):
+    model = Publication
+    table_class = PublicationTable
+    template_name = 'publication/publication_special_list.html' # why this template isn't use !!!! 
+    paginate_by = 25
+    filter_class = PublicationFilter
