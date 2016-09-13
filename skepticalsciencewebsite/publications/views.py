@@ -94,7 +94,7 @@ class PublicationFilteredTableView(SingleTableView):
 class PublicationTableView(PublicationFilteredTableView):
     model = Publication
     table_class = PublicationTable
-    template_name = 'publication/publication_list.html'
+    template_name = 'publications/publication_list.html'
     paginate_by = 20
     filter_class = PublicationFilter
     formhelper_class = PublicationFilterFormHelper
@@ -124,6 +124,6 @@ class PublicationSpecialTableView(SingleTableView):
 class PublicationReviewTableView(PublicationSpecialTableView):
     model = Publication
     table_class = PublicationTable
-    template_name = 'publication/publication_special_list.html' # why this template isn't use !!!! 
+    template_name = 'publications/publication_special_list.html' # why this template isn't use !!!!
     paginate_by = 25
     filter_class = PublicationFilter
