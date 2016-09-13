@@ -5,8 +5,9 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
 from sendfile import sendfile
 from django_tables2 import SingleTableView, RequestConfig
-from publications.models import Publication, PublicationFilter, PublicationFilterFormHelper, PublicationTable
+from publications.models import Publication, PublicationFilter, PublicationFilterFormHelper
 from publications.forms import PublicationCreateForm
+from publications.tables import PublicationTable
 # Create your views here.
 
 

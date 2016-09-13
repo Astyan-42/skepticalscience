@@ -3,12 +3,10 @@ from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 import django_filters
-import django_tables2 as tables
 from crispy_forms.helper import FormHelper
 from crispy_forms.bootstrap import FormActions, Field
 from crispy_forms.layout import Layout, Submit
 from django_select2.forms import Select2MultipleWidget
-from django_tables2.utils import A
 from sciences.models import Science
 from customuser.models import User, MinMaxFloat
 
@@ -84,26 +82,6 @@ class Publication(models.Model):
 
     def __str__(self):
         return self.title
-
-
-class GoodScience(tables.Column):
-
-    def render(self, value):
-        sciences = sorted([science.name for science in value.all()])
-        sciences = ", ".join(sciences)
-        return sciences
-
-
-class PublicationTable(tables.Table):
-    sciences = GoodScience()
-    # temporary use the futur view of the publication
-    link = tables.LinkColumn("download_publication", text="publication", kwargs={"field_name" : "pdf_creation",
-                                                                                 "publication_id" : A('pk')})
-
-    class Meta:
-        model = Publication
-        fields = ["editor", "sciences", "title", "status", "estimated_impact_factor", "publication_score"]
-        attrs = {"class": "table table-responsive paleblue"}
 
 
 class PublicationFilter(django_filters.FilterSet):
