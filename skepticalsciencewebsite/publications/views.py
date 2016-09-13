@@ -104,7 +104,12 @@ class PublicationTableView(PublicationFilteredTableView):
 class PublicationSpecialTableView(SingleTableView):
     filter_class = None
     context_filter_name = 'filter'
+    name = ""
     filter_dict = {}
+    model = Publication
+    table_class = PublicationTable
+    template_name = 'publications/publication_special_list.html'
+    paginate_by = 25
 
     def fill_user_science(self):
         user = User.objects.get(pk=self.request.session['_auth_user_id'])
@@ -127,13 +132,23 @@ class PublicationSpecialTableView(SingleTableView):
     def get_context_data(self, **kwargs):
         context = super(PublicationSpecialTableView, self).get_context_data()
         context[self.context_filter_name] = self.filter
+        context['name'] = self.name
         return context
 
 
-class PublicationReviewTableView(PublicationSpecialTableView):
-    model = Publication
-    table_class = PublicationTable
-    template_name = 'publications/publication_special_list.html'
-    paginate_by = 25
+class PublicationToReviewTableView(PublicationSpecialTableView):
+    name = "to review"
     filter_class = PublicationFilter
-    filter_dict = {'status' : ''}
+    filter_dict = {'status' : 'adding_peer'}
+
+
+class PublicationInReviewTableView(PublicationSpecialTableView):
+    name = "to comment"
+    filter_class = PublicationFilter
+    filter_dict = {'status' : 'peer_review'}
+
+
+class PublicationToEvaluateTableView(PublicationSpecialTableView):
+    name = "to evaluate"
+    filter_class = PublicationFilter
+    filter_dict = {'status' : 'evaluation'}
