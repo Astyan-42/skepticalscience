@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django_filters',
     'django_tables2',
     'sendfile',
+    'simple_history',
     'sciences',
     'customuser',
     'publications',
@@ -56,6 +57,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+MIDDLEWARE_CLASS = [
+    'simple_history.middleware.HistoryRequestMiddleware',
 ]
 
 ROOT_URLCONF = 'skepticalsciencewebsite.urls'

@@ -1,4 +1,5 @@
 from django.contrib import admin
+from simple_history.admin import SimpleHistoryAdmin
 from publications.models import Licence, EstimatedImpactFactor, Publication, Comment, Reviewer
 # Register your models here.
 

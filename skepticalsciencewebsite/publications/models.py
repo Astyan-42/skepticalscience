@@ -2,8 +2,10 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
+from simple_history.models import HistoricalRecords
 from sciences.models import Science
 from customuser.models import User, MinMaxFloat
+
 
 sendfile_storage = FileSystemStorage(location=settings.SENDFILE_ROOT)
 # Create your models here.
@@ -74,6 +76,7 @@ class Publication(models.Model):
     # or just resume ?
     # tags = models.ManyToManyField(KeyWord, blank= False, symmetrical=False, verbose_name=_("Keywords"))
     licence = models.ForeignKey(Licence, verbose_name=_("Licence"))
+    history = HistoricalRecords()
 
     def __str__(self):
         return self.title
