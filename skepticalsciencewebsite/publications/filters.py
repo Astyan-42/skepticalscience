@@ -10,13 +10,16 @@ from publications.models import Publication
 
 
 class PublicationFilter(django_filters.FilterSet):
+    """
+    a filter used in publication with wanted field to filter done
+    """
     sciences = django_filters.MultipleChoiceFilter(
         choices=_science_choices(Science.objects.filter(primary_science=True)),
         widget=Select2MultipleWidget
     )
     editor = django_filters.ModelChoiceFilter(
         queryset=User.objects.all(),
-        empty_label = "All editors"
+        empty_label="All editors"
     )
     estimated_impact_factor = django_filters.NumberFilter(lookup_expr='gte')
     publication_score = django_filters.NumberFilter(lookup_expr='gte')
@@ -28,6 +31,10 @@ class PublicationFilter(django_filters.FilterSet):
 
 
 class PublicationFilterFormHelper(FormHelper):
+    """
+    A form helper to create a form to filter the publication with the filter we like.
+    Contain the field we want, there parameter, a template, and a class to add to the form
+    """
     model = Publication
     form_class = 'form-inline' # this force us to make science of a bigger size
     field_template = 'bootstrap3/layout/inline_field.html'

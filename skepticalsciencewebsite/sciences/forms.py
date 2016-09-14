@@ -3,6 +3,13 @@ from sciences.models import Science
 
 
 def _science_choices(queryset, prefix=''):
+    """
+    Transform the queryset in choices. Used to add '-' in front of subscience
+    :param queryset: A science queryset (should be only with primary science
+    :param prefix: the recursive prefix a str compatible with the  regex '-*'
+    :return: a choice list
+    :rtype: list((int, str))
+    """
     choices = []
     queryset = sorted(queryset, key=lambda science: science.name)
     for science in queryset:
@@ -13,6 +20,9 @@ def _science_choices(queryset, prefix=''):
 
 
 class ScienceModelForm(forms.ModelForm):
+    """
+    A modelform with science choices already made
+    """
 
     def __init__(self, *args, **kwargs):
         super(ScienceModelForm, self).__init__(*args, **kwargs)

@@ -70,6 +70,9 @@ class PublicationCreate(CreateView):
 
 
 class PublicationFilteredTableView(SingleTableView):
+    """
+    A class used to combine the filter, the table and the form helper
+    """
     filter_class = None
     formhelper_class = None
     context_filter_name = 'filter'
@@ -93,6 +96,9 @@ class PublicationFilteredTableView(SingleTableView):
 
 
 class PublicationTableView(PublicationFilteredTableView):
+    """
+    A class for the publication list with the form and the table
+    """
     model = Publication
     table_class = PublicationTable
     template_name = 'publications/publication_list.html'
@@ -102,6 +108,11 @@ class PublicationTableView(PublicationFilteredTableView):
 
 
 class PublicationSpecialTableView(SingleTableView):
+    """
+    A class used to combine the filter and the table (only the ordering is possible the filtering is already done
+    as a built-in).
+    Filter get only the publications on the science the user follow
+    """
     filter_class = None
     context_filter_name = 'filter'
     name = ""
@@ -109,7 +120,7 @@ class PublicationSpecialTableView(SingleTableView):
     model = Publication
     table_class = PublicationTable
     template_name = 'publications/publication_special_list.html'
-    paginate_by = 25
+    paginate_by = 20
 
     def fill_user_science(self):
         user = User.objects.get(pk=self.request.session['_auth_user_id'])
@@ -137,18 +148,29 @@ class PublicationSpecialTableView(SingleTableView):
 
 
 class PublicationToReviewTableView(PublicationSpecialTableView):
+    """
+    Show the publications about the sciences of the user and in need of peer for a review.
+    Only for the user in scientist group
+    """
     name = "to review"
     filter_class = PublicationFilter
     filter_dict = {'status' : 'adding_peer'}
 
 
 class PublicationInReviewTableView(PublicationSpecialTableView):
+    """
+    show the publications about the science of the user and in review. In need of comment
+    """
     name = "to comment"
     filter_class = PublicationFilter
     filter_dict = {'status' : 'peer_review'}
 
 
 class PublicationToEvaluateTableView(PublicationSpecialTableView):
+    """
+    show the publications about the sciences of the user and in evaluation. In need of an estimated impact factor.
+    Only for user in the scientist group
+    """
     name = "to evaluate"
     filter_class = PublicationFilter
     filter_dict = {'status' : 'evaluation'}
