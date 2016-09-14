@@ -4,20 +4,20 @@ from crispy_forms.bootstrap import FormActions, Field
 from crispy_forms.layout import Layout, Submit
 from django_select2.forms import Select2MultipleWidget
 from sciences.models import Science
+from sciences.forms import _science_choices
 from customuser.models import User
 from publications.models import Publication
 
 
 class PublicationFilter(django_filters.FilterSet):
-    sciences = django_filters.ModelMultipleChoiceFilter(
-        queryset=Science.objects.all(),
+    sciences = django_filters.MultipleChoiceFilter(
+        choices=_science_choices(Science.objects.filter(primary_science=True)),
         widget=Select2MultipleWidget
     )
     editor = django_filters.ModelChoiceFilter(
         queryset=User.objects.all(),
         empty_label = "All editors"
     )
-
     estimated_impact_factor = django_filters.NumberFilter(lookup_expr='gte')
     publication_score = django_filters.NumberFilter(lookup_expr='gte')
     title = django_filters.CharFilter(lookup_expr='icontains')
@@ -29,7 +29,7 @@ class PublicationFilter(django_filters.FilterSet):
 
 class PublicationFilterFormHelper(FormHelper):
     model = Publication
-    form_class = 'form-inline' #this force us to make science of a bigger size
+    form_class = 'form-inline' # this force us to make science of a bigger size
     field_template = 'bootstrap3/layout/inline_field.html'
     help_text_inline = True
     form_id = 'id_filterForm'
