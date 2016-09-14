@@ -24,12 +24,12 @@ class PublicationFilter(django_filters.FilterSet):
     estimated_impact_factor = django_filters.NumberFilter(lookup_expr='gte')
     publication_score = django_filters.NumberFilter(lookup_expr='gte')
     title = django_filters.CharFilter(lookup_expr='icontains')
-    resume_creation = django_filters.CharFilter(lookup_expr='icontains')
+    resume = django_filters.CharFilter(lookup_expr='icontains')
 
     class Meta:
         model = Publication
         fields = ["editor", "sciences", "title", "status", "estimated_impact_factor", "publication_score",
-                  "resume_creation"]
+                  "resume"]
 
 
 class PublicationFilterFormHelper(FormHelper):
@@ -43,7 +43,7 @@ class PublicationFilterFormHelper(FormHelper):
     help_text_inline = True
     form_id = 'id_filterForm'
     form_method = 'get'
-    layout = Layout("title", "status", "editor", "resume_creation",
+    layout = Layout("title", "status", "editor", "resume",
                     Field("sciences", style="min-width: 320px;", template=field_template),
                     Field("estimated_impact_factor", placeholder="(Minimal)", min=0., value="",
                           template=field_template),

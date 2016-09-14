@@ -69,8 +69,7 @@ class Publication(models.Model):
                                  verbose_name=_("Publication final (pdf)"))
     source_final = models.FileField(upload_to="source_final/%Y/%m/%d", storage=sendfile_storage, null=True, blank=True,
                                     verbose_name=_("Publication final (sources)"))
-    resume_creation = models.CharField(max_length=1024, blank=False, verbose_name=_("Resume at creation"))
-    resume_validation = models.CharField(max_length=1024, blank=True, verbose_name=_("Resume at validation"))
+    resume = models.CharField(max_length=1024, blank=False, verbose_name=_("Resume at creation"))
     status = models.CharField(choices=PUBLICATION_STATUS, max_length=100, db_index=True, default="waiting_payment",
                               verbose_name=_('Status'))
     # or just resume ?
