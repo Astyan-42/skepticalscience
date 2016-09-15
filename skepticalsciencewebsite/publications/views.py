@@ -191,7 +191,12 @@ class PublicationDisplay(DetailView):
         # adding comment to the view
         # print(Comment.objects.filter(publication=self.kwargs["pk"]).order_by('seriousness'))
         context['comments'] = Comment.objects.filter(publication=self.kwargs["pk"]).order_by('seriousness')
-        context['form'] = CommentForm()
+        print(Publication.objects.get(pk=self.kwargs["pk"]).licence.__dict__)
+        # exept for licence to put in form valid
+        context['form'] = CommentForm(initial={"author" : self.request.user,
+                                               "publication" : Publication.objects.get(pk=self.kwargs["pk"]),
+                                               "author_fake_pseudo" :"Charlie",
+                                               "licence" : Publication.objects.get(pk=self.kwargs["pk"]).licence})
         return context
 
 
