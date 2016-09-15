@@ -112,7 +112,7 @@ class Comment(models.Model):
     publication = models.ForeignKey(Publication, verbose_name=_("Publication"))
     author = models.ForeignKey(User, verbose_name=_("Author"))
     # fake pseudo when reviewer must be reviewer (fake pseudo given automatically between: Reviewer, Scientist, Skeptic)
-    author_fake_pseudo = models.CharField(max_length=100, default=None, verbose_name=_('Fake Pseudo'))
+    author_fake_pseudo = models.CharField(max_length=100, default=None, blank=True, verbose_name=_('Fake Pseudo'))
     creation_date = models.DateTimeField(auto_now_add=True, verbose_name=_('Creation date'))
     comment_type = models.CharField(choices=COMMENT_ON, max_length=100, db_index=True, verbose_name=_("Comment type"))
     seriousness = models.CharField(choices=SERIOUSNESS_STATUS, max_length=100, db_index=True, blank=True,

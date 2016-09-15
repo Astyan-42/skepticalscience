@@ -188,14 +188,9 @@ class PublicationDisplay(DetailView):
     def get_context_data(self, **kwargs):
         context = super(PublicationDisplay, self).get_context_data(**kwargs)
         # adding comment to the view
-        # print(Comment.objects.filter(publication=self.kwargs["pk"]).order_by('seriousness'))
         context['comments'] = Comment.objects.filter(publication=self.kwargs["pk"]).order_by('seriousness')
-        # print(Publication.objects.get(pk=self.kwargs["pk"]).licence.__dict__)
-        # exept for licence to put in form valid
-        context['form'] = CommentForm(initial={"author" : self.request.user,
-                                               "publication" : Publication.objects.get(pk=self.kwargs["pk"]),
-                                               "author_fake_pseudo" :"Charlie",
-                                               "licence" : Publication.objects.get(pk=self.kwargs["pk"]).licence})
+        # put the initial licence as the licence of the publication
+        context['form'] = CommentForm(initial={"licence" : Publication.objects.get(pk=self.kwargs["pk"]).licence})
         return context
 
 
@@ -205,16 +200,15 @@ class PublicationInterest(CreateView):
     model = Comment
 
     def form_valid(self, form):
-        # self.object = form.save(commit=False)
-        # self.object.author = self.request.user
-        # self.object.publication = Publication.objects.get(pk=self.kwargs["pk"])
+        self.object = form.save(commit=False)
+        self.object.author = self.request.user
+        self.object.publication = Publication.objects.get(pk=self.kwargs["pk"])
         return super(PublicationInterest, self).form_valid(form)
 
     # def post(self, request, *args, **kwargs):
     #     print("trigerred")
     #     if not request.user.is_authenticated():
     #         return HttpResponseForbidden()
-    #     # self.object = self.get_object()
     #     return super(PublicationInterest, self).post(request, *args, **kwargs)
 
     def get_success_url(self):
