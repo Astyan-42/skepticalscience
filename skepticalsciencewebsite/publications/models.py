@@ -115,7 +115,7 @@ class Comment(models.Model):
     author_fake_pseudo = models.CharField(max_length=100, default=None, verbose_name=_('Fake Pseudo'))
     creation_date = models.DateTimeField(auto_now_add=True, verbose_name=_('Creation date'))
     comment_type = models.CharField(choices=COMMENT_ON, max_length=100, db_index=True, verbose_name=_("Comment type"))
-    seriousness = models.CharField(choices=SERIOUSNESS_STATUS, max_length=100, db_index=True,
+    seriousness = models.CharField(choices=SERIOUSNESS_STATUS, max_length=100, db_index=True, blank=True,
                                    verbose_name=_("Seriousness"))
     content = models.CharField(max_length=8192, blank=False, verbose_name=_("Publication comment"))
     title = models.CharField(max_length=255, blank=False, verbose_name=_("Title"))

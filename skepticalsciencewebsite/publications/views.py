@@ -1,8 +1,7 @@
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponseForbidden
 from django.views.generic.edit import CreateView
-from django.views.generic.detail import DetailView, SingleObjectMixin
-from django.views.generic import View, FormView
+from django.views.generic.detail import DetailView
+from django.views.generic import View
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
@@ -200,25 +199,26 @@ class PublicationDisplay(DetailView):
         return context
 
 
-class PublicationInterest(SingleObjectMixin, FormView):
+class PublicationInterest(CreateView):
     # template_name = 'publications/publication_detail.html'
     form_class = CommentForm
-    model = Publication
+    model = Comment
 
-    # def form_valid(self, form):
-    #     self.object = form.save(commit=False)
-    #     self.object.author = self.request.user
-    #     self.object.publication = Publication.objects.get(pk=self.kwargs["pk"])
-    #     return super(PublicationInterest, self).form_valid(form)
+    def form_valid(self, form):
+        # self.object = form.save(commit=False)
+        # self.object.author = self.request.user
+        # self.object.publication = Publication.objects.get(pk=self.kwargs["pk"])
+        return super(PublicationInterest, self).form_valid(form)
 
-    def post(self, request, *args, **kwargs):
-        if not request.user.is_authenticated():
-            return HttpResponseForbidden()
-        self.object = self.get_object()
-        return super(PublicationInterest, self).post(request, *args, **kwargs)
+    # def post(self, request, *args, **kwargs):
+    #     print("trigerred")
+    #     if not request.user.is_authenticated():
+    #         return HttpResponseForbidden()
+    #     # self.object = self.get_object()
+    #     return super(PublicationInterest, self).post(request, *args, **kwargs)
 
     def get_success_url(self):
-        return reverse_lazy('publication_view', kwargs={'pk': self.object.pk})
+        return reverse_lazy('publication_view', kwargs={'pk': self.kwargs["pk"]})
 
 
 class PublicationDetailView(View):
