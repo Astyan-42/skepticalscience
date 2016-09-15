@@ -9,12 +9,12 @@
     <h1>{% trans "Test" %}</h1>
     <p>{% trans "Title " %}: {{ publication_detail.title }} </p>
 
-    {{ publication_detail.comments }}
-    {% for comment in publication_detail.comments %}
+    {% for comment in comments %}
+        lol
         {{ comment.title }}
     {% endfor %}
 
     {% crispy form %}
-    {{ form.media.js }}
+    {{ form.media.js }}s
 
 {% endblock %}

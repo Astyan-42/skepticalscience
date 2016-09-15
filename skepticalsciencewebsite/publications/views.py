@@ -189,7 +189,7 @@ class PublicationDisplay(DetailView):
     def get_context_data(self, **kwargs):
         context = super(PublicationDisplay, self).get_context_data(**kwargs)
         # adding comment to the view
-        print(Comment.objects.filter(publication=self.kwargs["pk"]).order_by('seriousness'))
+        # print(Comment.objects.filter(publication=self.kwargs["pk"]).order_by('seriousness'))
         context['comments'] = Comment.objects.filter(publication=self.kwargs["pk"]).order_by('seriousness')
         context['form'] = CommentForm()
         return context
@@ -219,5 +219,3 @@ class PublicationDetailView(View):
     def post(self, request, *args, **kwargs):
         view = PublicationInterest.as_view()
         return view(request, *args, **kwargs)
-
-
