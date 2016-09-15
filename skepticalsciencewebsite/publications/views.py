@@ -1,12 +1,13 @@
 from django.shortcuts import get_object_or_404
 from django.views.generic.edit import CreateView
+from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
 from sendfile import sendfile
 from django_tables2 import SingleTableView, RequestConfig
 from customuser.models import User
-from publications.models import Publication
+from publications.models import Publication, Comment
 from publications.forms import PublicationCreateForm
 from publications.tables import PublicationTable
 from publications.filters import PublicationFilter, PublicationFilterFormHelper
@@ -174,3 +175,17 @@ class PublicationToEvaluateTableView(PublicationSpecialTableView):
     name = "to evaluate"
     filter_class = PublicationFilter
     filter_dict = {'status' : 'evaluation'}
+
+
+class PublicationDetailView(DetailView):
+    context_object_name = "publication_detail"
+    model = Publication
+    template_name = 'publications/detail_publication.html'
+    fields = ["title", "sciences", "resume", "status", "licence", "publication_score", "estimated_impact_factor",
+              "pdf_creation", "source_creation", "pdf_final", "source_final"]
+
+    def get_context_data(self, **kwargs):
+        context = super(PublicationDetailView , self).get_context_data(**kwargs)
+        # adding comment to the view
+        context['comments'] = Comment.objects.filter(publication=self.kwargs["pk"]).order_by('seriousness')
+        return context

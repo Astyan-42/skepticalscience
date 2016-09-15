@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% load bootstrap3 %}
+
+{% block content %}
+    <h1>{% trans "Test" %}</h1>
+    <p>{% trans "Title " %}: {{ publication_detail.title }} </p>
+
+
+{% endblock %}
