@@ -191,7 +191,7 @@ class PublicationDisplay(DetailView):
         # adding comment to the view
         # print(Comment.objects.filter(publication=self.kwargs["pk"]).order_by('seriousness'))
         context['comments'] = Comment.objects.filter(publication=self.kwargs["pk"]).order_by('seriousness')
-        print(Publication.objects.get(pk=self.kwargs["pk"]).licence.__dict__)
+        # print(Publication.objects.get(pk=self.kwargs["pk"]).licence.__dict__)
         # exept for licence to put in form valid
         context['form'] = CommentForm(initial={"author" : self.request.user,
                                                "publication" : Publication.objects.get(pk=self.kwargs["pk"]),
@@ -204,6 +204,12 @@ class PublicationInterest(SingleObjectMixin, FormView):
     # template_name = 'publications/publication_detail.html'
     form_class = CommentForm
     model = Publication
+
+    # def form_valid(self, form):
+    #     self.object = form.save(commit=False)
+    #     self.object.author = self.request.user
+    #     self.object.publication = Publication.objects.get(pk=self.kwargs["pk"])
+    #     return super(PublicationInterest, self).form_valid(form)
 
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated():
