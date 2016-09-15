@@ -182,20 +182,21 @@ class PublicationToEvaluateTableView(PublicationSpecialTableView):
 class PublicationDisplay(DetailView):
     context_object_name = "publication_detail"
     model = Publication
-    # template_name = 'publications/detail_publication.html'
+    # template_name = 'publications/publication_detail.html'
     fields = ["title", "sciences", "resume", "status", "licence", "publication_score", "estimated_impact_factor",
               "pdf_creation", "source_creation", "pdf_final", "source_final"]
 
     def get_context_data(self, **kwargs):
         context = super(PublicationDisplay, self).get_context_data(**kwargs)
         # adding comment to the view
+        print(Comment.objects.filter(publication=self.kwargs["pk"]).order_by('seriousness'))
         context['comments'] = Comment.objects.filter(publication=self.kwargs["pk"]).order_by('seriousness')
         context['form'] = CommentForm()
         return context
 
 
 class PublicationInterest(SingleObjectMixin, FormView):
-    template_name = 'publications/detail_publication.html'
+    # template_name = 'publications/publication_detail.html'
     form_class = CommentForm
     model = Publication
 

@@ -26,6 +26,12 @@ class PublicationCreateForm(ScienceModelForm):
 
 class CommentForm(forms.ModelForm):
 
+    def __init__(self, *args, **kwargs):
+        super(CommentForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_id = 'id-commentForm'
+        self.helper.add_input(Submit('submit', _('Submit')))
+
     class Meta:
         model = Comment
         fields = ["publication", "author", "author_fake_pseudo", "comment_type", "title", "content", "licence"]

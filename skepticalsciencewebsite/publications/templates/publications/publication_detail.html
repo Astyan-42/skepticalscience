@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% load bootstrap3 %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+    <h1>{% trans "Test" %}</h1>
+    <p>{% trans "Title " %}: {{ publication_detail.title }} </p>
+
+    {{ publication_detail.comments }}
+    {% for comment in publication_detail.comments %}
+        {{ comment.title }}
+    {% endfor %}
+
+    {% crispy form %}
+    {{ form.media.js }}
+
+{% endblock %}
