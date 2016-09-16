@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
+from django.core.exceptions import ValidationError
 from simple_history.models import HistoricalRecords
 from sciences.models import Science
 from customuser.models import User, MinMaxFloat
@@ -119,11 +120,7 @@ class Comment(models.Model):
                                    verbose_name=_("Seriousness"))
     content = models.CharField(max_length=8192, blank=False, verbose_name=_("Publication comment"))
     title = models.CharField(max_length=255, blank=False, verbose_name=_("Title"))
-    #is validate by the 4 reviewers
     validated = models.BooleanField(default=False, verbose_name=_("Validated"))
-    # constrainte : must be on the same publication
-    validators = models.ManyToManyField(Reviewer, blank=True, verbose_name=_("Validator"))
-    # if the mistake pointed by the comment has been corrected
     corrected = models.BooleanField(default=False, verbose_name=_("Corrected"))
     licence = models.ForeignKey(Licence, verbose_name=_("Licence"))
 
@@ -131,3 +128,18 @@ class Comment(models.Model):
         return self.title
 
 
+class CommentRating(models.Model):
+    """
+     when done must check if every other reviewer have already done it
+    """
+    reviewer = models.ForeignKey(Reviewer, verbose_name=_("Reviewer"))
+    comment = models.ForeignKey(Comment, verbose_name=_("Comment"))
+    valid = models.BooleanField(default=False, verbose_name=_("Valid"))
+    seriousness = models.CharField(choices=SERIOUSNESS_STATUS, max_length=100, db_index=True, blank=True,
+                                   verbose_name=_("Seriousness"))
+    reason_validation = models.CharField(max_length=8192, blank=False, verbose_name=_("Reason of (in)validation"))
+    corrected = models.BooleanField(default=False, verbose_name=_("Corrected"))
+
+    def clean(self):
+        if self.reviewer.publication != self.comment.publication:
+            raise ValidationError('You are not a reviewer of this publication. Therefor You cannot rate this comment')
