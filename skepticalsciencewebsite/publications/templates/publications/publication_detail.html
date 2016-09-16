@@ -9,14 +9,42 @@
     <h1>{% trans "Test" %}</h1>
     <p>{% trans "Title " %}: {{ publication_detail.title }} </p>
 
+    <hr>
+    <h2>Comments :</h2>
     {% for comment in comments %}
-        lol
-        {{ comment.title }}
+<!-- color faded not validate, validated blue, if publication has been corrected then if the comment is
+corrected green, if not red, if comment after the validation and valid then orange-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title pull-left">
+                    {{ comment.title }} {% trans " by "%} {{ comment.author_fake_pseudo|default:comment.author }}
+                    {% trans " on the " %} {{ comment.comment_type }}
+                </div>
+                <div class="panel-title pull-right">
+                    {{ comment.seriousness|default:"Not validated"}}
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="panel-body">
+                {{ comment.content}}
+            </div>
+            <div class="panel-footer">
+                <div class="panel-title pull-left">
+                    {{ comment.licence }} ({{ comment.creation_date }})
+                </div>
+                <div class="panel-title pull-right">
+                    Link to the comment evaluation (only for the reviewers)
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
     {% endfor %}
 
 
     <hr>
-<!--fomula for the form-->
+    <h2>Send a comment :</h2>
+<!--fomula for the form tu show only if the user is auth-->
     {% crispy form %}
     {{ form.media.js }}
 
