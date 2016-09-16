@@ -46,4 +46,3 @@ class CommentForm(forms.ModelForm):
         model = Comment
         fields = ["author_fake_pseudo", "comment_type", "title", "content", "licence"]
         widgets = {'content': forms.Textarea()}
-
