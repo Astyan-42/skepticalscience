@@ -6,7 +6,14 @@
 
 
 {% block content %}
-    <h1>{% trans "Publication :" %}{{ publication_detail.title }}</h1>
+    <h1>{% trans "Publication" %} : {{ publication_detail.title }}</h1>
+
+    <!-- different with the status of the publication and if there is still validated comments -->
+    <div class="alert alert-dismissible alert-warning">
+        <button class="close" type="button" data-dismiss="alert">x</button>
+        <h4>Test</h4>
+        <p>Just for test</p>
+    </div>
 
     <div class="row">
         <div class="col-md-8">
@@ -18,7 +25,24 @@
             </div>
         </div>
         <div class="col-md-4">
-            {{ publication_detail.editor }}
+            <p>{{ publication_detail.creation_date }}</p>
+            <!--<p>{{ publication_detail.payment_date }}</p>-->
+            <p>{{ publication_detail.validation_date }}</p>
+            <p>{% for science in publication_detail.sciences.all %}
+                    {% if forloop.last %}
+                        {{ science }}
+                    {% else %}
+                        {{ science }},
+                    {% endif %}
+                {% endfor %}</p>
+            <p>{{ publication_detail.publication_score }}</p>
+            <p>{{ publication_detail.estimated_impact_factor}}</p>
+            <p>{{ publication_detail.first_author.get_full_name}}</p>
+            <p>{{ publication_detail.authors.all }}</p>
+            <p>{{ publication_detail.last_author }}</p>
+            <p>{{ publication_detail.get_status_display }}</p>
+            <p>{{ publication_detail.licence }}</p>
+            <!--dropdown button with download-->
         </div>
     </div>
 
@@ -58,7 +82,7 @@ corrected green, if not red, if comment after the validation and valid then oran
 
     <hr>
     <h2>Send a comment :</h2>
-<!--fomula for the form to show only if the user is auth-->
+<!--show the form only if the user is auth-->
     {% crispy form %}
     {{ form.media.js }}
 
