@@ -61,6 +61,10 @@ class Publication(models.Model):
     estimated_impact_factor = MinMaxFloat(min_value=0.0, max_value=1000.0, default=None, null=True, blank=True,
                                           verbose_name=_("Estimated impact factor"))
     # authors ????
+    first_author = models.ForeignKey(User, related_name='first_author', verbose_name=_("First author"))
+    authors = models.ManyToManyField(User, blank=True, related_name='authors', verbose_name=_("Authors"))
+    last_author = models.ForeignKey(User, blank=True, null=True, related_name='last_author',
+                                    verbose_name=_("First author"))
     # the pdf file at the creation
     pdf_creation = models.FileField(upload_to="pdf_creation/%Y/%m/%d", storage=sendfile_storage,
                                     verbose_name=_("Publication draft (PDF)"))
