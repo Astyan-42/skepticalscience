@@ -5,10 +5,12 @@ from django.views.generic import View
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
+from django.contrib.auth.models import Group
+from django.core.exceptions import ObjectDoesNotExist
 from sendfile import sendfile
 from django_tables2 import SingleTableView, RequestConfig
 from customuser.models import User
-from publications.models import Publication, Comment
+from publications.models import Publication, Comment, Reviewer
 from publications.forms import PublicationCreateForm, CommentForm
 from publications.tables import PublicationTable
 from publications.filters import PublicationFilter, PublicationFilterFormHelper
@@ -203,6 +205,17 @@ class PublicationInterest(CreateView):
         self.object = form.save(commit=False)
         self.object.author = self.request.user
         self.object.publication = Publication.objects.get(pk=self.kwargs["pk"])
+        # just to add the right name before the fake pseudo
+        if self.object.author_fake_pseudo != "":
+            try:
+                Reviewer.objects.get(scientist=self.object.author, publication=self.object.publication)
+                self.object.author_fake_pseudo = "Reviewer "+self.object.author_fake_pseudo
+            except Reviewer.DoesNotExist:
+                try:
+                    self.object.author.groups.get(name="Scientist")
+                    self.object.author_fake_pseudo = "Scientist " + self.object.author_fake_pseudo
+                except ObjectDoesNotExist:
+                    self.object.author_fake_pseudo = "Skeptic " + self.object.author_fake_pseudo
         return super(PublicationInterest, self).form_valid(form)
 
     # def post(self, request, *args, **kwargs):

@@ -107,7 +107,7 @@ class Reviewer(models.Model):
     publication = models.ForeignKey(Publication, verbose_name=_("Publication"))
 
     def __str__(self):
-        return self.scientist
+        return self.scientist.get_full_name()
 
 
 class Comment(models.Model):
