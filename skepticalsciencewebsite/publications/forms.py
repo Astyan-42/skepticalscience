@@ -22,7 +22,7 @@ class PublicationCreateForm(ScienceModelForm):
     first_author=UserModelChoiceField(queryset=User.objects.filter(~Q(first_name="") & ~Q(last_name="")))
 
     def __init__(self, *args, **kwargs):
-        super(PublicationCreateForm, self).__init__(*args, **kwargs)
+        super(PublicationCreateForm).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.form_id = 'id-publicationcreateForm'
         self.helper.add_input(Submit('submit', _('Submit')))
@@ -37,7 +37,7 @@ class PublicationCreateForm(ScienceModelForm):
 class CommentForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
-        super(CommentForm, self).__init__(*args, **kwargs)
+        super(CommentForm).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.form_id = 'id-commentForm'
         self.helper.add_input(Submit('submit', _('Submit')))
