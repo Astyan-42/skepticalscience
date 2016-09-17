@@ -17,8 +17,9 @@ PUBLICATION_STATUS = [(1, "Waiting payment"),
                       (3, "Peer review"),
                       (4, "Correction"),
                       (5, "Aborted"),
-                      (6, "Evaluation"),
-                      (7, "Published")]
+                      (6, "Validation"),
+                      (7, "Evaluation"),
+                      (8, "Published")]
 
 
 SERIOUSNESS_STATUS = [("minor", "Minor"),

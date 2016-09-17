@@ -193,7 +193,7 @@ class PublicationDisplay(DetailView):
         """
         status = context["publication_detail"].status
         alert = {}
-        if status < 6:
+        if status < 7:
             if status == 5:
                 alert["class"] = "alert-danger"
                 alert["title"] = _("Publication canceled")

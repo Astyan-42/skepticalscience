@@ -66,7 +66,7 @@
                 <h5><strong>{% trans "Publication score" %}</strong></h5>
                 <p class="text-indent">{{ publication_detail.publication_score }}</p>
             {% endif %}
-            {% if publication_detail.status >= 7 %}
+            {% if publication_detail.status >= 8 %}
                 <h5><strong>{% trans "Estimated impact factor" %}</strong></h5>
                 <p class="text-indent">{{ publication_detail.estimated_impact_factor}}</p>
             {% endif %}
@@ -82,7 +82,15 @@
     {% for comment in comments %}
 <!-- color faded not validate, validated blue, if publication has been corrected then if the comment is
 corrected green, if not red, if comment after the validation and valid then orange-->
-        <div class="panel panel-default">
+        {% if not comment.validated %}
+            <div class="panel panel-default">
+        {% elif comment.corrected %}
+            <div class="panel panel-success">
+        {% elif publication_detail.status >= 7 %}
+            <div class="panel panel-warning">
+        {% else %}
+            <div class="panel panel-danger">
+        {% endif %}
             <div class="panel-heading">
                 <div class="panel-title pull-left">
                     {{ comment.title }} {% trans " by "%} {{ comment.author_fake_pseudo|default:comment.author }}
