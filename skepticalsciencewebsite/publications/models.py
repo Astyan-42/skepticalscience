@@ -62,7 +62,7 @@ class Publication(models.Model):
     first_author = models.ForeignKey(User, related_name='first_author', verbose_name=_("First author"))
     authors = models.ManyToManyField(User, blank=True, related_name='authors', verbose_name=_("Authors"))
     last_author = models.ForeignKey(User, blank=True, null=True, related_name='last_author',
-                                    verbose_name=_("First author"))
+                                    verbose_name=_("Last author"))
     # the pdf file at the creation
     pdf_creation = models.FileField(upload_to="pdf_creation/%Y/%m/%d", storage=sendfile_storage,
                                     verbose_name=_("Publication draft (PDF)"))
