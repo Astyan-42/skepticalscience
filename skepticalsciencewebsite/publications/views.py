@@ -224,7 +224,7 @@ class PublicationDisplay(DetailView):
     def get_context_data(self, **kwargs):
         context = super(PublicationDisplay, self).get_context_data(**kwargs)
         # adding comment to the view, better order by
-        context['comments'] = Comment.objects.filter(publication=self.kwargs["pk"]).order_by('-validated',
+        context['comments'] = Comment.objects.filter(publication=self.kwargs["pk"]).order_by('validated',
                                                                                              '-comment_type',
                                                                                              'corrected',
                                                                                              '-seriousness',

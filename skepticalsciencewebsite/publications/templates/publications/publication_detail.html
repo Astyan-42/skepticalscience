@@ -82,8 +82,10 @@
     {% for comment in comments %}
 <!-- color faded not validate, validated blue, if publication has been corrected then if the comment is
 corrected green, if not red, if comment after the validation and valid then orange-->
-        {% if not comment.validated %}
+        {% if comment.validated == 3 %}
             <div class="panel panel-default">
+        {% elif comment.validated == 2 %}
+            <div class="panel panel-primary">
         {% elif comment.corrected %}
             <div class="panel panel-success">
         {% elif comment.comment_type == 1 %}
@@ -99,7 +101,7 @@ corrected green, if not red, if comment after the validation and valid then oran
                     {% trans " on the " %} {{ comment.get_comment_type_display|lower }}
                 </div>
                 <div class="panel-title pull-right">
-                    {{ comment.get_seriousness_display|default:"Not validated"}}
+                    {{ comment.get_seriousness_display|default:comment.get_validated_display}}
                 </div>
                 <div class="clearfix"></div>
             </div>

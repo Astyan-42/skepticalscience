@@ -26,6 +26,9 @@ SERIOUSNESS_STATUS = [(1, "Minor"),
                       (2, "Major"),
                       (3, "Critical")]
 
+VALIDATION_STATUS = [(1, "Validate"),
+                     (2, "In progress"),
+                     (3, "Dismiss")]
 
 COMMENT_ON = [(1, "Form"),
               (2, "Content")]
@@ -127,7 +130,7 @@ class Comment(models.Model):
                                    verbose_name=_("Seriousness"))
     content = models.CharField(max_length=8192, blank=False, verbose_name=_("Publication comment"))
     title = models.CharField(max_length=255, blank=False, verbose_name=_("Title"))
-    validated = models.BooleanField(default=False, verbose_name=_("Validated"))
+    validated = models.IntegerField(choices=VALIDATION_STATUS, default=2, verbose_name=_("Validation"))
     corrected = models.BooleanField(default=False, verbose_name=_("Corrected"))
     licence = models.ForeignKey(Licence, verbose_name=_("Licence"))
 
