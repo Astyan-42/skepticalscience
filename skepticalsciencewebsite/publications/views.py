@@ -124,6 +124,7 @@ class PublicationSpecialTableView(SingleTableView):
     table_class = PublicationTable
     template_name = 'publications/publication_special_list.html'
     paginate_by = 20
+    science_filter=True
 
     def fill_user_science(self):
         user = User.objects.get(pk=self.request.session['_auth_user_id'])
@@ -133,7 +134,8 @@ class PublicationSpecialTableView(SingleTableView):
     def get_queryset(self, **kwargs):
         qs = super(PublicationSpecialTableView, self).get_queryset()
         # filter from the user information
-        self.fill_user_science()
+        if self.science_filter:
+            self.fill_user_science()
         print(self.filter_dict)
         self.filter = self.filter_class(self.filter_dict, queryset=qs)
         return self.filter.qs
@@ -183,8 +185,9 @@ class PublicationToEvaluateTableView(PublicationSpecialTableView):
 class PublicationOwnedTableView(PublicationSpecialTableView):
     name = "owned"
     filter_class = PublicationFilter
-    filter_dict = {'first_author': User.objects.get(username="Astyan")}
-
+    filter_dict = {'editor': User.objects.get(username="Astyan").id}
+    science_filter = False
+    
 
 class PublicationDisplay(DetailView):
     context_object_name = "publication_detail"
