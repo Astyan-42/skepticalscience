@@ -47,8 +47,14 @@
             <h5><strong>Status</strong></h5>
             <p class="text-indent">{{ publication_detail.get_status_display }}</p>
             <!--other information to show if function of the status -->
+            <h5><strong>Downloads</strong></h5>
+            <p class="text-indent"><a href="{% url 'download_publication' 'pdf_creation' object.pk %}">{% trans "PDF at creation" %}</a></p>
+            <p class="text-indent"><a href="{% url 'download_publication' 'source_creation' object.pk %}">{% trans "Source at creation" %}</a></p>
+
+<!--other dowload only if validated-->
             <p>{{ publication_detail.publication_score }}</p>
             <p>{{ publication_detail.estimated_impact_factor}}</p>
+
             <h5><strong>Licence</strong></h5>
             <p class="text-indent">{{ publication_detail.licence }}</p>
             <!--dropdown button with download-->
