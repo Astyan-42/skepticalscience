@@ -11,5 +11,7 @@ urlpatterns = [url(r'^new_publication/$', PublicationCreate.as_view(), name="cre
                url(r'^publication_to_evaluate/$', PublicationToEvaluateTableView.as_view(),
                    name="publication_to_evaluate"),
                url(r'publication_detail/(?P<pk>\d+)/$', PublicationDetailView.as_view(),
-                   name="publication_view")
+                   name="publication_view"),
+               url(r'^comment_evaluation/$',PublicationToEvaluateTableView.as_view(),
+                   name="comment_evaluation"),
 ]

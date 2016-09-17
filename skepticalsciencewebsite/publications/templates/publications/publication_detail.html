@@ -111,7 +111,7 @@ corrected green, if not red, if comment after the validation and valid then oran
                 </div>
                 {% if is_reviewer %}
                     <div class="panel-title pull-right">
-                        Link to the comment evaluation (only for the reviewers)
+                        <a href="{% url 'comment_evaluation' %}">{% trans "Evaluate the comment" %}</a>
                     </div>
                 {% endif %}
             </div>
