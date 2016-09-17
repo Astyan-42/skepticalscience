@@ -22,9 +22,11 @@
                     <p>{{ publication_detail.resume|linebreaks }}</p>
                     <small>{{ publication_detail.editor.get_full_name }}</small>
                 </blockquote>
+                <!-- and good publication in evaluation and user in phd-->
                 {% if perms.publications.estimated_impact_factor and not user in publication_detail.get_all_authors %}
                     <p> if in evaluation and (permission to evaluate then evaluate form) ADD FRAKING URL OR FORM</p>
                 {% endif %}
+                <!-- participate at the rewiew in add_peer, user scientist with phd and not in author-->
             </div>
         </div>
         <div class="col-md-4">
@@ -111,9 +113,13 @@ corrected green, if not red, if comment after the validation and valid then oran
                 <div class="panel-title pull-left">
                     {{ comment.licence }} ({{ comment.creation_date }})
                 </div>
-                {% if is_reviewer %}
+                {% if comment.validated == 2 and publication_detail.status == 3 and is_reviewer %}
                     <div class="panel-title pull-right">
                         <a href="{% url 'comment_evaluation' %}">{% trans "Evaluate the comment" %}</a>
+                    </div>
+                {% elif comment.validated == 1 and publication_detail.status == 6 and is_reviewer %}
+                    <div class="panel-title pull-right">
+                        <a href="{% url 'comment_evaluation' %}">{% trans "Is it corrected ?" %}</a>
                     </div>
                 {% endif %}
             </div>
@@ -122,7 +128,7 @@ corrected green, if not red, if comment after the validation and valid then oran
         {% trans "No comment yet" %}
     {% endfor %}
 
-    {% if user.is_authenticated %}
+    {% if user.is_authenticated and publication_detail.status == 3 %}
         <hr>
         <h2>{% trans "Send a comment"%} :</h2>
         <p class="text-info">{% blocktrans %} A comment must describe only one error.
