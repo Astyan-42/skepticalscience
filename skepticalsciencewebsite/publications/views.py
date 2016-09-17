@@ -185,7 +185,7 @@ class PublicationDisplay(DetailView):
     fields = ["title", "sciences", "resume", "status", "licence", "publication_score", "estimated_impact_factor",
               "pdf_creation", "source_creation", "pdf_final", "source_final"]
 
-    def get_alert_status(self):
+    def get_alert_status(self, context):
         """
         get the alert status: if validated of not. If validated is there no corrected comment ?
         :return:
@@ -193,7 +193,9 @@ class PublicationDisplay(DetailView):
         pass
 
     def get_is_reviewer(self):
-        pass
+        is_reviewer = Reviewer.objects.filter(scientist=self.request.session['_auth_user_id'],
+                                              publication=self.kwargs["pk"]).exists()
+        return is_reviewer
 
 
     def get_context_data(self, **kwargs):
@@ -201,6 +203,7 @@ class PublicationDisplay(DetailView):
         # adding comment to the view, better order by
         context['comments'] = Comment.objects.filter(publication=self.kwargs["pk"]).order_by('seriousness')
         # put the initial licence as the licence of the publication
+        context['is_reviewer'] = self.get_is_reviewer()
         context['form'] = CommentForm(initial={"licence": Publication.objects.get(pk=self.kwargs["pk"]).licence})
         return context
 

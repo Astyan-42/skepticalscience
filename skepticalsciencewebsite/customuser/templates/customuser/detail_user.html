@@ -28,12 +28,11 @@
                                         {% if forloop.last %}
                                             {{ science }}
                                         {% else %}
-                                            {{ science }},
+                                            {{ science }}
                                         {% endif %}
-                                    {% endfor %}
-                                    {% if user_detail.sciences.all|length == 0 %}
+                                    {% empty %}
                                         {% trans "None" %}
-                                    {% endif %}</p>
+                                    {% endfor %}</p>
             <h5><strong>{% trans "Skeptic score" %}</strong></h5>
             <p class="text-indent">{{ user_detail.skeptic_score }}</p>
             <h5><strong>{% trans "Mean publication score" %}</strong></h5>

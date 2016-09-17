@@ -22,7 +22,9 @@
                     <p>{{ publication_detail.resume }}</p>
                     <small>{{ publication_detail.editor.get_full_name }}</small>
                 </blockquote>
-                <p> if in evaluation and (permission to evaluate then evaluate form) </p>
+                {% if perms.publications.estimated_impact_factor and not user in publication_detail.get_all_authors %}
+                    <p> if in evaluation and (permission to evaluate then evaluate form) ADD FRAKING URL</p>
+                {% endif %}
             </div>
         </div>
         <div class="col-md-4">
@@ -98,9 +100,11 @@ corrected green, if not red, if comment after the validation and valid then oran
                 <div class="panel-title pull-left">
                     {{ comment.licence }} ({{ comment.creation_date }})
                 </div>
-                <div class="panel-title pull-right">
-                    Link to the comment evaluation (only for the reviewers)
-                </div>
+                {% if is_reviewer %}
+                    <div class="panel-title pull-right">
+                        Link to the comment evaluation (only for the reviewers)
+                    </div>
+                {% endif %}
             </div>
         </div>
     {% endfor %}
