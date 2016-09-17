@@ -6,7 +6,9 @@ from django_select2.forms import Select2MultipleWidget
 from sciences.models import Science
 from sciences.forms import _science_choices
 from customuser.models import User
-from publications.models import Publication
+from publications.models import Publication, PUBLICATION_STATUS
+
+PUBLICATION_STATUS_AND_EMPTY = [('','All status')] + PUBLICATION_STATUS
 
 
 class PublicationFilter(django_filters.FilterSet):
@@ -20,6 +22,9 @@ class PublicationFilter(django_filters.FilterSet):
     editor = django_filters.ModelChoiceFilter(
         queryset=User.objects.all(),
         empty_label="All editors"
+    )
+    status = django_filters.ChoiceFilter(
+        choices= PUBLICATION_STATUS_AND_EMPTY
     )
     estimated_impact_factor = django_filters.NumberFilter(lookup_expr='gte')
     publication_score = django_filters.NumberFilter(lookup_expr='gte')

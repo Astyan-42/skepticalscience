@@ -12,15 +12,13 @@ sendfile_storage = FileSystemStorage(location=settings.SENDFILE_ROOT)
 # Create your models here.
 
 
-PUBLICATION_STATUS = [("", "All status"),
-                      ("waiting_payment", "Waiting payment"),
-                      ("adding_peer", "Adding peer"),
-                      ("peer_review", "Peer review"),
-                      ("correction", "Correction"),
-                      ("validation", "Validation"),
-                      ("evaluation", "Evaluation"),
-                      ("published", "Published"),
-                      ("aborted", "Aborted")]
+PUBLICATION_STATUS = [(1, "Waiting payment"),
+                      (2, "Adding peer"),
+                      (3, "Peer review"),
+                      (4, "Correction"),
+                      (5, "Aborted"),
+                      (6, "Evaluation"),
+                      (7, "Published")]
 
 
 SERIOUSNESS_STATUS = [("minor", "Minor"),
@@ -75,8 +73,7 @@ class Publication(models.Model):
     source_final = models.FileField(upload_to="source_final/%Y/%m/%d", storage=sendfile_storage, null=True, blank=True,
                                     verbose_name=_("Publication final (sources)"))
     resume = models.CharField(max_length=1024, blank=False, verbose_name=_("Resume"))
-    status = models.CharField(choices=PUBLICATION_STATUS, max_length=100, db_index=True, default="waiting_payment",
-                              verbose_name=_('Status'))
+    status = models.IntegerField(choices=PUBLICATION_STATUS, db_index=True, default=1, verbose_name=_('Status'))
     # or just resume ?
     # tags = models.ManyToManyField(KeyWord, blank= False, symmetrical=False, verbose_name=_("Keywords"))
     licence = models.ForeignKey(Licence, verbose_name=_("Licence"))
