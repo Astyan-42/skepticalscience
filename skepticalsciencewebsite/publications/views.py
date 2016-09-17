@@ -5,6 +5,7 @@ from django.views.generic import View
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
+from django.utils.translation import ugettext_lazy as _
 from sendfile import sendfile
 from django_tables2 import SingleTableView, RequestConfig
 from customuser.models import User
@@ -191,20 +192,34 @@ class PublicationDisplay(DetailView):
         :return:
         """
         status = context["publication_detail"].status
+        alert = {}
         if status < 6:
-            pass # alert-warning
-        else:
-            if context['comments'].objects.filter(comment_type="content", validated=True, corrected=False).exists():
-                pass # alert-danger
+            if status == 5:
+                alert["class"] = "alert-danger"
+                alert["title"] = _("Publication canceled")
+                alert["message"] = _("This publication haven't been validated. Be careful. We appreciate your help!")
             else:
-                pass # alert-success
-        
+                alert["class"] = "alert-warning"
+                alert["title"] = _("Publication not finished")
+                alert["message"] = _("This publication haven't been validated yet. It could have some bias. \
+                                      We appreciate your help!")
+        else:
+            if Comment.objects.filter(publication=self.kwargs["pk"], comment_type="content",
+                                      validated=True, corrected=False).exists():
+                alert["class"] = "alert-danger"
+                alert["title"] = _("Publication with bias")
+                alert["message"] = _("This publication contain some bias. Be carefull. We appreciate your help!")
+            else:
+                alert["class"] = "alert-success"
+                alert["title"] = _("Publication validated")
+                alert["message"] = _("This publication have been validated. \
+                                     You can help us by trying to find more bias !")
+        return alert
 
     def get_is_reviewer(self):
         is_reviewer = Reviewer.objects.filter(scientist=self.request.session['_auth_user_id'],
                                               publication=self.kwargs["pk"]).exists()
         return is_reviewer
-
 
     def get_context_data(self, **kwargs):
         context = super(PublicationDisplay, self).get_context_data(**kwargs)
@@ -212,7 +227,7 @@ class PublicationDisplay(DetailView):
         context['comments'] = Comment.objects.filter(publication=self.kwargs["pk"]).order_by('seriousness')
         # put the initial licence as the licence of the publication
         context['is_reviewer'] = self.get_is_reviewer()
-        self.get_alert_status(context)
+        context['alert'] = self.get_alert_status(context)
         context['form'] = CommentForm(initial={"licence": Publication.objects.get(pk=self.kwargs["pk"]).licence})
         return context
 
