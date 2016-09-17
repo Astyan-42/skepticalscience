@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from django.views.generic import UpdateView, DetailView
 from django.core.urlresolvers import reverse_lazy
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from customuser.models import User
@@ -20,6 +22,14 @@ class UserDetailView(DetailView):
     fields = ["first_name", "middle_name", "last_name", "phd", "country", "workplace", "description",
               "job_title", "sciences", "skeptic_score", "mean_publication_score", "mean_impact_factor",
               "estimator_score"]
+
+    def get_context_data(self, **kwargs):
+        context = super(UserDetailView, self).get_context_data(**kwargs)
+        if context["user_detail"].groups.filter(name="Scientist").exists():
+            context["account_status"] = _("Scientist")
+        else:
+            context["account_status"] = _("Skeptic")
+        return context
 
 
 @method_decorator(login_required, name='dispatch')

@@ -214,15 +214,12 @@ class PublicationInterest(CreateView):
         self.object.publication = Publication.objects.get(pk=self.kwargs["pk"])
         # just to add the right name before the fake pseudo
         if self.object.author_fake_pseudo != "":
-            try:
-                Reviewer.objects.get(scientist=self.object.author, publication=self.object.publication)
-                self.object.author_fake_pseudo = "Reviewer "+self.object.author_fake_pseudo
-            except Reviewer.DoesNotExist:
-                try:
-                    self.object.author.groups.get(name="Scientist")
-                    self.object.author_fake_pseudo = "Scientist " + self.object.author_fake_pseudo
-                except ObjectDoesNotExist:
-                    self.object.author_fake_pseudo = "Skeptic " + self.object.author_fake_pseudo
+            if Reviewer.objects.filter(scientist=self.object.author, publication=self.object.publication).exists():
+                self.object.author_fake_pseudo = "Reviewer " + self.object.author_fake_pseudo
+            elif self.object.author.groups.filter(name="Scientist").exists():
+                self.object.author_fake_pseudo = "Scientist " + self.object.author_fake_pseudo
+            else:
+                self.object.author_fake_pseudo = "Skeptic " + self.object.author_fake_pseudo
         return super(PublicationInterest, self).form_valid(form)
 
     # def post(self, request, *args, **kwargs):
