@@ -116,7 +116,7 @@ class PublicationSpecialTableView(SingleTableView):
     as a built-in).
     Filter get only the publications on the science the user follow
     """
-    filter_class = None
+    filter_class = PublicationFilter
     context_filter_name = 'filter'
     name = ""
     filter_dict = {}
@@ -159,7 +159,6 @@ class PublicationToReviewTableView(PublicationSpecialTableView):
     Only for the user in scientist group
     """
     name = "to review"
-    filter_class = PublicationFilter
     filter_dict = {'status': 'adding_peer'}
 
 
@@ -168,7 +167,6 @@ class PublicationInReviewTableView(PublicationSpecialTableView):
     show the publications about the science of the user and in review. In need of comment
     """
     name = "to comment"
-    filter_class = PublicationFilter
     filter_dict = {'status': 'peer_review'}
 
 
@@ -178,16 +176,14 @@ class PublicationToEvaluateTableView(PublicationSpecialTableView):
     Only for user in the scientist group
     """
     name = "to evaluate"
-    filter_class = PublicationFilter
     filter_dict = {'status' : 'evaluation'}
 
 
 class PublicationOwnedTableView(PublicationSpecialTableView):
     name = "owned"
-    filter_class = PublicationFilter
-    filter_dict = {'editor': User.objects.get(username="Astyan").id}
+    filter_dict = {'authors': User.objects.get(username="Astyan")}
     science_filter = False
-    
+
 
 class PublicationDisplay(DetailView):
     context_object_name = "publication_detail"

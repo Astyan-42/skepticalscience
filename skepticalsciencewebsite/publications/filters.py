@@ -1,4 +1,5 @@
 import django_filters
+from django.db.models import Q
 from crispy_forms.helper import FormHelper
 from crispy_forms.bootstrap import FormActions, Field
 from crispy_forms.layout import Layout, Submit
@@ -23,6 +24,7 @@ class PublicationFilter(django_filters.FilterSet):
         queryset=User.objects.all(),
         empty_label="All editors"
     )
+    authors = django_filters.MethodFilter()
     status = django_filters.ChoiceFilter(
         choices= PUBLICATION_STATUS_AND_EMPTY
     )
@@ -31,10 +33,14 @@ class PublicationFilter(django_filters.FilterSet):
     title = django_filters.CharFilter(lookup_expr='icontains')
     resume = django_filters.CharFilter(lookup_expr='icontains')
 
+    @staticmethod
+    def filter_authors(queryset, value):
+        return queryset.filter(Q(authors=value) | Q(first_author=value) | Q(last_author=value))
+
     class Meta:
         model = Publication
         fields = ["editor", "sciences", "title", "status", "estimated_impact_factor", "publication_score",
-                  "resume"]
+                  "resume", "authors"]
 
 
 class PublicationFilterFormHelper(FormHelper):
