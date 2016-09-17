@@ -59,7 +59,7 @@ class PublicationCreate(CreateView):
         # add the editor in object
         self.object.editor = self.request.user
         # call the parent to save correctly the ManyToManyField (sciences)
-        return super(CreateView).form_valid(form)
+        return super(CreateView, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
         """
@@ -81,13 +81,13 @@ class PublicationFilteredTableView(SingleTableView):
     context_filter_name = 'filter'
 
     def get_queryset(self, **kwargs):
-        qs = super(PublicationFilteredTableView).get_queryset()
+        qs = super(PublicationFilteredTableView, self).get_queryset()
         self.filter = self.filter_class(self.request.GET, queryset=qs)
         self.filter.form.helper = self.formhelper_class()
         return self.filter.qs
 
     def get_table(self, **kwargs):
-        table = super(PublicationFilteredTableView).get_table()
+        table = super(PublicationFilteredTableView, self).get_table()
         RequestConfig(self.request, paginate={'page': self.page_kwarg,
                       "per_page": self.paginate_by}).configure(table)
         return table
@@ -181,11 +181,11 @@ class PublicationToEvaluateTableView(PublicationSpecialTableView):
 
 class PublicationOwnedTableView(PublicationSpecialTableView):
     name = "owned"
-    filter_dict = {'authors': User.objects.get(username="Astyan")}
     science_filter = False
 
-    def __init__(self, *args, **kwargs):
-        super(PublicationOwnedTableView).__init__(*args, **kwargs)
+    def get_queryset(self, **kwargs):
+        self.filter_dict = {'authors': self.request.session['_auth_user_id']}
+        return super(PublicationOwnedTableView, self).get_queryset()
 
 
 class PublicationDisplay(DetailView):
