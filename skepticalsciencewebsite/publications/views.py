@@ -190,7 +190,15 @@ class PublicationDisplay(DetailView):
         get the alert status: if validated of not. If validated is there no corrected comment ?
         :return:
         """
-        pass
+        status = context["publication_detail"].status
+        if status < 6:
+            pass # alert-warning
+        else:
+            if context['comments'].objects.filter(comment_type="content", validated=True, corrected=False).exists():
+                pass # alert-danger
+            else:
+                pass # alert-success
+        
 
     def get_is_reviewer(self):
         is_reviewer = Reviewer.objects.filter(scientist=self.request.session['_auth_user_id'],
@@ -204,6 +212,7 @@ class PublicationDisplay(DetailView):
         context['comments'] = Comment.objects.filter(publication=self.kwargs["pk"]).order_by('seriousness')
         # put the initial licence as the licence of the publication
         context['is_reviewer'] = self.get_is_reviewer()
+        self.get_alert_status(context)
         context['form'] = CommentForm(initial={"licence": Publication.objects.get(pk=self.kwargs["pk"]).licence})
         return context
 
