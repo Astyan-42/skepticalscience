@@ -5,8 +5,6 @@ from django.views.generic import View
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
-from django.contrib.auth.models import Group
-from django.core.exceptions import ObjectDoesNotExist
 from sendfile import sendfile
 from django_tables2 import SingleTableView, RequestConfig
 from customuser.models import User
@@ -158,7 +156,7 @@ class PublicationToReviewTableView(PublicationSpecialTableView):
     """
     name = "to review"
     filter_class = PublicationFilter
-    filter_dict = {'status' : 'adding_peer'}
+    filter_dict = {'status': 'adding_peer'}
 
 
 class PublicationInReviewTableView(PublicationSpecialTableView):
@@ -167,7 +165,7 @@ class PublicationInReviewTableView(PublicationSpecialTableView):
     """
     name = "to comment"
     filter_class = PublicationFilter
-    filter_dict = {'status' : 'peer_review'}
+    filter_dict = {'status': 'peer_review'}
 
 
 class PublicationToEvaluateTableView(PublicationSpecialTableView):
@@ -199,7 +197,7 @@ class PublicationDisplay(DetailView):
         # adding comment to the view, better order by
         context['comments'] = Comment.objects.filter(publication=self.kwargs["pk"]).order_by('seriousness')
         # put the initial licence as the licence of the publication
-        context['form'] = CommentForm(initial={"licence" : Publication.objects.get(pk=self.kwargs["pk"]).licence})
+        context['form'] = CommentForm(initial={"licence": Publication.objects.get(pk=self.kwargs["pk"]).licence})
         return context
 
 
