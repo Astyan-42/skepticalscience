@@ -38,7 +38,7 @@
             <p>{{ publication_detail.publication_score }}</p>
             <p>{{ publication_detail.estimated_impact_factor}}</p>
             <p>{{ publication_detail.first_author.get_full_name}}</p>
-            <p>{{ publication_detail.authors.all }}</p>
+            <p>{{ publication_detail.get_all_authors }}</p>
             <p>{{ publication_detail.last_author }}</p>
             <p>{{ publication_detail.get_status_display }}</p>
             <p>{{ publication_detail.licence }}</p>
