@@ -19,8 +19,7 @@ class PublicationTable(tables.Table):
     """
     sciences = GoodScience()
     # temporary use the futur view of the publication
-    link = tables.LinkColumn("download_publication", text="publication", kwargs={"field_name" : "pdf_creation",
-                                                                                 "publication_id" : A('pk')})
+    link = tables.LinkColumn("publication_view", text="publication", kwargs={"pk" : A('pk')})
 
     class Meta:
         model = Publication

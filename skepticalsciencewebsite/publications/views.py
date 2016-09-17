@@ -134,6 +134,7 @@ class PublicationSpecialTableView(SingleTableView):
         qs = super(PublicationSpecialTableView, self).get_queryset()
         # filter from the user information
         self.fill_user_science()
+        print(self.filter_dict)
         self.filter = self.filter_class(self.filter_dict, queryset=qs)
         return self.filter.qs
 
@@ -177,6 +178,12 @@ class PublicationToEvaluateTableView(PublicationSpecialTableView):
     name = "to evaluate"
     filter_class = PublicationFilter
     filter_dict = {'status' : 'evaluation'}
+
+
+class PublicationOwnedTableView(PublicationSpecialTableView):
+    name = "owned"
+    filter_class = PublicationFilter
+    filter_dict = {'first_author': User.objects.get(username="Astyan")}
 
 
 class PublicationDisplay(DetailView):
