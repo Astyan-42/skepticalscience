@@ -49,7 +49,6 @@
                 {% endfor %}</p>
             <h5><strong>{% trans "Status" %}</strong></h5>
             <p class="text-indent">{{ publication_detail.get_status_display }}</p>
-            <!--other information to show if function of the status -->
             <h5><strong>{% trans "Downloads" %}</strong></h5>
             <p class="text-indent">
                 <a href="{% url 'download_publication' 'pdf_creation' object.pk %}">{% trans "PDF at creation" %}</a>
@@ -77,8 +76,8 @@
         </div>
     </div>
 
-    <hr>
 
+    <hr>
     <h2>Comments :</h2>
     {% for comment in comments %}
 <!-- color faded not validate, validated blue, if publication has been corrected then if the comment is
@@ -107,6 +106,8 @@ corrected green, if not red, if comment after the validation and valid then oran
                 {% endif %}
             </div>
         </div>
+    {% empty %}
+        {% trans "No comment yet" %}
     {% endfor %}
 
     {% if user.is_authenticated %}
