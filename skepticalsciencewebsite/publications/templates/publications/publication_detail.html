@@ -22,12 +22,13 @@
                     <p>{{ publication_detail.resume }}</p>
                     <small>{{ publication_detail.editor.get_full_name }}</small>
                 </blockquote>
+                <p> if in evaluation and (permission to evaluate then evaluate form) </p>
             </div>
         </div>
         <div class="col-md-4">
-            <h5><strong>Creation date</strong></h5>
+            <h5><strong>{% trans "Creation date" %}</strong></h5>
             <p class="text-indent">{{ publication_detail.creation_date }}</p>
-            <h5><strong>Sciences</strong></h5>
+            <h5><strong>{% trans "Sciences" %}</strong></h5>
             <p class="text-indent">{% for science in publication_detail.sciences.all %}
                     {% if forloop.last %}
                         {{ science }}
@@ -35,7 +36,7 @@
                         {{ science }},
                     {% endif %}
                 {% endfor %}</p>
-            <h5><strong>Authors</strong></h5>
+            <h5><strong>{% trans "Authors" %}</strong></h5>
             <p class="text-indent">
                 {% for author in publication_detail.get_all_authors %}
                     {% if forloop.last %}
@@ -44,10 +45,10 @@
                         {{ author.get_full_name }},
                     {% endif %}
                 {% endfor %}</p>
-            <h5><strong>Status</strong></h5>
+            <h5><strong>{% trans "Status" %}</strong></h5>
             <p class="text-indent">{{ publication_detail.get_status_display }}</p>
             <!--other information to show if function of the status -->
-            <h5><strong>Downloads</strong></h5>
+            <h5><strong>{% trans "Downloads" %}</strong></h5>
             <p class="text-indent">
                 <a href="{% url 'download_publication' 'pdf_creation' object.pk %}">{% trans "PDF at creation" %}</a>
             </p>
@@ -61,11 +62,14 @@
                 <p class="text-indent">
                     <a href="{% url 'download_publication' 'source_final' object.pk %}">{% trans "Source after correction" %}</a>
                 </p>
+                <h5><strong>{% trans "Publication score" %}</strong></h5>
+                <p class="text-indent">{{ publication_detail.publication_score }}</p>
             {% endif %}
-<!--other dowload only if validated-->
-            <p>{{ publication_detail.publication_score }}</p>
-            <p>{{ publication_detail.estimated_impact_factor}}</p>
-            <h5><strong>Licence</strong></h5>
+            {% if publication_detail.status >= 7 %}
+                <h5><strong>{% trans "Estimated impact factor" %}</strong></h5>
+                <p class="text-indent">{{ publication_detail.estimated_impact_factor}}</p>
+            {% endif %}
+            <h5><strong>{% trans "Licence" %}</strong></h5>
             <p class="text-indent">{{ publication_detail.licence }}</p>
             <!--dropdown button with download-->
         </div>
@@ -90,25 +94,22 @@ corrected green, if not red, if comment after the validation and valid then oran
             </div>
 
             <div class="panel-body">
-                {{ comment.content}}
-            </div>
-            <div class="panel-footer">
+                <p> {{ comment.content}}</p>
                 <div class="panel-title pull-left">
                     {{ comment.licence }} ({{ comment.creation_date }})
                 </div>
                 <div class="panel-title pull-right">
                     Link to the comment evaluation (only for the reviewers)
                 </div>
-                <div class="clearfix"></div>
             </div>
         </div>
     {% endfor %}
 
-
-    <hr>
-    <h2>Send a comment :</h2>
-<!--show the form only if the user is auth-->
-    {% crispy form %}
-    {{ form.media.js }}
+    {% if user.is_authenticated %}
+        <hr>
+        <h2>Send a comment :</h2>
+        {% crispy form %}
+        {{ form.media.js }}
+    {% endif %}
 
 {% endblock %}

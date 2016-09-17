@@ -192,6 +192,10 @@ class PublicationDisplay(DetailView):
         """
         pass
 
+    def get_is_reviewer(self):
+        pass
+
+
     def get_context_data(self, **kwargs):
         context = super(PublicationDisplay, self).get_context_data(**kwargs)
         # adding comment to the view, better order by
