@@ -204,11 +204,11 @@ class PublicationDisplay(DetailView):
                 alert["message"] = _("This publication haven't been validated yet. It could have some bias. \
                                       We appreciate your help!")
         else:
-            if Comment.objects.filter(publication=self.kwargs["pk"], comment_type="content",
+            if Comment.objects.filter(publication=self.kwargs["pk"], comment_type=2,
                                       validated=True, corrected=False).exists():
                 alert["class"] = "alert-danger"
                 alert["title"] = _("Publication with bias")
-                alert["message"] = _("This publication contain some bias. Be carefull. We appreciate your help!")
+                alert["message"] = _("This publication contain some bias. Be careful. We appreciate your help!")
             else:
                 alert["class"] = "alert-success"
                 alert["title"] = _("Publication validated")
@@ -224,7 +224,11 @@ class PublicationDisplay(DetailView):
     def get_context_data(self, **kwargs):
         context = super(PublicationDisplay, self).get_context_data(**kwargs)
         # adding comment to the view, better order by
-        context['comments'] = Comment.objects.filter(publication=self.kwargs["pk"]).order_by('seriousness')
+        context['comments'] = Comment.objects.filter(publication=self.kwargs["pk"]).order_by('-validated',
+                                                                                             '-comment_type',
+                                                                                             'corrected',
+                                                                                             '-seriousness',
+                                                                                             'creation_date')
         # put the initial licence as the licence of the publication
         context['is_reviewer'] = self.get_is_reviewer()
         context['alert'] = self.get_alert_status(context)

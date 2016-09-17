@@ -86,6 +86,8 @@ corrected green, if not red, if comment after the validation and valid then oran
             <div class="panel panel-default">
         {% elif comment.corrected %}
             <div class="panel panel-success">
+        {% elif comment.comment_type == 1 %}
+            <div class="panel panel-info">
         {% elif publication_detail.status >= 7 %}
             <div class="panel panel-warning">
         {% else %}
@@ -94,10 +96,10 @@ corrected green, if not red, if comment after the validation and valid then oran
             <div class="panel-heading">
                 <div class="panel-title pull-left">
                     {{ comment.title }} {% trans " by "%} {{ comment.author_fake_pseudo|default:comment.author }}
-                    {% trans " on the " %} {{ comment.comment_type }}
+                    {% trans " on the " %} {{ comment.get_comment_type_display|lower }}
                 </div>
                 <div class="panel-title pull-right">
-                    {{ comment.seriousness|default:"Not validated"}}
+                    {{ comment.get_seriousness_display|default:"Not validated"}}
                 </div>
                 <div class="clearfix"></div>
             </div>
@@ -120,7 +122,10 @@ corrected green, if not red, if comment after the validation and valid then oran
 
     {% if user.is_authenticated %}
         <hr>
-        <h2>Send a comment :</h2>
+        <h2>{% trans "Send a comment"%} :</h2>
+        <p class="text-info">{% blocktrans %} A comment must describe only one error.
+                                              If you spotted more than one, please do more than one comment.
+                             {% endblocktrans %} </p>
         {% crispy form %}
         {{ form.media.js }}
     {% endif %}
