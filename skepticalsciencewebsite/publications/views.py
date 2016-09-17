@@ -187,6 +187,13 @@ class PublicationDisplay(DetailView):
     fields = ["title", "sciences", "resume", "status", "licence", "publication_score", "estimated_impact_factor",
               "pdf_creation", "source_creation", "pdf_final", "source_final"]
 
+    def get_alert_status(self):
+        """
+        get the alert status: if validated of not. If validated is there no corrected comment ?
+        :return:
+        """
+        pass
+
     def get_context_data(self, **kwargs):
         context = super(PublicationDisplay, self).get_context_data(**kwargs)
         # adding comment to the view, better order by
