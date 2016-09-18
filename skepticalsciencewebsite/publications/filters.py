@@ -29,7 +29,7 @@ class PublicationFilter(django_filters.FilterSet):
         empty_label="All editors"
     )
     authors = django_filters.ModelChoiceFilter(
-        action=_filter_authors,
+        action=_filter_authors, # futur need to be changed in method (depreciation of action)
         queryset=User.objects.all(),
         empty_label="All authors"
     )
