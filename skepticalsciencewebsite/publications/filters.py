@@ -12,6 +12,10 @@ from publications.models import Publication, PUBLICATION_STATUS
 PUBLICATION_STATUS_AND_EMPTY = [('','All status')] + PUBLICATION_STATUS
 
 
+def _filter_authors(queryset, value):
+    return queryset.filter(Q(authors=value) | Q(first_author=value) | Q(last_author=value))
+
+
 class PublicationFilter(django_filters.FilterSet):
     """
     a filter used in publication with wanted field to filter done
@@ -24,7 +28,11 @@ class PublicationFilter(django_filters.FilterSet):
         queryset=User.objects.all(),
         empty_label="All editors"
     )
-    authors = django_filters.MethodFilter()
+    authors = django_filters.ModelChoiceFilter(
+        action=_filter_authors,
+        queryset=User.objects.all(),
+        empty_label="All authors"
+    )
     status = django_filters.ChoiceFilter(
         choices= PUBLICATION_STATUS_AND_EMPTY
     )
@@ -32,10 +40,6 @@ class PublicationFilter(django_filters.FilterSet):
     publication_score = django_filters.NumberFilter(lookup_expr='gte')
     title = django_filters.CharFilter(lookup_expr='icontains')
     resume = django_filters.CharFilter(lookup_expr='icontains')
-
-    @staticmethod
-    def filter_authors(queryset, value):
-        return queryset.filter(Q(authors=value) | Q(first_author=value) | Q(last_author=value))
 
     class Meta:
         model = Publication
@@ -54,7 +58,7 @@ class PublicationFilterFormHelper(FormHelper):
     help_text_inline = True
     form_id = 'id_filterForm'
     form_method = 'get'
-    layout = Layout("title", "status", "editor", "resume",
+    layout = Layout("title", "status", "editor", "authors", "resume",
                     Field("sciences", style="min-width: 320px;", template=field_template),
                     Field("estimated_impact_factor", placeholder="(Minimal)", min=0., value="",
                           template=field_template),

@@ -12,16 +12,16 @@ class GoodScience(tables.Column):
         sciences = ", ".join(sciences)
         return sciences
 
-
 class PublicationTable(tables.Table):
     """
     a table to represent a list of publication
     """
     sciences = GoodScience()
+    authors = GoodScience()
     # temporary use the futur view of the publication
     link = tables.LinkColumn("publication_view", text="publication", kwargs={"pk" : A('pk')})
 
     class Meta:
         model = Publication
-        fields = ["editor", "sciences", "title", "status", "estimated_impact_factor", "publication_score"]
+        fields = ["editor", "authors", "sciences", "title", "status", "estimated_impact_factor", "publication_score"]
         attrs = {"class": "table table-responsive paleblue"}

@@ -136,7 +136,6 @@ class PublicationSpecialTableView(SingleTableView):
         # filter from the user information
         if self.science_filter:
             self.fill_user_science()
-        print(self.filter_dict)
         self.filter = self.filter_class(self.filter_dict, queryset=qs)
         return self.filter.qs
 
