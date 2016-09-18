@@ -27,9 +27,9 @@ class PublicationTable(tables.Table):
     a table to represent a list of publication
     """
     sciences = GoodScience()
-    get_all_authors = GoodAuthor(verbose_name=_("Authors"))
+    get_all_authors = GoodAuthor(orderable=False, verbose_name=_("Authors"))
     # temporary use the futur view of the publication
-    link = tables.LinkColumn("publication_view", text="publication", kwargs={"pk" : A('pk')})
+    link = tables.LinkColumn("publication_view", text="publication", kwargs={"pk" : A('pk')}, orderable=False)
 
     class Meta:
         model = Publication
