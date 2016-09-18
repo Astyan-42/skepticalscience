@@ -3,6 +3,7 @@ from django.views.generic.edit import CreateView
 from django.views.generic.detail import DetailView
 from django.views.generic import View
 from django.core.exceptions import PermissionDenied
+from django.conf import settings
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
@@ -289,5 +290,15 @@ class PublicationDetailView(View):
 @permission_required('publications.publication.can_add_reviewer', raise_exception=True)
 def become_reviewer_view(request, publication_id):
     # get all the reviewer, check if not
-    # raise PermissionDenied
-    return redirect('publication_view', pk=publication_id )
+    reviewers = Reviewer.objects.filter(publication=publication_id)
+    if len(reviewers) < settings.NB_REVIEWER_PER_ARTICLE :
+        scientists = [reviewer.scientist for reviewer in reviewers]
+        if request.user not in scientists:
+            publication = Publication.objects.get(pk=publication_id)
+            user_sciences = [science.id for science in request.user.sciences.all()]
+            publication_sciences = [science.id for science in publication.sciences.all()]
+            nb_common_sciences = len(set(user_sciences) & set(publication_sciences))
+            if nb_common_sciences > 0:
+                Reviewer.create(scientist=request.user, publication=publication)
+                return redirect('publication_view', pk=publication_id)
+    raise PermissionDenied
