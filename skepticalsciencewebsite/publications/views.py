@@ -242,7 +242,7 @@ class PublicationDisplay(DetailView):
         # put the initial licence as the licence of the publication
         context['is_reviewer'] = self.get_is_reviewer()
         context['alert'] = self.get_alert_status(context)
-        context['form'] = CommentForm(initial={"licence": Publication.objects.get(pk=self.kwargs["pk"]).licence})
+        context['form'] = CommentForm()
         return context
 
 
@@ -255,6 +255,7 @@ class PublicationInterest(CreateView):
         self.object = form.save(commit=False)
         self.object.author = self.request.user
         self.object.publication = Publication.objects.get(pk=self.kwargs["pk"])
+        self.object.licence = self.object.publication.licence
         # just to add the right name before the fake pseudo
         if self.object.author_fake_pseudo != "":
             if Reviewer.objects.filter(scientist=self.object.author, publication=self.object.publication).exists():

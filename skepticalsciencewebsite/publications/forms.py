@@ -44,5 +44,5 @@ class CommentForm(forms.ModelForm):
 
     class Meta:
         model = Comment
-        fields = ["author_fake_pseudo", "comment_type", "title", "content", "licence"]
+        fields = ["author_fake_pseudo", "comment_type", "title", "content"]
         widgets = {'content': forms.Textarea()}
