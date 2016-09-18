@@ -1,7 +1,8 @@
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.views.generic.edit import CreateView
 from django.views.generic.detail import DetailView
 from django.views.generic import View
+from django.core.exceptions import PermissionDenied
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
@@ -282,3 +283,11 @@ class PublicationDetailView(View):
     def post(self, request, *args, **kwargs):
         view = PublicationInterest.as_view()
         return view(request, *args, **kwargs)
+
+
+@login_required
+@permission_required('publications.publication.can_add_reviewer', raise_exception=True)
+def become_reviewer_view(request, publication_id):
+    # get all the reviewer, check if not
+    # raise PermissionDenied
+    return redirect('publication_view', pk=publication_id )

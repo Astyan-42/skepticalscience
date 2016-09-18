@@ -24,6 +24,7 @@
                 </blockquote>
                 <!-- and good publication in evaluation and user in phd-->
                 {% if perms.publications.estimated_impact_factor and not user in publication_detail.get_all_authors %}
+                    <a href="{% url 'become_reviewer'  object.pk %}"> become a reviewer</a>
                     <p> if in evaluation and (permission to evaluate then evaluate form) ADD FRAKING URL OR FORM</p>
                 {% endif %}
                 <!-- participate at the rewiew in add_peer, user scientist with phd and not in author-->
@@ -119,7 +120,7 @@ corrected green, if not red, if comment after the validation and valid then oran
                     </div>
                 {% elif comment.validated == 1 and publication_detail.status == 6 and is_reviewer %}
                     <div class="panel-title pull-right">
-                        <a href="{% url 'comment_evaluation' %}">{% trans "Is it corrected ?" %}</a>
+                        <a href="{% url 'comment_evaluation' %}">{% trans "Comment corrected ?" %}</a>
                     </div>
                 {% endif %}
             </div>
