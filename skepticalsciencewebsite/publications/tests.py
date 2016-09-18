@@ -21,4 +21,4 @@ class PublicationTestCase(TestCase):
 
     def test_get_all_authors(self):
         publi = Publication.objects.get(title="lol")
-        self.assertEqual(2, len(publi.get_all_authors()))
+        self.assertEqual(2, len(publi.get_all_authors))
