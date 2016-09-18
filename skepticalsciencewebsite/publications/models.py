@@ -83,6 +83,7 @@ class Publication(models.Model):
     licence = models.ForeignKey(Licence, verbose_name=_("Licence"))
     history = HistoricalRecords()
 
+    @property
     def get_all_authors(self):
         authors = [self.first_author] + [author for author in self.authors.all()] + \
                   [author for author in [self.last_author] if author is not None]

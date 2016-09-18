@@ -58,7 +58,7 @@ class PublicationFilterFormHelper(FormHelper):
     help_text_inline = True
     form_id = 'id_filterForm'
     form_method = 'get'
-    layout = Layout("title", "status", "editor", "authors", "resume",
+    layout = Layout("title", "status", "authors", "resume",
                     Field("sciences", style="min-width: 320px;", template=field_template),
                     Field("estimated_impact_factor", placeholder="(Minimal)", min=0., value="",
                           template=field_template),
