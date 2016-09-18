@@ -112,6 +112,8 @@ class Reviewer(models.Model):
     """
     scientist = models.ForeignKey(User, verbose_name=_("Reviewer"))
     publication = models.ForeignKey(Publication, verbose_name=_("Publication"))
+    actif = models.BooleanField(default=True, verbose_name=_("Actif"))
+    history = HistoricalRecords()
 
     def __str__(self):
         return self.scientist.get_full_name()
