@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views.generic.edit import CreateView
 from django.views.generic.detail import DetailView
 from django.views.generic import View
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 from django.conf import settings
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required, permission_required
@@ -307,3 +307,37 @@ def become_reviewer_view(request, publication_id):
                     Reviewer.create(scientist=request.user, publication=publication)
                     return redirect('publication_view', pk=publication_id)
     raise PermissionDenied
+
+@login_required
+@permission_required('publications.publication.can_add_reviewer', raise_exception=True)
+def become_reviewer_view(request, publication_id):
+    # add to reviewer if: phd & not enough rewiewers, group scientist, has sciences in common with the article
+    if request.user.phd:
+        reviewers_actif = Reviewer.objects.filter(publication=publication_id, actif=True)
+        if len(reviewers_actif) < settings.NB_REVIEWER_PER_ARTICLE :
+            scientists = [reviewer.scientist for reviewer in reviewers_actif]
+            if request.user not in scientists:
+                publication = Publication.objects.get(pk=publication_id)
+                user_sciences = [science.id for science in request.user.sciences.all()]
+                publication_sciences = [science.id for science in publication.sciences.all()]
+                nb_common_sciences = len(set(user_sciences) & set(publication_sciences))
+                if nb_common_sciences > 0:
+                    if Reviewer.objects.filter(publication=publication_id, scientist=request.user).exists():
+                        reviewer = Reviewer.objects.get(publication=publication_id, scientist=request.user)
+                        reviewer.actif=True
+                        reviewer.save()
+                    else:
+                        Reviewer(scientist=request.user, publication=publication)
+                    return redirect('publication_view', pk=publication_id)
+    raise PermissionDenied
+
+@login_required
+@permission_required('publications.publication.can_add_reviewer', raise_exception=True)
+def leave_reviewer_view(request, publication_id):
+    try:
+        reviewer = Reviewer.objects.get(publication=publication_id, scientist=request.user)
+        reviewer.actif = False
+        reviewer.save()
+        return redirect('publication_view', pk=publication_id)
+    except ObjectDoesNotExist:
+        raise PermissionDenied
