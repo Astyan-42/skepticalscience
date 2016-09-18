@@ -14,10 +14,10 @@ sendfile_storage = FileSystemStorage(location=settings.SENDFILE_ROOT)
 
 PUBLICATION_STATUS = [(1, "Waiting payment"),
                       (2, "Adding peer"),
-                      (3, "Peer review"),
-                      (4, "Correction"),
+                      (3, "Peer review"), # no change of reviewer
+                      (4, "Correction"), # no change of reviewer
                       (5, "Aborted"),
-                      (6, "Validation"),
+                      (6, "Validation"), # no change of reviewer
                       (7, "Evaluation"),
                       (8, "Published")]
 
