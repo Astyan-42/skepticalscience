@@ -3,8 +3,9 @@ from django.utils.translation import ugettext_lazy as _
 from django_select2.forms import Select2MultipleWidget
 from django.db.models import Q
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
-from publications.models import Publication, Comment
+from crispy_forms.layout import Layout, Submit
+from crispy_forms.bootstrap import Field
+from publications.models import Publication, Comment, EstimatedImpactFactor
 from sciences.forms import ScienceModelForm
 from customuser.models import User
 
@@ -46,3 +47,20 @@ class CommentForm(forms.ModelForm):
         model = Comment
         fields = ["author_fake_pseudo", "comment_type", "title", "content"]
         widgets = {'content': forms.Textarea()}
+
+
+class EstimatedImpactFactorForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(EstimatedImpactFactor, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.form_class = 'form-inline'
+        self.field_template = 'bootstrap3/layout/inline_field.html'
+        self.helper.form_id = 'id-estimatedimpactfactorForm'
+        self.helper.layout = Layout(Field("estimated_impact_factor", placeholder="(Minimal)", min=0., value="",
+                                    template=self.field_template))
+        self.helper.add_input(Submit('submit', _('Evaluate')))
+
+    class Meta:
+        model = EstimatedImpactFactor
+        fields = ["estimated_impact_factor"]
