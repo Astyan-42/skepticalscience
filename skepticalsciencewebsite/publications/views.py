@@ -228,7 +228,7 @@ class PublicationDisplay(DetailView):
 
     def get_is_reviewer(self):
         is_reviewer = Reviewer.objects.filter(scientist=self.request.session['_auth_user_id'],
-                                              publication=self.kwargs["pk"]).exists()
+                                              publication=self.kwargs["pk"], actif=True).exists()
         return is_reviewer
 
     def get_context_data(self, **kwargs):
@@ -241,11 +241,12 @@ class PublicationDisplay(DetailView):
                                                                                              'creation_date')
         # put the initial licence as the licence of the publication
         context['is_reviewer'] = self.get_is_reviewer()
+        context['reviewer_registration'] = context["publication_detail"].status in [2, 5, 7, 8]
         context['alert'] = self.get_alert_status(context)
         context['form_comment'] = CommentForm()
         context['form_eif'] = EstimatedImpactFactorForm()
         return context
-
+    
 
 class PublicationInterest(CreateView):
     # template_name = 'publications/publication_detail.html'
@@ -267,12 +268,6 @@ class PublicationInterest(CreateView):
                 self.object.author_fake_pseudo = "Skeptic " + self.object.author_fake_pseudo
         return super(PublicationInterest, self).form_valid(form)
 
-    # def post(self, request, *args, **kwargs):
-    #     print("trigerred")
-    #     if not request.user.is_authenticated():
-    #         return HttpResponseForbidden()
-    #     return super(PublicationInterest, self).post(request, *args, **kwargs)
-
     def get_success_url(self):
         return reverse_lazy('publication_view', kwargs={'pk': self.kwargs["pk"]})
 
@@ -286,6 +281,8 @@ class EstimatedImpactFactorInterest(CreateView):
         self.object = form.save(commit=False)
         self.object.estimator = self.request.user
         self.object.publication = Publication.objects.get(pk=self.kwargs["pk"])
+        if self.object.publication.status != 7:
+            raise PermissionDenied
         return super(EstimatedImpactFactorInterest, self).form_valid(form)
 
     def get_success_url(self):
@@ -299,31 +296,12 @@ class PublicationDetailView(View):
         return view(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        view = PublicationInterest.as_view()
+        if request.POST["submit"].lower() == "evaluate":
+            view = EstimatedImpactFactorInterest.as_view()
+        else:
+            view = PublicationInterest.as_view()
         return view(request, *args, **kwargs)
 
-
-@login_required
-@permission_required('publications.publication.can_add_reviewer', raise_exception=True)
-def become_reviewer_view(request, publication_id):
-    # add to reviewer if: phd & not enough rewiewers, group scientist, has sciences in common with the article
-    if request.user.phd:
-        reviewers_actif = Reviewer.objects.filter(publication=publication_id)
-        if len(reviewers_actif) < settings.NB_REVIEWER_PER_ARTICLE :
-            scientists = [reviewer.scientist for reviewer in reviewers_actif]
-            if request.user not in scientists:
-                publication = Publication.objects.get(pk=publication_id)
-                user_sciences = [science.id for science in request.user.sciences.all()]
-                publication_sciences = [science.id for science in publication.sciences.all()]
-                nb_common_sciences = len(set(user_sciences) & set(publication_sciences))
-                if nb_common_sciences > 0:
-                    if Reviewer.objects.filter(publication=publication_id, scientist=request.user).exists():
-                        reviewer = Reviewer.objects.filter(publication=publication_id, scientist=request.user)
-                        reviewer.actif=True
-                        reviewer.save()
-                    Reviewer.create(scientist=request.user, publication=publication)
-                    return redirect('publication_view', pk=publication_id)
-    raise PermissionDenied
 
 @login_required
 @permission_required('publications.publication.can_add_reviewer', raise_exception=True)
@@ -344,7 +322,8 @@ def become_reviewer_view(request, publication_id):
                         reviewer.actif=True
                         reviewer.save()
                     else:
-                        Reviewer(scientist=request.user, publication=publication)
+                        reviewer = Reviewer(scientist=request.user, publication=publication)
+                        reviewer.save()
                     return redirect('publication_view', pk=publication_id)
     raise PermissionDenied
 

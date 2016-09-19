@@ -102,8 +102,11 @@ class EstimatedImpactFactor(models.Model):
     publication = models.ForeignKey(Publication, verbose_name=_('Publication'))
     estimated_impact_factor = MinMaxFloat(min_value=0.0, max_value=1000.0, verbose_name=_("Estimated impact factor"))
 
+    class Meta:
+        unique_together = ('estimator', 'publication')
+
     def __str__(self):
-        return self.estimator
+        return self.estimator.get_full_name()
 
 
 class Reviewer(models.Model):
@@ -114,6 +117,9 @@ class Reviewer(models.Model):
     publication = models.ForeignKey(Publication, verbose_name=_("Publication"))
     actif = models.BooleanField(default=True, verbose_name=_("Actif"))
     history = HistoricalRecords()
+
+    class Meta:
+        unique_together = ('scientist', 'publication')
 
     def __str__(self):
         return self.scientist.get_full_name()
