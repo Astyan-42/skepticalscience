@@ -189,6 +189,23 @@ class PublicationOwnedTableView(PublicationSpecialTableView):
         return super(PublicationOwnedTableView, self).get_queryset()
 
 
+def can_be_reviewer(phd, nb_reviewer_actif, nb_common_science, not_in_authors, publication_status):
+    return (phd and nb_reviewer_actif < settings.NB_REVIEWER_PER_ARTICLE and not_in_authors and
+            nb_common_science > 0 and publication_status in [2, 5, 7, 8])
+
+
+def reviewer_action(user, publication_id):
+    phd = user.phd
+    nb_reviewer_actif = len(Reviewer.objects.filter(publication=publication_id, actif=True))
+    publication = Publication.objects.get(pk=publication_id)
+    not_in_authors = user not in publication.get_all_authors
+    user_sciences = [science.id for science in user.sciences.all()]
+    publication_sciences = [science.id for science in publication.sciences.all()]
+    nb_common_sciences = len(set(user_sciences) & set(publication_sciences))
+    publication_status = publication.status
+    return can_be_reviewer(phd, nb_reviewer_actif, nb_common_sciences, not_in_authors, publication_status)
+
+
 class PublicationDisplay(DetailView):
     context_object_name = "publication_detail"
     model = Publication
@@ -241,12 +258,12 @@ class PublicationDisplay(DetailView):
                                                                                              'creation_date')
         # put the initial licence as the licence of the publication
         context['is_reviewer'] = self.get_is_reviewer()
-        context['reviewer_registration'] = context["publication_detail"].status in [2, 5, 7, 8]
+        context['reviewer_registration'] = reviewer_action(self.request.user, self.kwargs["pk"])
         context['alert'] = self.get_alert_status(context)
         context['form_comment'] = CommentForm()
         context['form_eif'] = EstimatedImpactFactorForm()
         return context
-    
+
 
 class PublicationInterest(CreateView):
     # template_name = 'publications/publication_detail.html'
@@ -305,35 +322,30 @@ class PublicationDetailView(View):
 
 @login_required
 @permission_required('publications.publication.can_add_reviewer', raise_exception=True)
+@permission_required('publications.publication.can_change_reviewer', raise_exception=True)
 def become_reviewer_view(request, publication_id):
     # add to reviewer if: phd & not enough rewiewers, group scientist, has sciences in common with the article
-    if request.user.phd:
-        reviewers_actif = Reviewer.objects.filter(publication=publication_id, actif=True)
-        if len(reviewers_actif) < settings.NB_REVIEWER_PER_ARTICLE :
-            scientists = [reviewer.scientist for reviewer in reviewers_actif]
-            if request.user not in scientists:
-                publication = Publication.objects.get(pk=publication_id)
-                user_sciences = [science.id for science in request.user.sciences.all()]
-                publication_sciences = [science.id for science in publication.sciences.all()]
-                nb_common_sciences = len(set(user_sciences) & set(publication_sciences))
-                if nb_common_sciences > 0:
-                    if Reviewer.objects.filter(publication=publication_id, scientist=request.user).exists():
-                        reviewer = Reviewer.objects.get(publication=publication_id, scientist=request.user)
-                        reviewer.actif=True
-                        reviewer.save()
-                    else:
-                        reviewer = Reviewer(scientist=request.user, publication=publication)
-                        reviewer.save()
-                    return redirect('publication_view', pk=publication_id)
+    if reviewer_action(request.user, publication_id):
+        if Reviewer.objects.filter(publication=publication_id, scientist=request.user).exists():
+            reviewer = Reviewer.objects.get(publication=publication_id, scientist=request.user)
+            reviewer.actif=True
+            reviewer.save()
+        else:
+            publication = Publication.objects.get(pk=publication_id)
+            reviewer = Reviewer(scientist=request.user, publication=publication)
+            reviewer.save()
+        return redirect('publication_view', pk=publication_id)
     raise PermissionDenied
 
 @login_required
-@permission_required('publications.publication.can_add_reviewer', raise_exception=True)
+@permission_required('publications.publication.can_change_reviewer', raise_exception=True)
 def leave_reviewer_view(request, publication_id):
-    try:
-        reviewer = Reviewer.objects.get(publication=publication_id, scientist=request.user)
-        reviewer.actif = False
-        reviewer.save()
-        return redirect('publication_view', pk=publication_id)
-    except ObjectDoesNotExist:
-        raise PermissionDenied
+    if reviewer_action(request.user, publication_id):
+        try:
+            reviewer = Reviewer.objects.get(publication=publication_id, scientist=request.user)
+            reviewer.actif = False
+            reviewer.save()
+            return redirect('publication_view', pk=publication_id)
+        except ObjectDoesNotExist:
+            raise PermissionDenied
+    raise PermissionDenied
