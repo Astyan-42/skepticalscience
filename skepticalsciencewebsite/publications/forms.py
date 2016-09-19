@@ -52,13 +52,13 @@ class CommentForm(forms.ModelForm):
 class EstimatedImpactFactorForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
-        super(EstimatedImpactFactor, self).__init__(*args, **kwargs)
+        super(EstimatedImpactFactorForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
-        self.form_class = 'form-inline'
-        self.field_template = 'bootstrap3/layout/inline_field.html'
+        self.helper.form_class = 'form-inline'
+        self.helper.field_template = 'bootstrap3/layout/inline_field.html'
         self.helper.form_id = 'id-estimatedimpactfactorForm'
-        self.helper.layout = Layout(Field("estimated_impact_factor", placeholder="(Minimal)", min=0., value="",
-                                    template=self.field_template))
+        self.helper.layout = Layout(Field("estimated_impact_factor", min=0, max=1000, value="",
+                                    template=self.helper.field_template))
         self.helper.add_input(Submit('submit', _('Evaluate')))
 
     class Meta:

@@ -137,7 +137,8 @@ corrected green, if not red, if comment after the validation and valid then oran
         <p class="text-info">{% blocktrans %} A comment must describe only one error.
                                               If you spotted more than one, please do more than one comment.
                              {% endblocktrans %} </p>
-        {% crispy form %}
+        {% crispy form_comment %}
+        {% crispy form_eif %}
         {{ form.media.js }}
     {% endif %}
 

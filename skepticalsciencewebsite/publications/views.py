@@ -11,8 +11,8 @@ from django.utils.translation import ugettext_lazy as _
 from sendfile import sendfile
 from django_tables2 import SingleTableView, RequestConfig
 from customuser.models import User
-from publications.models import Publication, Comment, Reviewer
-from publications.forms import PublicationCreateForm, CommentForm
+from publications.models import Publication, Comment, Reviewer, EstimatedImpactFactor
+from publications.forms import PublicationCreateForm, CommentForm, EstimatedImpactFactorForm
 from publications.tables import PublicationTable
 from publications.filters import PublicationFilter, PublicationFilterFormHelper
 # Create your views here.
@@ -242,7 +242,8 @@ class PublicationDisplay(DetailView):
         # put the initial licence as the licence of the publication
         context['is_reviewer'] = self.get_is_reviewer()
         context['alert'] = self.get_alert_status(context)
-        context['form'] = CommentForm()
+        context['form_comment'] = CommentForm()
+        context['form_eif'] = EstimatedImpactFactorForm()
         return context
 
 
@@ -271,6 +272,21 @@ class PublicationInterest(CreateView):
     #     if not request.user.is_authenticated():
     #         return HttpResponseForbidden()
     #     return super(PublicationInterest, self).post(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse_lazy('publication_view', kwargs={'pk': self.kwargs["pk"]})
+
+
+class EstimatedImpactFactorInterest(CreateView):
+    # template_name = 'publications/publication_detail.html'
+    form_class = EstimatedImpactFactorForm
+    model = EstimatedImpactFactor
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.estimator = self.request.user
+        self.object.publication = Publication.objects.get(pk=self.kwargs["pk"])
+        return super(EstimatedImpactFactorInterest, self).form_valid(form)
 
     def get_success_url(self):
         return reverse_lazy('publication_view', kwargs={'pk': self.kwargs["pk"]})
