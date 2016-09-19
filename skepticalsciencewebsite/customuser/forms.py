@@ -1,3 +1,4 @@
+from django import forms
 from registration.forms import RegistrationForm
 from django.utils.translation import ugettext_lazy as _
 from customuser.models import User
@@ -32,4 +33,5 @@ class CustomUserUpdateForm(ScienceModelForm):
         fields = ["email", "first_name", "middle_name", "last_name", "phd", "country", "workplace", "description",
                   "job_title", "sciences"]
         # widgets = {'sciences': Select2MultipleWidget(attrs={'class': 'form-control'})}
-        widgets = {'sciences': Select2MultipleWidget}
+        widgets = {'sciences': Select2MultipleWidget,
+                   'description': forms.Textarea()}

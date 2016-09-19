@@ -10,7 +10,8 @@
             <h5><strong>{% trans "Name" %}</strong></h5>
             <p class="text-indent">{{ user_detail.get_full_name|default:"Not filled yet" }}</p>
             <h5><strong>{% trans "Personal description" %}</strong></h5>
-            <p class="text-indent">{{ user_detail.description|default:"Not filled yet" }}</p>
+            <!-- the text-indent don't work with linebreaks. Why ?-->
+            <p class="text-indent">{{ user_detail.description|default:"Not filled yet"|linebreaks }}</p>
             <h5><strong>{% trans "Country" %}</strong></h5>
             <p class="text-indent">{{ user_detail.country|default:"Not filled yet" }}</p>
             <h5><strong>{% trans "Workplace" %}</strong></h5>
