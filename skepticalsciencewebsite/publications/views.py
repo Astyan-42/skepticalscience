@@ -10,8 +10,9 @@ from django.utils.translation import ugettext_lazy as _
 from sendfile import sendfile
 from django_tables2 import SingleTableView, RequestConfig
 from customuser.models import User
-from publications.models import Publication, Comment, Reviewer, EstimatedImpactFactor
-from publications.forms import PublicationCreateForm, CommentForm, EstimatedImpactFactorForm
+from publications.models import Publication, Comment, Reviewer, EstimatedImpactFactor, CommentReview
+from publications.forms import (PublicationCreateForm, CommentForm, EstimatedImpactFactorForm,
+                                CommentReviewValidationForm)
 from publications.tables import PublicationTable
 from publications.filters import PublicationFilter, PublicationFilterFormHelper
 from publications.constants import *
@@ -322,7 +323,7 @@ class PublicationDetailView(View):
         return view(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        if request.POST["submit"].lower() == "evaluate":
+        if request.POST["submit"].lower() == _("Evaluate").lower():
             view = EstimatedImpactFactorInterest.as_view()
         else:
             view = PublicationInterest.as_view()
@@ -359,3 +360,59 @@ def leave_reviewer_view(request, publication_id):
         except ObjectDoesNotExist:
             raise PermissionDenied
     raise PermissionDenied
+
+
+class CommentDisplay(DetailView):
+    context_object_name = "comment_detail"
+    model = Comment
+    # template_name = 'publications/publication_detail.html'
+    fields = ["publication", "author", "author_fake_pseudo", "creation_date", "comment_type", "seriousness",
+              "content", "title", "validated", "corrected", "licence"]
+
+    def get_is_reviewer(self, publication_id):
+        is_reviewer = Reviewer.objects.filter(scientist=self.request.session['_auth_user_id'],
+                                              publication=publication_id, actif=True).exists()
+        return is_reviewer
+
+    def get_context_data(self, **kwargs):
+        context = super(CommentDisplay, self).get_context_data(**kwargs)
+        context['constants'] = CONSTANTS_TEMPLATE
+        print(context['comment_detail'].publication)
+        # context['is_reviewer'] = self.get_is_reviewer(context['comment_detail'].publication)
+        context['reviews'] = CommentReview.objects.filter(comment=self.kwargs["pk"])
+        # context['form_comment'] = CommentReviewValidationForm()
+        # context['form_comment'] = CommentReviewCorrectionForm()
+
+
+class CommentReviewValidationInterest(CreateView):
+    form_class = CommentReviewValidationForm
+    model = CommentReview
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        # self.object.author = self.request.user
+        # self.object.publication = Publication.objects.get(pk=self.kwargs["pk"])
+        # self.object.licence = self.object.publication.licence
+        # # just to add the right name before the fake pseudo
+        # if self.object.author_fake_pseudo != "":
+        #     if Reviewer.objects.filter(scientist=self.object.author, publication=self.object.publication).exists():
+        #         self.object.author_fake_pseudo = "Reviewer " + self.object.author_fake_pseudo
+        #     elif self.object.author.groups.filter(name="Scientist").exists():
+        #         self.object.author_fake_pseudo = "Scientist " + self.object.author_fake_pseudo
+        #     else:
+        #         self.object.author_fake_pseudo = "Skeptic " + self.object.author_fake_pseudo
+        return super(CommentReviewValidationInterest, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('comment_evaluation', kwargs={'pk': self.kwargs["pk"]})
+
+
+class CommentDetailView(View):
+
+    def get(self, request, *args, **kwargs):
+        view = CommentDisplay.as_view()
+        return view(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        view = CommentReviewValidationInterest.as_view()
+        return view(request, *args, **kwargs)

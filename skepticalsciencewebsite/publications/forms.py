@@ -5,7 +5,7 @@ from django.db.models import Q
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit
 from crispy_forms.bootstrap import Field
-from publications.models import Publication, Comment, EstimatedImpactFactor
+from publications.models import Publication, Comment, EstimatedImpactFactor, CommentReview
 from sciences.forms import ScienceModelForm
 from customuser.models import User
 
@@ -64,3 +64,17 @@ class EstimatedImpactFactorForm(forms.ModelForm):
     class Meta:
         model = EstimatedImpactFactor
         fields = ["estimated_impact_factor"]
+
+
+class CommentReviewValidationForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(CommentReviewValidationForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_id = 'id-commentreviewvalidationForm'
+        self.helper.add_input(Submit('submit', _('Submit')))
+
+    class Meta:
+        model = CommentReview
+        fields = ["valid", "seriousness", "reason_validation"]
+        widgets = {'reason_validation': forms.Textarea()}
