@@ -134,11 +134,10 @@ class CommentReview(models.Model):
     creation_date = models.DateTimeField(auto_now_add=True, verbose_name=_('Creation date'))
     seriousness = models.CharField(choices=SERIOUSNESS_STATUS, max_length=100, db_index=True, blank=True,
                                    verbose_name=_("Seriousness"))
-    valid = models.BooleanField(default=False, verbose_name=_("Valid"))
+    valid = models.NullBooleanField(default=None, verbose_name=_("Valid"))
     reason_validation = models.CharField(max_length=8192, blank=False, verbose_name=_("Reason of (in)validation"))
-    corrected = models.BooleanField(default=False, verbose_name=_("Corrected"))
+    corrected = models.NullBooleanField(default=None, verbose_name=_("Corrected"))
     reason_correction = models.CharField(max_length=8192, blank=False, verbose_name=_("Reason of (in)correction"))
-    licence = models.ForeignKey(Licence, verbose_name=_("Licence"))
 
     def clean(self):
         if self.reviewer.publication != self.comment.publication:

@@ -135,7 +135,7 @@ corrected green, if not red, if comment after the validation and valid then oran
     {% endfor %}
 
     <hr>
-    <h2>{% trans "Send a comment"%} :</h2>
+    <h2>{% trans "Send a comment"%}: </h2>
     {% if user.is_authenticated and publication_detail.status >= constants.ADDING_PEER %}
         <p class="text-info">{% blocktrans %} A comment must describe only one error.
                                               If you spotted more than one, please do more than one comment.

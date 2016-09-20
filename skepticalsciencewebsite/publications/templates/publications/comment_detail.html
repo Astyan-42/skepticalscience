@@ -37,13 +37,28 @@
     <hr>
     <h2>{% trans "Evaluations" %}:</h2>
     {% for review in reviews %}
-
+        {% if review.valid %}
+            {% if review.corrected %}
+                <div class="panel panel-success">
+            {% else %}
+                <div class="panel panel-warning">
+            {% endif %}
+        {% else %}
+            <div class="panel panel-default">
+        {% endif %}
+            <div class="panel-body">
+                {{ reason_validation|linebreaks }}
+            </div>
+        </div>
     {% empty %}
         {% trans "No evaluations yet" %}
     {% endfor %}
 
     <!-- special if -->
     <hr>
+    <h2>{% trans "Evaluate this comment"%}: </h2>
+    {% crispy form_validation %}
+    {{ form.media.js }}
 
 
 

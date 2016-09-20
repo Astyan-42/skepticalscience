@@ -379,7 +379,7 @@ class CommentDisplay(DetailView):
         context['constants'] = CONSTANTS_TEMPLATE
         # context['is_reviewer'] = self.get_is_reviewer(context['comment_detail'].publication.pk)
         context['reviews'] = CommentReview.objects.filter(comment=self.kwargs["pk"])
-        # context['form_comment'] = CommentReviewValidationForm()
+        context['form_validation'] = CommentReviewValidationForm()
         # context['form_comment'] = CommentReviewCorrectionForm()
         return context
 
