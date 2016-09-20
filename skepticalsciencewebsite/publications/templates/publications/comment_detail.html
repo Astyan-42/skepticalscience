@@ -7,9 +7,32 @@
 {% block content %}
     <h1>{% trans "Comment" %}: {{ comment_detail.title }}</h1>
 
-    <blockquote>
-        <p>{{ comment_detail.content|linebreaks }}</p>
-        <small>{{ comment_detail.author_fake_pseudo|default:comment_detail.author }}</small>
-    </blockquote>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="bs-component">
+                <blockquote>
+                    <p>{{ comment_detail.content|linebreaks }}</p>
+                    <small>{{ comment_detail.author_fake_pseudo|default:comment_detail.author }}</small>
+                </blockquote>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h5><strong>{% trans "Creation date" %}</strong></h5>
+            <p class="text-indent">{{ comment_detail.creation_date }}</p>
+            <h5><strong>{% trans "Comment type" %}</strong></h5>
+            <p class="text-indent">{{ comment_detail.get_comment_type_display }}</p>
+            <h5><strong>{% trans "Licence" %}</strong></h5>
+            <p class="text-indent">{{ comment_detail.licence }}</p>
+            <h5><strong>{% trans "Status" %}</strong></h5>
+            <p class="text-indent">{{ comment_detail.get_validated_display }}</p>
+            {% if comment_detail.validated == constants.VALIDATE %}
+                <h5><strong>{% trans "Seriousness" %}</strong></h5>
+                <p class="text-indent">{{ comment_detail.get_seriousness_display }}</p>
+                <h5><strong>{% trans "Corrected" %}</strong></h5>
+                <p class="text-indent">{{ comment_detail.corrected|yesno|capfirst }}</p>
+            {% endif %}
+        </div>
+    </div>
+
 
 {% endblock %}

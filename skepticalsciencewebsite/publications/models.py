@@ -114,7 +114,7 @@ class Comment(models.Model):
     creation_date = models.DateTimeField(auto_now_add=True, verbose_name=_('Creation date'))
     comment_type = models.IntegerField(choices=COMMENT_ON, db_index=True, verbose_name=_("Comment type"))
     seriousness = models.IntegerField(choices=SERIOUSNESS_STATUS, db_index=True, blank=True, null=True,
-                                   verbose_name=_("Seriousness"))
+                                      verbose_name=_("Seriousness"))
     content = models.CharField(max_length=8192, blank=False, verbose_name=_("Publication comment"))
     title = models.CharField(max_length=255, blank=False, verbose_name=_("Title"))
     validated = models.IntegerField(choices=VALIDATION_STATUS, default=2, verbose_name=_("Validation"))
