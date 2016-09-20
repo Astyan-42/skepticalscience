@@ -19,7 +19,7 @@
         <div class="col-md-4">
             <h5><strong>{% trans "Creation date" %}</strong></h5>
             <p class="text-indent">{{ comment_detail.creation_date }}</p>
-            <h5><strong>{% trans "Comment type" %}</strong></h5>
+            <h5><strong>{% trans "Comment on" %}</strong></h5>
             <p class="text-indent">{{ comment_detail.get_comment_type_display }}</p>
             <h5><strong>{% trans "Licence" %}</strong></h5>
             <p class="text-indent">{{ comment_detail.licence }}</p>
@@ -33,6 +33,18 @@
             {% endif %}
         </div>
     </div>
+
+    <hr>
+    <h2>{% trans "Evaluations" %}:</h2>
+    {% for review in reviews %}
+
+    {% empty %}
+        {% trans "No evaluations yet" %}
+    {% endfor %}
+
+    <!-- special if -->
+    <hr>
+
 
 
 {% endblock %}

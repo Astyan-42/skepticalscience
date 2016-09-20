@@ -92,7 +92,7 @@
 
 
     <hr>
-    <h2>Comments :</h2>
+    <h2>{% trans "Comments" %} :</h2>
     {% for comment in comments %}
 <!-- color faded not validate, validated blue, if publication has been corrected then if the comment is
 corrected green, if not red, if comment after the validation and valid then orange-->
@@ -125,24 +125,13 @@ corrected green, if not red, if comment after the validation and valid then oran
                 <div class="panel-title pull-left">
                     {{ comment.licence }} ({{ comment.creation_date }})
                 </div>
-                <!-- view comment detail for everyone so the if to really change (just in wain-->
                 <div class="panel-title pull-right">
                     <a href="{% url 'comment_evaluation' comment.pk %}">{% trans "Evaluation of the comment" %}</a>
                 </div>
-
-                {% if comment.validated == 2 and publication_detail.status == 3 and is_reviewer %}
-                    <div class="panel-title pull-right">
-                        <a href="{% url 'comment_evaluation' %}">{% trans "Evaluate the comment" %}</a>
-                    </div>
-                {% elif comment.validated == 1 and publication_detail.status == 6 and is_reviewer %}
-                    <div class="panel-title pull-right">
-                        <a href="{% url 'comment_evaluation' %}">{% trans "Comment corrected ?" %}</a>
-                    </div>
-                {% endif %}
             </div>
         </div>
     {% empty %}
-        {% trans "No comment yet" %}
+        {% trans "No comments yet" %}
     {% endfor %}
 
     <hr>
