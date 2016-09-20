@@ -125,17 +125,18 @@ class Comment(models.Model):
         return self.title
 
 
-class CommentRating(models.Model):
+class CommentReview(models.Model):
     """
      when done must check if every other reviewer have already done it
     """
     reviewer = models.ForeignKey(Reviewer, verbose_name=_("Reviewer"))
     comment = models.ForeignKey(Comment, verbose_name=_("Comment"))
-    valid = models.BooleanField(default=False, verbose_name=_("Valid"))
     seriousness = models.CharField(choices=SERIOUSNESS_STATUS, max_length=100, db_index=True, blank=True,
                                    verbose_name=_("Seriousness"))
+    valid = models.BooleanField(default=False, verbose_name=_("Valid"))
     reason_validation = models.CharField(max_length=8192, blank=False, verbose_name=_("Reason of (in)validation"))
     corrected = models.BooleanField(default=False, verbose_name=_("Corrected"))
+    reason_correction = models.CharField(max_length=8192, blank=False, verbose_name=_("Reason of (in)correction"))
 
     def clean(self):
         if self.reviewer.publication != self.comment.publication:
