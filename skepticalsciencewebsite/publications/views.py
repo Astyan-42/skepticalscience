@@ -264,6 +264,7 @@ class PublicationDisplay(DetailView):
                                                                                              'creation_date')
         # put the initial licence as the licence of the publication
         context['is_reviewer'] = self.get_is_reviewer()
+        context['constants'] = CONSTANTS_TEMPLATE
         if context['is_reviewer']:
             context['reviewer_registration'] = reviewer_action(self.request.user, self.kwargs["pk"], "leave")
         else:

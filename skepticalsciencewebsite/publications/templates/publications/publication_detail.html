@@ -69,7 +69,7 @@
             <p class="text-indent">
                 <a href="{% url 'download_publication' 'source_creation' object.pk %}">{% trans "Source at creation" %}</a>
             </p>
-            {% if publication_detail.status >= 6 %}
+            {% if publication_detail.status >= constants.VALIDATION %}
                 <p class="text-indent">
                     <a href="{% url 'download_publication' 'pdf_final' object.pk %}">{% trans "PDF after correction" %}</a>
                 </p>
@@ -79,7 +79,7 @@
                 <h5><strong>{% trans "Publication score" %}</strong></h5>
                 <p class="text-indent">{{ publication_detail.publication_score }}</p>
             {% endif %}
-            {% if publication_detail.status >= 8 %}
+            {% if publication_detail.status >= constants.PUBLISHED %}
                 <h5><strong>{% trans "Estimated impact factor" %}</strong></h5>
                 <p class="text-indent">{{ publication_detail.estimated_impact_factor}}</p>
             {% endif %}
@@ -95,15 +95,15 @@
     {% for comment in comments %}
 <!-- color faded not validate, validated blue, if publication has been corrected then if the comment is
 corrected green, if not red, if comment after the validation and valid then orange-->
-        {% if comment.validated == 3 %}
+        {% if comment.validated == constants.DISMISS %}
             <div class="panel panel-default">
-        {% elif comment.validated == 2 %}
+        {% elif comment.validated == constants.IN_PROGRESS %}
             <div class="panel panel-primary">
         {% elif comment.corrected %}
             <div class="panel panel-success">
-        {% elif comment.comment_type == 1 %}
+        {% elif comment.comment_type == constants.FORM %}
             <div class="panel panel-info">
-        {% elif publication_detail.status >= 7 %}
+        {% elif publication_detail.status >= constants.EVALUATION %}
             <div class="panel panel-warning">
         {% else %}
             <div class="panel panel-danger">
@@ -124,6 +124,7 @@ corrected green, if not red, if comment after the validation and valid then oran
                 <div class="panel-title pull-left">
                     {{ comment.licence }} ({{ comment.creation_date }})
                 </div>
+                <!-- view comment detail for everyone so the if to really change (just in wain-->
                 {% if comment.validated == 2 and publication_detail.status == 3 and is_reviewer %}
                     <div class="panel-title pull-right">
                         <a href="{% url 'comment_evaluation' %}">{% trans "Evaluate the comment" %}</a>
@@ -139,15 +140,16 @@ corrected green, if not red, if comment after the validation and valid then oran
         {% trans "No comment yet" %}
     {% endfor %}
 
-                <!--always ?-->
-    {% if user.is_authenticated %}
-        <hr>
-        <h2>{% trans "Send a comment"%} :</h2>
+    <hr>
+    <h2>{% trans "Send a comment"%} :</h2>
+    {% if user.is_authenticated and publication_detail.status >= constants.ADDING_PEER %}
         <p class="text-info">{% blocktrans %} A comment must describe only one error.
                                               If you spotted more than one, please do more than one comment.
                              {% endblocktrans %} </p>
         {% crispy form_comment %}
         {{ form.media.js }}
+    {% else %}
+        <p class="text_info">{% trans "Only payed publications can receive comments." %}</p>
     {% endif %}
 
 {% endblock %}
