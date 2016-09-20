@@ -377,11 +377,11 @@ class CommentDisplay(DetailView):
     def get_context_data(self, **kwargs):
         context = super(CommentDisplay, self).get_context_data(**kwargs)
         context['constants'] = CONSTANTS_TEMPLATE
-        print(context['comment_detail'].publication)
-        # context['is_reviewer'] = self.get_is_reviewer(context['comment_detail'].publication)
+        # context['is_reviewer'] = self.get_is_reviewer(context['comment_detail'].publication.pk)
         context['reviews'] = CommentReview.objects.filter(comment=self.kwargs["pk"])
         # context['form_comment'] = CommentReviewValidationForm()
         # context['form_comment'] = CommentReviewCorrectionForm()
+        return context
 
 
 class CommentReviewValidationInterest(CreateView):

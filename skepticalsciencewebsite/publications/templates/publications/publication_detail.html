@@ -6,7 +6,7 @@
 
 
 {% block content %}
-    <h1>{% trans "Publication" %} : {{ publication_detail.title }}</h1>
+    <h1>{% trans "Publication" %}: {{ publication_detail.title }}</h1>
 
     <!-- different with the status of the publication and if there is still validated comments -->
     <div class="alert alert-dismissible {{ alert.class }}">
@@ -126,6 +126,10 @@ corrected green, if not red, if comment after the validation and valid then oran
                     {{ comment.licence }} ({{ comment.creation_date }})
                 </div>
                 <!-- view comment detail for everyone so the if to really change (just in wain-->
+                <div class="panel-title pull-right">
+                    <a href="{% url 'comment_evaluation' comment.pk %}">{% trans "Evaluation of the comment" %}</a>
+                </div>
+
                 {% if comment.validated == 2 and publication_detail.status == 3 and is_reviewer %}
                     <div class="panel-title pull-right">
                         <a href="{% url 'comment_evaluation' %}">{% trans "Evaluate the comment" %}</a>

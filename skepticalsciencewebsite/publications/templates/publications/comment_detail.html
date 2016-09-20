@@ -5,10 +5,10 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    <h1>{% trans "Comment" %} : {{ comment_detail.title }}</h1>
+    <h1>{% trans "Comment" %}: {{ comment_detail.title }}</h1>
 
     <blockquote>
-        <p>{{ comment_detail.resume|linebreaks }}</p>
+        <p>{{ comment_detail.content|linebreaks }}</p>
         <small>{{ comment_detail.author_fake_pseudo|default:comment_detail.author }}</small>
     </blockquote>
 
