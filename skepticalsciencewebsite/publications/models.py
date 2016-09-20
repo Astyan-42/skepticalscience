@@ -135,6 +135,7 @@ class CommentReview(models.Model):
     seriousness = models.IntegerField(choices=SERIOUSNESS_STATUS, db_index=True, verbose_name=_("Seriousness"))
     valid = models.NullBooleanField(default=None, verbose_name=_("Valid"))
     reason_validation = models.CharField(max_length=8192, blank=False, verbose_name=_("Reason of (in)validation"))
+    corrected_date = models.DateTimeField(null=True, blank=True, default=None, verbose_name=_('Corrected date'))
     corrected = models.NullBooleanField(default=None, verbose_name=_("Corrected"))
     reason_correction = models.CharField(max_length=8192, blank=False, verbose_name=_("Reason of (in)correction"))
 
@@ -142,5 +143,6 @@ class CommentReview(models.Model):
         return self.comment.title
 
     # def clean(self):
-        # if self.reviewer.publication != self.comment.publication:
-        #     raise ValidationError('You are not a reviewer of this publication. Therefor You cannot rate this comment')
+    #     to put in the form valid
+    #     if self.reviewer.publication != self.comment.publication:
+    #         raise ValidationError('You are not a reviewer of this publication. Therefor You cannot rate this comment')

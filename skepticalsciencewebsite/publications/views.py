@@ -388,13 +388,15 @@ class CommentReviewValidationInterest(CreateView):
     model = CommentReview
 
     def form_valid(self, form):
-        print("SERIOUSLY ????")
         self.object = form.save(commit=False)
         self.object.comment = Comment.objects.get(pk=self.kwargs["pk"])
         publication = self.object.comment.publication.id
         author = self.request.user
-        reviewer = Reviewer.objects.get(scientist=author, publication=publication)
-        self.object.reviewer = reviewer
+        if Reviewer.objects.filter(scientist=author, publication=publication, actif=True).exists():
+            reviewer = Reviewer.objects.get(scientist=author, publication=publication, actif=True)
+            self.object.reviewer = reviewer
+        else:
+            raise PermissionDenied
         return super(CommentReviewValidationInterest, self).form_valid(form)
 
     def get_success_url(self):
