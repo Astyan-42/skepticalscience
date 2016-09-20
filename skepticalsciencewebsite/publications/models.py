@@ -129,16 +129,18 @@ class CommentReview(models.Model):
     """
      when done must check if every other reviewer have already done it
     """
-    reviewer = models.ForeignKey(Reviewer, verbose_name=_("Reviewer"))
     comment = models.ForeignKey(Comment, verbose_name=_("Comment"))
+    reviewer = models.ForeignKey(Reviewer, verbose_name=_("Reviewer"))
     creation_date = models.DateTimeField(auto_now_add=True, verbose_name=_('Creation date'))
-    seriousness = models.CharField(choices=SERIOUSNESS_STATUS, max_length=100, db_index=True, blank=True,
-                                   verbose_name=_("Seriousness"))
+    seriousness = models.IntegerField(choices=SERIOUSNESS_STATUS, db_index=True, verbose_name=_("Seriousness"))
     valid = models.NullBooleanField(default=None, verbose_name=_("Valid"))
     reason_validation = models.CharField(max_length=8192, blank=False, verbose_name=_("Reason of (in)validation"))
     corrected = models.NullBooleanField(default=None, verbose_name=_("Corrected"))
     reason_correction = models.CharField(max_length=8192, blank=False, verbose_name=_("Reason of (in)correction"))
 
-    def clean(self):
-        if self.reviewer.publication != self.comment.publication:
-            raise ValidationError('You are not a reviewer of this publication. Therefor You cannot rate this comment')
+    def __str__(self):
+        return self.comment.title
+
+    # def clean(self):
+        # if self.reviewer.publication != self.comment.publication:
+        #     raise ValidationError('You are not a reviewer of this publication. Therefor You cannot rate this comment')

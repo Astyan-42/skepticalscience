@@ -126,7 +126,7 @@ corrected green, if not red, if comment after the validation and valid then oran
                     {{ comment.licence }} ({{ comment.creation_date }})
                 </div>
                 <div class="panel-title pull-right">
-                    <a href="{% url 'comment_evaluation' comment.pk %}">{% trans "Evaluation of the comment" %}</a>
+                    <a href="{% url 'comment_view' comment.pk %}">{% trans "Evaluation of the comment" %}</a>
                 </div>
             </div>
         </div>

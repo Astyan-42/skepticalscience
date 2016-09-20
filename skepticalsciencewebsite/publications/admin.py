@@ -1,5 +1,5 @@
 from django.contrib import admin
-from publications.models import Licence, EstimatedImpactFactor, Publication, Comment, Reviewer
+from publications.models import Licence, EstimatedImpactFactor, Publication, Comment, Reviewer, CommentReview
 # Register your models here.
 
 
@@ -49,8 +49,17 @@ class ReviewerAdmin(admin.ModelAdmin):
     ordering = ['scientist', 'publication']
     search_fields = ['scientist', 'publication']
 
+
+class CommentReviewAdmin(admin.ModelAdmin):
+    list_display = ['reviewer', 'comment']
+    list_filter = ['reviewer', 'comment']
+    ordering = ['reviewer', 'comment']
+    search_fields = ['reviewer', 'comment']
+
+
 admin.site.register(Licence, LicenceAdmin)
 admin.site.register(EstimatedImpactFactor, EstimatedImpactFactorAdmin)
 admin.site.register(Publication, PublicationAdmin)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(Reviewer, ReviewerAdmin)
+admin.site.register(CommentReview, CommentReviewAdmin)

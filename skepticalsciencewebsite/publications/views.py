@@ -365,7 +365,6 @@ def leave_reviewer_view(request, publication_id):
 class CommentDisplay(DetailView):
     context_object_name = "comment_detail"
     model = Comment
-    # template_name = 'publications/publication_detail.html'
     fields = ["publication", "author", "author_fake_pseudo", "creation_date", "comment_type", "seriousness",
               "content", "title", "validated", "corrected", "licence"]
 
@@ -377,9 +376,9 @@ class CommentDisplay(DetailView):
     def get_context_data(self, **kwargs):
         context = super(CommentDisplay, self).get_context_data(**kwargs)
         context['constants'] = CONSTANTS_TEMPLATE
-        # context['is_reviewer'] = self.get_is_reviewer(context['comment_detail'].publication.pk)
+        context['is_reviewer'] = self.get_is_reviewer(context['comment_detail'].publication.pk)
         context['reviews'] = CommentReview.objects.filter(comment=self.kwargs["pk"])
-        context['form_validation'] = CommentReviewValidationForm()
+        context['form_review_validation'] = CommentReviewValidationForm()
         # context['form_comment'] = CommentReviewCorrectionForm()
         return context
 
@@ -389,22 +388,17 @@ class CommentReviewValidationInterest(CreateView):
     model = CommentReview
 
     def form_valid(self, form):
+        print("SERIOUSLY ????")
         self.object = form.save(commit=False)
-        # self.object.author = self.request.user
-        # self.object.publication = Publication.objects.get(pk=self.kwargs["pk"])
-        # self.object.licence = self.object.publication.licence
-        # # just to add the right name before the fake pseudo
-        # if self.object.author_fake_pseudo != "":
-        #     if Reviewer.objects.filter(scientist=self.object.author, publication=self.object.publication).exists():
-        #         self.object.author_fake_pseudo = "Reviewer " + self.object.author_fake_pseudo
-        #     elif self.object.author.groups.filter(name="Scientist").exists():
-        #         self.object.author_fake_pseudo = "Scientist " + self.object.author_fake_pseudo
-        #     else:
-        #         self.object.author_fake_pseudo = "Skeptic " + self.object.author_fake_pseudo
+        self.object.comment = Comment.objects.get(pk=self.kwargs["pk"])
+        publication = self.object.comment.publication.id
+        author = self.request.user
+        reviewer = Reviewer.objects.get(scientist=author, publication=publication)
+        self.object.reviewer = reviewer
         return super(CommentReviewValidationInterest, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('comment_evaluation', kwargs={'pk': self.kwargs["pk"]})
+        return reverse_lazy('comment_view', kwargs={'pk': self.kwargs["pk"]})
 
 
 class CommentDetailView(View):

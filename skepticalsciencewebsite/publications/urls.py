@@ -17,6 +17,6 @@ urlpatterns = [url(r'^new_publication/$', PublicationCreate.as_view(), name="cre
                    name="publication_view"),
                url(r'become_reviewer/(?P<publication_id>\d+)/$', become_reviewer_view, name="become_reviewer"),
                url(r'leave_reviewer/(?P<publication_id>\d+)/$', leave_reviewer_view, name="leave_reviewer"),
-               url(r'^comment_evaluation/(?P<pk>\d+)$', CommentDetailView.as_view(),
-                   name="comment_evaluation")
+               url(r'^comment_detail/(?P<pk>\d+)$', CommentDetailView.as_view(),
+                   name="comment_view")
 ]
