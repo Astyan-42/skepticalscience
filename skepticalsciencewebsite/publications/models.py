@@ -6,32 +6,10 @@ from django.core.exceptions import ValidationError
 from simple_history.models import HistoricalRecords
 from sciences.models import Science
 from customuser.models import User, MinMaxFloat
-
+from publications.constants import *
 
 sendfile_storage = FileSystemStorage(location=settings.SENDFILE_ROOT)
 # Create your models here.
-
-
-PUBLICATION_STATUS = [(1, "Waiting payment"),
-                      (2, "Adding peer"),
-                      (3, "Peer review"), # no change of reviewer
-                      (4, "Correction"), # no change of reviewer
-                      (5, "Aborted"),
-                      (6, "Validation"), # no change of reviewer
-                      (7, "Evaluation"),
-                      (8, "Published")]
-
-
-SERIOUSNESS_STATUS = [(1, "Minor"),
-                      (2, "Major"),
-                      (3, "Critical")]
-
-VALIDATION_STATUS = [(1, "Validate"),
-                     (2, "In progress"),
-                     (3, "Dismiss")]
-
-COMMENT_ON = [(1, "Form"),
-              (2, "Content")]
 
 
 class Licence(models.Model):

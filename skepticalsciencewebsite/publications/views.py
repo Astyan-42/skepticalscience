@@ -15,6 +15,7 @@ from publications.models import Publication, Comment, Reviewer, EstimatedImpactF
 from publications.forms import PublicationCreateForm, CommentForm, EstimatedImpactFactorForm
 from publications.tables import PublicationTable
 from publications.filters import PublicationFilter, PublicationFilterFormHelper
+from publications.constants import *
 # Create your views here.
 
 
@@ -191,7 +192,7 @@ class PublicationOwnedTableView(PublicationSpecialTableView):
 
 def can_be_reviewer(phd, nb_reviewer_actif, nb_common_science, not_in_authors, publication_status):
     return (phd and nb_reviewer_actif < settings.NB_REVIEWER_PER_ARTICLE and not_in_authors and
-            nb_common_science > 0 and publication_status in [2, 5, 7, 8])
+            nb_common_science > 0 and publication_status in [ADDING_PEER, ABORTED, EVALUATION, PUBLISHED])
 
 
 def reviewer_action(user, publication_id):
@@ -298,7 +299,7 @@ class EstimatedImpactFactorInterest(CreateView):
         self.object = form.save(commit=False)
         self.object.estimator = self.request.user
         self.object.publication = Publication.objects.get(pk=self.kwargs["pk"])
-        if self.object.publication.status != 7:
+        if self.object.publication.status != EVALUATION:
             raise PermissionDenied
         return super(EstimatedImpactFactorInterest, self).form_valid(form)
 
