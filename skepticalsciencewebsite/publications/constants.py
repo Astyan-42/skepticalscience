@@ -1,3 +1,7 @@
+# nb of reviewer
+NB_REVIEWER_PER_ARTICLE = 4
+
+# possible status of the publication
 WAITING_PAYMENT = 1
 ADDING_PEER = 2
 PEER_REVIEW = 3
@@ -16,6 +20,7 @@ PUBLICATION_STATUS = [(WAITING_PAYMENT, "Waiting payment"),
                       (EVALUATION, "Evaluation"),
                       (PUBLISHED, "Published")]
 
+# seriousness of a bias
 MINOR = 1
 MAJOR = 2
 CRITICAL = 3
@@ -24,6 +29,7 @@ SERIOUSNESS_STATUS = [(MINOR, "Minor"),
                       (MAJOR, "Major"),
                       (CRITICAL, "Critical")]
 
+# validation status of a comment
 VALIDATE = 1
 IN_PROGRESS = 2
 DISMISS = 3
@@ -32,6 +38,7 @@ VALIDATION_STATUS = [(VALIDATE, "Validate"),
                      (IN_PROGRESS, "In progress"),
                      (DISMISS, "Dismiss")]
 
+# subject of a comment
 FORM = 1
 CONTENT = 2
 

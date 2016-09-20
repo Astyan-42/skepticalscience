@@ -3,7 +3,6 @@ from django.views.generic.edit import CreateView
 from django.views.generic.detail import DetailView
 from django.views.generic import View
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
-from django.conf import settings
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
@@ -192,7 +191,7 @@ class PublicationOwnedTableView(PublicationSpecialTableView):
 
 def can_be_leave_reviewer(phd, nb_reviewer_actif, nb_common_science, not_in_authors, publication_status, action):
     if action == "become":
-        return (phd and nb_reviewer_actif < settings.NB_REVIEWER_PER_ARTICLE and not_in_authors and
+        return (phd and nb_reviewer_actif < NB_REVIEWER_PER_ARTICLE and not_in_authors and
                 nb_common_science > 0 and publication_status in [ADDING_PEER, ABORTED, EVALUATION, PUBLISHED])
     elif action == "leave":
         return (phd and not_in_authors and
