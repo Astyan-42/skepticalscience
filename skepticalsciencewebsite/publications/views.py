@@ -190,12 +190,16 @@ class PublicationOwnedTableView(PublicationSpecialTableView):
         return super(PublicationOwnedTableView, self).get_queryset()
 
 
-def can_be_reviewer(phd, nb_reviewer_actif, nb_common_science, not_in_authors, publication_status):
-    return (phd and nb_reviewer_actif < settings.NB_REVIEWER_PER_ARTICLE and not_in_authors and
-            nb_common_science > 0 and publication_status in [ADDING_PEER, ABORTED, EVALUATION, PUBLISHED])
+def can_be_leave_reviewer(phd, nb_reviewer_actif, nb_common_science, not_in_authors, publication_status, action):
+    if action == "become":
+        return (phd and nb_reviewer_actif < settings.NB_REVIEWER_PER_ARTICLE and not_in_authors and
+                nb_common_science > 0 and publication_status in [ADDING_PEER, ABORTED, EVALUATION, PUBLISHED])
+    elif action == "leave":
+        return (phd and not_in_authors and
+                nb_common_science > 0 and publication_status in [ADDING_PEER, ABORTED, EVALUATION, PUBLISHED])
 
 
-def reviewer_action(user, publication_id):
+def reviewer_action(user, publication_id, action):
     phd = user.phd
     nb_reviewer_actif = len(Reviewer.objects.filter(publication=publication_id, actif=True))
     publication = Publication.objects.get(pk=publication_id)
@@ -204,7 +208,8 @@ def reviewer_action(user, publication_id):
     publication_sciences = [science.id for science in publication.sciences.all()]
     nb_common_sciences = len(set(user_sciences) & set(publication_sciences))
     publication_status = publication.status
-    return can_be_reviewer(phd, nb_reviewer_actif, nb_common_sciences, not_in_authors, publication_status)
+    return can_be_leave_reviewer(phd, nb_reviewer_actif, nb_common_sciences,
+                                 not_in_authors, publication_status, action=action)
 
 
 class PublicationDisplay(DetailView):
@@ -259,7 +264,10 @@ class PublicationDisplay(DetailView):
                                                                                              'creation_date')
         # put the initial licence as the licence of the publication
         context['is_reviewer'] = self.get_is_reviewer()
-        context['reviewer_registration'] = reviewer_action(self.request.user, self.kwargs["pk"])
+        if context['is_reviewer']:
+            context['reviewer_registration'] = reviewer_action(self.request.user, self.kwargs["pk"], "leave")
+        else:
+            context['reviewer_registration'] = reviewer_action(self.request.user, self.kwargs["pk"], "become")
         context['alert'] = self.get_alert_status(context)
         context['form_comment'] = CommentForm()
         context['form_eif'] = EstimatedImpactFactorForm()
@@ -326,7 +334,7 @@ class PublicationDetailView(View):
 @permission_required('publications.publication.can_change_reviewer', raise_exception=True)
 def become_reviewer_view(request, publication_id):
     # add to reviewer if: phd & not enough rewiewers, group scientist, has sciences in common with the article
-    if reviewer_action(request.user, publication_id):
+    if reviewer_action(request.user, publication_id, "become"):
         if Reviewer.objects.filter(publication=publication_id, scientist=request.user).exists():
             reviewer = Reviewer.objects.get(publication=publication_id, scientist=request.user)
             reviewer.actif=True
@@ -338,10 +346,11 @@ def become_reviewer_view(request, publication_id):
         return redirect('publication_view', pk=publication_id)
     raise PermissionDenied
 
+
 @login_required
 @permission_required('publications.publication.can_change_reviewer', raise_exception=True)
 def leave_reviewer_view(request, publication_id):
-    if reviewer_action(request.user, publication_id):
+    if reviewer_action(request.user, publication_id, "leave"):
         try:
             reviewer = Reviewer.objects.get(publication=publication_id, scientist=request.user)
             reviewer.actif = False
