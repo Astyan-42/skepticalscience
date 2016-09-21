@@ -139,6 +139,9 @@ class CommentReview(models.Model):
     corrected = models.BooleanField(default=False, verbose_name=_("Corrected"))
     reason_correction = models.CharField(max_length=8192, blank=False, verbose_name=_("Reason of (in)correction"))
 
+    class Meta:
+        unique_together = ('reviewer', 'comment')
+
     def __str__(self):
         return self.comment.title
 
