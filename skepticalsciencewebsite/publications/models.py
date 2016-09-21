@@ -133,10 +133,10 @@ class CommentReview(models.Model):
     reviewer = models.ForeignKey(Reviewer, verbose_name=_("Reviewer"))
     creation_date = models.DateTimeField(auto_now_add=True, verbose_name=_('Creation date'))
     seriousness = models.IntegerField(choices=SERIOUSNESS_STATUS, db_index=True, verbose_name=_("Seriousness"))
-    valid = models.NullBooleanField(default=None, verbose_name=_("Valid"))
+    valid = models.BooleanField(default=False, verbose_name=_("Valid"))
     reason_validation = models.CharField(max_length=8192, blank=False, verbose_name=_("Reason of (in)validation"))
     corrected_date = models.DateTimeField(null=True, blank=True, default=None, verbose_name=_('Corrected date'))
-    corrected = models.NullBooleanField(default=None, verbose_name=_("Corrected"))
+    corrected = models.BooleanField(default=False, verbose_name=_("Corrected"))
     reason_correction = models.CharField(max_length=8192, blank=False, verbose_name=_("Reason of (in)correction"))
 
     def __str__(self):

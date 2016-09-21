@@ -6,6 +6,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit
 from crispy_forms.bootstrap import Field
 from publications.models import Publication, Comment, EstimatedImpactFactor, CommentReview
+from publications.constants import BOOLEAN_CHOICES
 from sciences.forms import ScienceModelForm
 from customuser.models import User
 
@@ -67,6 +68,7 @@ class EstimatedImpactFactorForm(forms.ModelForm):
 
 
 class CommentReviewValidationForm(forms.ModelForm):
+    valid = forms.ChoiceField(choices=BOOLEAN_CHOICES, widget=forms.Select())
 
     def __init__(self, *args, **kwargs):
         super(CommentReviewValidationForm, self).__init__(*args, **kwargs)
@@ -77,4 +79,19 @@ class CommentReviewValidationForm(forms.ModelForm):
     class Meta:
         model = CommentReview
         fields = ["valid", "seriousness", "reason_validation"]
+        widgets = {'reason_validation': forms.Textarea()}
+
+
+class CommentReviewCorrectionForm(forms.ModelForm):
+    corrected = forms.ChoiceField(choices=BOOLEAN_CHOICES, widget=forms.Select())
+
+    def __init__(self, *args, **kwargs):
+        super(CommentReviewCorrectionForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_id = 'id-commentreviewvcorrectionForm'
+        self.helper.add_input(Submit('submit', _('Submit')))
+
+    class Meta:
+        model = CommentReview
+        fields = ["corrected", "reason_correction"]
         widgets = {'reason_validation': forms.Textarea()}

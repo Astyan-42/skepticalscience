@@ -1,5 +1,7 @@
 # nb of reviewer
 NB_REVIEWER_PER_ARTICLE = 4
+# boolean choices
+BOOLEAN_CHOICES = ((True, 'Yes'), (False, 'No'))
 
 # possible status of the publication
 WAITING_PAYMENT = 1

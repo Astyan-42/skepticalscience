@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, redirect
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic import View
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
@@ -12,7 +12,7 @@ from django_tables2 import SingleTableView, RequestConfig
 from customuser.models import User
 from publications.models import Publication, Comment, Reviewer, EstimatedImpactFactor, CommentReview
 from publications.forms import (PublicationCreateForm, CommentForm, EstimatedImpactFactorForm,
-                                CommentReviewValidationForm)
+                                CommentReviewValidationForm, CommentReviewCorrectionForm)
 from publications.tables import PublicationTable
 from publications.filters import PublicationFilter, PublicationFilterFormHelper
 from publications.constants import *
@@ -392,16 +392,39 @@ class CommentReviewValidationInterest(CreateView):
         self.object.comment = Comment.objects.get(pk=self.kwargs["pk"])
         publication = self.object.comment.publication.id
         author = self.request.user
-        if Reviewer.objects.filter(scientist=author, publication=publication, actif=True).exists():
-            reviewer = Reviewer.objects.get(scientist=author, publication=publication, actif=True)
-            self.object.reviewer = reviewer
-        else:
+        try:
+            self.object.reviewer = Reviewer.objects.get(scientist=author, publication=publication, actif=True)
+        except ObjectDoesNotExist:
             raise PermissionDenied
         return super(CommentReviewValidationInterest, self).form_valid(form)
 
     def get_success_url(self):
         return reverse_lazy('comment_view', kwargs={'pk': self.kwargs["pk"]})
 
+
+class CommentReviewCorrectionInterest(UpdateView):
+    form_class = CommentReviewCorrectionForm
+    model = CommentReview
+
+    def get_object(self, queryset=None):
+        comment = Comment.objects.get(pk=self.kwargs["pk"])
+        publication = comment.publication.id
+        author = self.request.user
+        try:
+            reviewer = Reviewer.objects.get(scientist=author, publication=publication, actif=True)
+            commentreview = CommentReview.objects.get(reviewer=reviewer)
+        except ObjectDoesNotExist:
+            raise PermissionDenied
+        obj = commentreview
+        return obj
+
+    def form_valid(self, form):
+        # need to be clever to get the object to update
+        self.object = form.save(commit=False)
+        return super(CommentReviewCorrectionInterest, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('comment_view', kwargs={'pk': self.kwargs["pk"]})
 
 class CommentDetailView(View):
 
