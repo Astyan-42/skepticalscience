@@ -33,8 +33,12 @@
                     {% endif %}
                     <!-- need to check if already evaluate by the user-->
                     {% if perms.publications.can_add_estimated_impact_factor and publication_detail.status == constants.EVALUATION %}
-                        <h5><strong> {% trans "Evaluate" %} </strong></h5>
-                        {% crispy form_eif %}
+                        {% if not evaluated %}
+                            <h5><strong> {% trans "Evaluate" %} </strong></h5>
+                            {% crispy form_eif %}
+                        {% else %}
+                            {% trans "You already evaluated this publication" %}.
+                        {% endif %}
                     {% endif %}
                 {% endif %}
 

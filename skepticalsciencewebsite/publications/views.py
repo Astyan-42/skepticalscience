@@ -255,6 +255,11 @@ class PublicationDisplay(DetailView):
                                               publication=self.kwargs["pk"], actif=True).exists()
         return is_reviewer
 
+    def get_evaluated(self):
+        evaluated = EstimatedImpactFactor.objects.filter(estimator=self.request.session['_auth_user_id'],
+                                                         publication=self.kwargs["pk"]).exists()
+        return evaluated
+
     def get_context_data(self, **kwargs):
         context = super(PublicationDisplay, self).get_context_data(**kwargs)
         # adding comment to the view, better order by
@@ -265,6 +270,7 @@ class PublicationDisplay(DetailView):
                                                                                              'creation_date')
         # put the initial licence as the licence of the publication
         context['is_reviewer'] = self.get_is_reviewer()
+        context['evaluated'] = self.get_evaluated()
         context['constants'] = CONSTANTS_TEMPLATE
         if context['is_reviewer']:
             context['reviewer_registration'] = reviewer_action(self.request.user, self.kwargs["pk"], "leave")
