@@ -50,8 +50,8 @@ class User(AbstractUser):
     job_title = models.CharField(max_length=255, blank=True, verbose_name=_("Job title"))
     sciences = models.ManyToManyField(Science, blank=True, symmetrical=False, verbose_name=_("Sciences"))
     # finding biais in publication : or number of valid biais foud and number of ivalid biais found ?
-    valid_biais_found = models.IntegerField(default=0, verbose_name=_("Valid biais found"))
-    invalid_biais_found = models.IntegerField(default=0, verbose_name=_("Invalid biais found"))
+    valid_bias_found = models.IntegerField(default=0, verbose_name=_("Valid bias found"))
+    invalid_bias_found = models.IntegerField(default=0, verbose_name=_("Invalid bias found"))
     skeptic_score = MinMaxFloat(min_value=0.0, max_value=10.0, default=0.0, verbose_name=_("Skeptic score"))
     # publish without biais
     nb_publication = models.IntegerField(default=0, verbose_name=_("Number of publication"))

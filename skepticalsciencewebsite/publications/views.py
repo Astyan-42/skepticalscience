@@ -17,7 +17,7 @@ from publications.forms import (PublicationCreateForm, CommentForm, EstimatedImp
 from publications.tables import PublicationTable
 from publications.filters import PublicationFilter, PublicationFilterFormHelper
 from publications.constants import *
-from publications.cascade import update_comment_validation, update_comment_correction
+from publications.cascade import update_comment_validation, update_comment_correction, update_user_skeptic_score
 # Create your views here.
 
 
@@ -417,7 +417,7 @@ class CommentReviewValidationInterest(CreateView):
     def cascade_modifications(self):
         res = update_comment_validation(self.kwargs["pk"])
         if res:
-            pass
+            update_user_skeptic_score(self.kwargs["pk"])
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -431,6 +431,7 @@ class CommentReviewValidationInterest(CreateView):
         return super(CommentReviewValidationInterest, self).form_valid(form)
 
     def get_success_url(self):
+        self.cascade_modifications()
         return reverse_lazy('comment_view', kwargs={'pk': self.kwargs["pk"]})
 
 
@@ -442,9 +443,7 @@ class CommentReviewCorrectionInterest(UpdateView):
     model = CommentReview
 
     def cascade_modifications(self):
-        res = update_comment_correction(self.kwargs["pk"])
-        if res:
-            pass
+        update_comment_correction(self.kwargs["pk"])
 
     def get_object(self, queryset=None):
         comment = Comment.objects.get(pk=self.kwargs["pk"])
@@ -465,6 +464,7 @@ class CommentReviewCorrectionInterest(UpdateView):
         return super(CommentReviewCorrectionInterest, self).form_valid(form)
 
     def get_success_url(self):
+        self.cascade_modifications()
         return reverse_lazy('comment_view', kwargs={'pk': self.kwargs["pk"]})
 
 
