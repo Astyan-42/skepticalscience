@@ -119,6 +119,7 @@ class Comment(models.Model):
     title = models.CharField(max_length=255, blank=False, verbose_name=_("Title"))
     validated = models.IntegerField(choices=VALIDATION_STATUS, default=2, verbose_name=_("Validation"))
     corrected = models.BooleanField(default=False, verbose_name=_("Corrected"))
+    corrected_date = models.DateTimeField(null=True, blank=True, default=None, verbose_name=_('Corrected date'))
     licence = models.ForeignKey(Licence, verbose_name=_("Licence"))
 
     def __str__(self):
