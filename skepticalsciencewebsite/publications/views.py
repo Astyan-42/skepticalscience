@@ -7,6 +7,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
+from django.utils import timezone
 from sendfile import sendfile
 from django_tables2 import SingleTableView, RequestConfig
 from customuser.models import User
@@ -433,6 +434,7 @@ class CommentReviewCorrectionInterest(UpdateView):
     def form_valid(self, form):
         # need to be clever to get the object to update
         self.object = form.save(commit=False)
+        self.object.corrected_date = timezone.now()
         return super(CommentReviewCorrectionInterest, self).form_valid(form)
 
     def get_success_url(self):

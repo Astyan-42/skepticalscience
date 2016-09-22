@@ -47,26 +47,42 @@
             <div class="panel panel-default">
         {% endif %}
             <div class="panel-body">
+                <div class="panel-title pull-left">
+                    {% trans "Reason for " %} {{ review.valid|yesno:"validation,invalidation" }}:
+                </div>
+                <div class="panel-title pull-right">
+                    {{ review.creation_date }}
+                </div>
+                <div class="clearfix"></div>
+                <br>
                 {{ review.reason_validation|linebreaks }}
-                <hr>
-                {{ review.reason_validation|linebreaks }}
+                {% if review.reason_correction != "" %}
+                    <hr>
+                    <div class="panel-title pull-left">
+                        {% trans "Reason for " %} {{ review.corrected|yesno:"correction,incorrection" }}:
+                    </div>
+                    <div class="panel-title pull-right">
+                        {{ review.corrected_date }}
+                    </div>
+                    <div class="clearfix"></div>
+                    <br>
+                    {{ review.reason_correction|linebreaks }}
+                {% endif %}
             </div>
         </div>
     {% empty %}
         {% trans "No evaluations yet" %}
     {% endfor %}
 
-    <!-- special if -->
-
-
-    {% if review_state  == "to_review_validation" and publication_status >= constants.PEER_REVIEW %}
+    <!-- show only at the good times  -->
+    {% if review_state == "to_review_validation" and publication_status >= constants.PEER_REVIEW %}
         <hr>
-        <h2>{% trans "Is this comment valide ?"%}: </h2>
+        <h2>{% trans "Is this comment valid" %} ?</h2>
         {% crispy form_review_validation %}
         {{ form.media.js }}
     {% elif review_state == "to_review_correction" and publication_status == VALIDATION %}
         <hr>
-        <h2>{% trans "Is this comment corrected"%}: </h2>
+        <h2>{% trans "Is this comment corrected" %} ?</h2>
         {% crispy correction %}
         {{ form.media.js }}
     {% endif %}
