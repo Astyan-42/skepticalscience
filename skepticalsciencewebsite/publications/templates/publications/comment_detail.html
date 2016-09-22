@@ -57,12 +57,18 @@
     {% endfor %}
 
     <!-- special if -->
-    {% if is_reviewer %}
+
+
+    {% if review_state  == "to_review_validation" and publication_status >= constants.PEER_REVIEW %}
         <hr>
-        <h2>{% trans "Evaluate this comment"%}: </h2>
+        <h2>{% trans "Is this comment valide ?"%}: </h2>
         {% crispy form_review_validation %}
         {{ form.media.js }}
+    {% elif review_state == "to_review_correction" and publication_status == VALIDATION %}
+        <hr>
+        <h2>{% trans "Is this comment corrected"%}: </h2>
+        {% crispy correction %}
+        {{ form.media.js }}
     {% endif %}
-
 
 {% endblock %}

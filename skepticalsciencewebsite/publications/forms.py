@@ -74,7 +74,7 @@ class CommentReviewValidationForm(forms.ModelForm):
         super(CommentReviewValidationForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.form_id = 'id-commentreviewvalidationForm'
-        self.helper.add_input(Submit('submit', _('Submit')))
+        self.helper.add_input(Submit('submit', _('Validate')))
 
     class Meta:
         model = CommentReview
@@ -89,7 +89,7 @@ class CommentReviewCorrectionForm(forms.ModelForm):
         super(CommentReviewCorrectionForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.form_id = 'id-commentreviewvcorrectionForm'
-        self.helper.add_input(Submit('submit', _('Submit')))
+        self.helper.add_input(Submit('submit', _('Corrected')))
 
     class Meta:
         model = CommentReview

@@ -368,18 +368,30 @@ class CommentDisplay(DetailView):
     fields = ["publication", "author", "author_fake_pseudo", "creation_date", "comment_type", "seriousness",
               "content", "title", "validated", "corrected", "licence"]
 
-    def get_is_reviewer(self, publication_id):
-        is_reviewer = Reviewer.objects.filter(scientist=self.request.session['_auth_user_id'],
-                                              publication=publication_id, actif=True).exists()
-        return is_reviewer
+    def get_review_state(self, comment_context):
+        publication_id = comment_context.publication.pk
+        try:
+            reviewer = Reviewer.objects.get(scientist=self.request.session['_auth_user_id'],
+                                            publication=publication_id, actif=True)
+        except ObjectDoesNotExist:
+            return "not_reviewer"
+        try:
+            comment_review = CommentReview.objects.get(comment=self.kwargs["pk"], reviewer=reviewer)
+        except ObjectDoesNotExist:
+            if comment_context.validated == IN_PROGRESS:
+                return "to_review_validation"
+        if comment_context.validated == VALIDATE and not comment_context.corrected:
+            return "to_review_correction"
+        return "nothing_to_do"
 
     def get_context_data(self, **kwargs):
         context = super(CommentDisplay, self).get_context_data(**kwargs)
         context['constants'] = CONSTANTS_TEMPLATE
-        context['is_reviewer'] = self.get_is_reviewer(context['comment_detail'].publication.pk)
         context['reviews'] = CommentReview.objects.filter(comment=self.kwargs["pk"])
+        context['review_state'] = self.get_review_state(context["comment_detail"])
+        context['publication_status'] = Publication.objects.get(pk=context['comment_detail'].publication.pk).status
         context['form_review_validation'] = CommentReviewValidationForm()
-        # context['form_comment'] = CommentReviewCorrectionForm()
+        context['form_review_correction'] = CommentReviewCorrectionForm()
         return context
 
 
@@ -426,6 +438,7 @@ class CommentReviewCorrectionInterest(UpdateView):
     def get_success_url(self):
         return reverse_lazy('comment_view', kwargs={'pk': self.kwargs["pk"]})
 
+
 class CommentDetailView(View):
 
     def get(self, request, *args, **kwargs):
@@ -433,5 +446,8 @@ class CommentDetailView(View):
         return view(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        view = CommentReviewValidationInterest.as_view()
+        if request.POST["submit"].lower() == _("Validate").lower():
+            view = CommentReviewValidationInterest.as_view()
+        else:
+            view = CommentReviewCorrectionInterest.as_view()
         return view(request, *args, **kwargs)
