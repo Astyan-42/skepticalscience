@@ -56,6 +56,10 @@
                 <div class="clearfix"></div>
                 <br>
                 {{ review.reason_validation|linebreaks }}
+                 <div class="panel-title pull-right">
+                    {% trans "Seriousness" %}: {{ review.get_seriousness_display|lower }}
+                </div>
+                <div class="clearfix"></div>
                 {% if review.reason_correction != "" %}
                     <hr>
                     <div class="panel-title pull-left">
