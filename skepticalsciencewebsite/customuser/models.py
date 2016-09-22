@@ -54,6 +54,7 @@ class User(AbstractUser):
     invalid_biais_found = models.IntegerField(default=0, verbose_name=_("Invalid biais found"))
     skeptic_score = MinMaxFloat(min_value=0.0, max_value=10.0, default=0.0, verbose_name=_("Skeptic score"))
     # publish without biais
+    nb_publication = models.IntegerField(default=0, verbose_name=_("Number of publication"))
     mean_publication_score = MinMaxFloat(min_value=0.0, max_value=10.0, default=0.0,
                                          verbose_name=_("Mean publication score"))
     # mean estimated impact factor

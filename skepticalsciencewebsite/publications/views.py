@@ -17,6 +17,7 @@ from publications.forms import (PublicationCreateForm, CommentForm, EstimatedImp
 from publications.tables import PublicationTable
 from publications.filters import PublicationFilter, PublicationFilterFormHelper
 from publications.constants import *
+from publications.cascade import update_comment_validation, update_comment_correction
 # Create your views here.
 
 
@@ -414,7 +415,9 @@ class CommentReviewValidationInterest(CreateView):
     model = CommentReview
 
     def cascade_modifications(self):
-        pass
+        res = update_comment_validation(self.kwargs["pk"])
+        if res:
+            pass
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -437,6 +440,11 @@ class CommentReviewValidationInterest(CreateView):
 class CommentReviewCorrectionInterest(UpdateView):
     form_class = CommentReviewCorrectionForm
     model = CommentReview
+
+    def cascade_modifications(self):
+        res = update_comment_correction(self.kwargs["pk"])
+        if res:
+            pass
 
     def get_object(self, queryset=None):
         comment = Comment.objects.get(pk=self.kwargs["pk"])
