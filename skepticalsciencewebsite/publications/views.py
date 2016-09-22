@@ -276,6 +276,7 @@ class PublicationDisplay(DetailView):
         return context
 
 
+@method_decorator(login_required, name='dispatch')
 class PublicationInterest(CreateView):
     # template_name = 'publications/publication_detail.html'
     form_class = CommentForm
@@ -300,6 +301,9 @@ class PublicationInterest(CreateView):
         return reverse_lazy('publication_view', kwargs={'pk': self.kwargs["pk"]})
 
 
+@method_decorator(login_required, name='dispatch')
+@method_decorator(permission_required('publications.publication.can_add_estimatedimpactfactor', raise_exception=True),
+                  name='dispatch')
 class EstimatedImpactFactorInterest(CreateView):
     # template_name = 'publications/publication_detail.html'
     form_class = EstimatedImpactFactorForm
@@ -396,9 +400,15 @@ class CommentDisplay(DetailView):
         return context
 
 
+@method_decorator(login_required, name='dispatch')
+@method_decorator(permission_required('publications.publication.can_add_commentreview', raise_exception=True),
+                  name='dispatch')
 class CommentReviewValidationInterest(CreateView):
     form_class = CommentReviewValidationForm
     model = CommentReview
+
+    def cascade_modifications(self):
+        pass
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -415,6 +425,9 @@ class CommentReviewValidationInterest(CreateView):
         return reverse_lazy('comment_view', kwargs={'pk': self.kwargs["pk"]})
 
 
+@method_decorator(login_required, name='dispatch')
+@method_decorator(permission_required('publications.publication.can_change_commentreview', raise_exception=True),
+                  name='dispatch')
 class CommentReviewCorrectionInterest(UpdateView):
     form_class = CommentReviewCorrectionForm
     model = CommentReview
