@@ -42,8 +42,10 @@
                 {% endif %}
                 {% if perms.publications.can_change_publication and publication_detail.status == constants.CORRECTION and is_editor%}
                     <!-- to do as a link-->
-                    <p><a href="{% url 'correct_publication' object.pk %}"> {% trans "Correct the publication" %}</a></p>
-                    <p>{% trans "Correct/Abort this publication" %}</p>
+                    <p><a href="{% url 'correct_publication' object.pk %}">{% trans "Correct " %}</a>
+                    {% trans "or " %}
+                    <a href="{% url 'abort_publication' object.pk %}">{% trans "abort " %}</a>
+                    {% trans "this publication" %}.</p>
                 {% endif %}
 
                 <!-- participate at the rewiew in add_peer, user scientist with phd and not in author-->
