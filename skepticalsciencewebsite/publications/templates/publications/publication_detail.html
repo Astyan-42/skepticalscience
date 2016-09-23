@@ -31,7 +31,6 @@
                             <p><a href="{% url 'become_reviewer' object.pk %}"> {% trans "Join the reviewers" %}</a></p>
                         {% endif %}
                     {% endif %}
-                    <!-- need to check if already evaluate by the user-->
                     {% if perms.publications.can_add_estimated_impact_factor and publication_detail.status == constants.EVALUATION %}
                         {% if not evaluated %}
                             <h5><strong> {% trans "Evaluate" %} </strong></h5>
@@ -40,6 +39,10 @@
                             {% trans "You already evaluated this publication" %}.
                         {% endif %}
                     {% endif %}
+                {% endif %}
+                {% if perms.publications.can_change_publication and publication_detail.status == constants.CORRECTION and is_editor%}
+                    <!-- to do as a link-->
+                    <p>{% trans "Correct/Abort this publication" %}</p>
                 {% endif %}
 
                 <!-- participate at the rewiew in add_peer, user scientist with phd and not in author-->

@@ -239,7 +239,7 @@ class PublicationDisplay(DetailView):
                 alert["message"] = _("This publication haven't been validated yet. It could have some bias. \
                                       We appreciate your help!")
         else:
-            if Comment.objects.filter(publication=self.kwargs["pk"], comment_type=2,
+            if Comment.objects.filter(publication=self.kwargs["pk"], comment_type=CONTENT,
                                       validated=True, corrected=False).exists():
                 alert["class"] = "alert-danger"
                 alert["title"] = _("Publication with bias")
@@ -261,9 +261,13 @@ class PublicationDisplay(DetailView):
                                                          publication=self.kwargs["pk"]).exists()
         return evaluated
 
+    def get_is_editor(self, editor):
+        return editor.pk == int(self.request.session['_auth_user_id'])
+
     def get_context_data(self, **kwargs):
         context = super(PublicationDisplay, self).get_context_data(**kwargs)
         # adding comment to the view, better order by
+        context['is_editor'] = self.get_is_editor(context["publication_detail"].editor)
         context['comments'] = Comment.objects.filter(publication=self.kwargs["pk"]).order_by('validated',
                                                                                              '-comment_type',
                                                                                              'corrected',
@@ -322,6 +326,7 @@ class EstimatedImpactFactorInterest(CreateView):
         self.object.publication = Publication.objects.get(pk=self.kwargs["pk"])
         if self.object.publication.status != EVALUATION:
             raise PermissionDenied
+        # if user in author permissionDenied too
         return super(EstimatedImpactFactorInterest, self).form_valid(form)
 
     def get_success_url(self):
