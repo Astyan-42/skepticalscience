@@ -94,4 +94,4 @@ class CommentReviewCorrectionForm(forms.ModelForm):
     class Meta:
         model = CommentReview
         fields = ["corrected", "reason_correction"]
-        widgets = {'reason_validation': forms.Textarea()}
+        widgets = {'reason_correction': forms.Textarea()}
