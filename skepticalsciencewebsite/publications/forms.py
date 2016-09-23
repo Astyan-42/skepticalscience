@@ -20,8 +20,11 @@ class UserModelChoiceField(forms.ModelChoiceField):
 class PublicationCreateForm(ScienceModelForm):
     """
     create an publication form with restricted field
+    TO ADD AUTHORS AND LAST AUTHOR
     """
-    first_author=UserModelChoiceField(queryset=User.objects.filter(~Q(first_name="") & ~Q(last_name="")))
+    first_author = UserModelChoiceField(queryset=User.objects.filter(~Q(first_name="") & ~Q(last_name="")))
+    last_author = UserModelChoiceField(queryset=User.objects.filter(~Q(first_name="") & ~Q(last_name="")),
+                                       required=False)
 
     def __init__(self, *args, **kwargs):
         super(PublicationCreateForm, self).__init__(*args, **kwargs)
@@ -31,9 +34,18 @@ class PublicationCreateForm(ScienceModelForm):
 
     class Meta:
         model = Publication
-        fields = ["title", "resume", "pdf_creation", "source_creation", "first_author", "sciences", "licence"]
+        fields = ["title", "resume", "pdf_creation", "source_creation", "first_author", "last_author",
+                  "sciences", "licence"]
         widgets = {'sciences': Select2MultipleWidget,
                    'resume': forms.Textarea()}
+
+
+class PublicationCorrectForm():
+    pass
+
+
+class PublicationAbortForm():
+    pass
 
 
 class CommentForm(forms.ModelForm):

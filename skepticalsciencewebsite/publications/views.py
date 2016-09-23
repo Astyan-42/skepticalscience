@@ -326,7 +326,8 @@ class EstimatedImpactFactorInterest(CreateView):
         self.object.publication = Publication.objects.get(pk=self.kwargs["pk"])
         if self.object.publication.status != EVALUATION:
             raise PermissionDenied
-        # if user in author permissionDenied too
+        if self.request.user in self.object.publication.get_all_authors:
+            raise PermissionDenied
         return super(EstimatedImpactFactorInterest, self).form_valid(form)
 
     def get_success_url(self):
