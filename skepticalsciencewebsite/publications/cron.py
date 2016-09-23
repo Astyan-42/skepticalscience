@@ -1,5 +1,6 @@
 from django_cron import CronJobBase, Schedule
 from publications.models import Publication
+from publications.constants import *
 
 
 class PublicationUpdateCronJob(CronJobBase):
@@ -29,4 +30,8 @@ class PublicationUpdateCronJob(CronJobBase):
         pass
 
     def do(self):
-        pass    # do your thing here
+        self.update_adding_peer_to_peer_review(Publication.objects.filter(status=ADDING_PEER))
+        self.update_peer_review_to_correction(Publication.objects.filter(status=PEER_REVIEW))
+        self.update_correction_to_validation(Publication.objects.filter(status=CORRECTION))
+        self.update_validation_to_evaluation(Publication.objects.filter(status=VALIDATION))
+        self.update_evaluation_to_published(Publication.objects.filter(status=EVALUATION))
