@@ -13,7 +13,8 @@ from django_tables2 import SingleTableView, RequestConfig
 from customuser.models import User
 from publications.models import Publication, Comment, Reviewer, EstimatedImpactFactor, CommentReview
 from publications.forms import (PublicationCreateForm, CommentForm, EstimatedImpactFactorForm,
-                                CommentReviewValidationForm, CommentReviewCorrectionForm, PublicationCorrectForm)
+                                CommentReviewValidationForm, CommentReviewCorrectionForm, PublicationCorrectForm,
+                                PublicationAbortForm)
 from publications.tables import PublicationTable
 from publications.filters import PublicationFilter, PublicationFilterFormHelper
 from publications.constants import *
@@ -89,7 +90,7 @@ class PublicationCorrectionUpdate(UpdateView):
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
-        if self.object.editor_id != self.request.user.id:
+        if int(self.object.editor_id) != int(self.request.user.id):
             raise PermissionDenied
         return super(PublicationCorrectionUpdate, self).form_valid(form)
 
@@ -101,6 +102,35 @@ class PublicationCorrectionUpdate(UpdateView):
         """
         context = super(PublicationCorrectionUpdate, self).get_context_data(**kwargs)
         context['name'] = self.name
+        context['constants'] = CONSTANTS_TEMPLATE
+        return context
+
+
+@method_decorator(login_required, name='dispatch')
+@method_decorator(permission_required('publications.publication.can_change_publication', raise_exception=True),
+                  name='dispatch')
+class PublicationAbortUpdate(UpdateView):
+    model = Publication
+    name = "Abort publication"
+    form_class = PublicationAbortForm
+    success_url = reverse_lazy("index")
+    template_name = 'publications/publication_edit_form.html'
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        if int(self.object.editor_id) != int(self.request.user.id): # check of the correction in the form
+            raise PermissionDenied
+        return super(PublicationAbortUpdate, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        """
+        add the name to the context (useful for the template)
+        :param kwargs: named arguments
+        :return: the context
+        """
+        context = super(PublicationAbortUpdate, self).get_context_data(**kwargs)
+        context['name'] = self.name
+        context['constants'] = CONSTANTS_TEMPLATE
         return context
 
 

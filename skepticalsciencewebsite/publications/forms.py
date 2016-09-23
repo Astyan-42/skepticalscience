@@ -1,12 +1,13 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
+from django.utils import timezone
 from django_select2.forms import Select2MultipleWidget
 from django.db.models import Q
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit
 from crispy_forms.bootstrap import Field
 from publications.models import Publication, Comment, EstimatedImpactFactor, CommentReview
-from publications.constants import BOOLEAN_CHOICES
+from publications.constants import BOOLEAN_CHOICES, ABORTED, CORRECTION
 from sciences.forms import ScienceModelForm
 from customuser.models import User
 
@@ -70,6 +71,15 @@ class PublicationAbortForm(forms.ModelForm):
         self.helper = FormHelper(self)
         self.helper.form_id = 'id_publicationabortupdateForm'
         self.helper.add_input(Submit('submit', _('Abort publication')))
+
+    def save(self, commit=True):
+        data = super(PublicationAbortForm, self).save(commit=False)
+        if self.cleaned_data["abort"] and data.status == CORRECTION:
+            data.status = ABORTED
+            data.update_status_date = timezone.now()
+        if commit:
+            data.save()
+        return data
 
     class Meta:
         model = Publication
