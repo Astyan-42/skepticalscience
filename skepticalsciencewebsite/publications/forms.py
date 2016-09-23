@@ -17,6 +17,12 @@ class UserModelChoiceField(forms.ModelChoiceField):
         return obj.get_full_name()
 
 
+class UserModelMultipleChoiceField(forms.ModelMultipleChoiceField):
+
+    def label_from_instance(self, obj):
+        return obj.get_full_name()
+
+
 class PublicationCreateForm(ScienceModelForm):
     """
     create an publication form with restricted field
@@ -25,6 +31,8 @@ class PublicationCreateForm(ScienceModelForm):
     first_author = UserModelChoiceField(queryset=User.objects.filter(~Q(first_name="") & ~Q(last_name="")))
     last_author = UserModelChoiceField(queryset=User.objects.filter(~Q(first_name="") & ~Q(last_name="")),
                                        required=False)
+    authors = UserModelMultipleChoiceField(queryset=User.objects.filter(~Q(first_name="") & ~Q(last_name="")),
+                                           required=False, widget=Select2MultipleWidget)
 
     def __init__(self, *args, **kwargs):
         super(PublicationCreateForm, self).__init__(*args, **kwargs)
@@ -34,7 +42,7 @@ class PublicationCreateForm(ScienceModelForm):
 
     class Meta:
         model = Publication
-        fields = ["title", "resume", "pdf_creation", "source_creation", "first_author", "last_author",
+        fields = ["title", "resume", "pdf_creation", "source_creation", "first_author", "authors", "last_author",
                   "sciences", "licence"]
         widgets = {'sciences': Select2MultipleWidget,
                    'resume': forms.Textarea()}
