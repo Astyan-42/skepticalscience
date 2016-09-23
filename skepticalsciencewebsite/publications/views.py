@@ -77,6 +77,9 @@ class PublicationCreate(CreateView):
         context['name'] = self.name
         return context
 
+    def get_success_url(self):
+        return reverse_lazy('publication_view', kwargs={'pk': self.object.id})
+
 
 @method_decorator(login_required, name='dispatch')
 @method_decorator(permission_required('publications.publication.can_change_publication', raise_exception=True),
@@ -85,7 +88,6 @@ class PublicationCorrectionUpdate(UpdateView):
     model = Publication
     name = "Correct publication"
     form_class = PublicationCorrectForm
-    success_url = reverse_lazy("index")
     template_name = 'publications/publication_edit_form.html'
 
     def form_valid(self, form):
@@ -104,6 +106,9 @@ class PublicationCorrectionUpdate(UpdateView):
         context['name'] = self.name
         context['constants'] = CONSTANTS_TEMPLATE
         return context
+
+    def get_success_url(self):
+        return reverse_lazy('publication_view', kwargs={'pk': self.kwargs["pk"]})
 
 
 @method_decorator(login_required, name='dispatch')
@@ -132,6 +137,9 @@ class PublicationAbortUpdate(UpdateView):
         context['name'] = self.name
         context['constants'] = CONSTANTS_TEMPLATE
         return context
+
+    def get_success_url(self):
+        return reverse_lazy('publication_view', kwargs={'pk': self.kwargs["pk"]})
 
 
 class PublicationFilteredTableView(SingleTableView):
