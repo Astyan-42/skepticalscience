@@ -12,5 +12,5 @@
 {% block content %}
     <h1>{% trans "Publications" %}</h1>
     {% crispy filter.form filter.form.helper %}
-    {% render_table table %}
+    {% render_table table "modifytable.html" %}
 {% endblock %}
