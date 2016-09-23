@@ -3,6 +3,13 @@ NB_REVIEWER_PER_ARTICLE = 4
 # boolean choices
 BOOLEAN_CHOICES = ((True, 'Yes'), (False, 'No'))
 
+# number of days per action
+ADDING_PEER_DAYS = 5
+PEER_REVIEW_DAYS = 18
+CORRECTION_DAYS = 21
+VALIDATION_DAYS = 5
+EVALUATION_DAYS = 7
+
 # possible status of the publication
 WAITING_PAYMENT = 1
 ADDING_PEER = 2

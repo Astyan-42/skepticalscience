@@ -204,6 +204,9 @@ BOOTSTRAP3 = {
     },
 }
 
+# admin for when debug = False to send email when failed on the server
+ADMINS = [('Astyan', 'fakeemail@fakeprovider.com')]
+
 SELECT2_CSS = '/static/css/select2.css'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
@@ -211,3 +214,5 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 CRON_CLASSES = [
     "publications.cron.PublicationUpdateCronJob",
 ]
+
+FAILED_RUNS_CRONJOB_EMAIL_PREFIX = "[Cronjob failed]: "
