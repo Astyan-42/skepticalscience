@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% load bootstrap3 %}
+{% load crispy_forms_tags %}
+
+{% if user.id == publication.editor.id %}
+    {% block content %}
+        <h1>{% trans name %}</h1>
+        {% crispy form %}
+        {{ form.media.js }}
+    {% endblock %}
+{% endif %}

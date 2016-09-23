@@ -77,12 +77,21 @@ class PublicationCreate(CreateView):
         return context
 
 
+@method_decorator(login_required, name='dispatch')
+@method_decorator(permission_required('publications.publication.can_change_publication', raise_exception=True),
+                  name='dispatch')
 class PublicationCorrectionUpdate(UpdateView):
     model = Publication
     name = "Correct publication"
     form_class = PublicationCorrectForm
     success_url = reverse_lazy("index")
-    template_name = 'publications/publication_form.html'
+    template_name = 'publications/publication_edit_form.html'
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        if self.object.editor_id != self.request.user.id:
+            raise PermissionDenied
+        return super(PublicationCorrectionUpdate, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
         """
