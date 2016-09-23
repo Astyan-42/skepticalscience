@@ -13,7 +13,7 @@ from django_tables2 import SingleTableView, RequestConfig
 from customuser.models import User
 from publications.models import Publication, Comment, Reviewer, EstimatedImpactFactor, CommentReview
 from publications.forms import (PublicationCreateForm, CommentForm, EstimatedImpactFactorForm,
-                                CommentReviewValidationForm, CommentReviewCorrectionForm)
+                                CommentReviewValidationForm, CommentReviewCorrectionForm, PublicationCorrectForm)
 from publications.tables import PublicationTable
 from publications.filters import PublicationFilter, PublicationFilterFormHelper
 from publications.constants import *
@@ -73,6 +73,24 @@ class PublicationCreate(CreateView):
         :return: the context
         """
         context = super(PublicationCreate, self).get_context_data(**kwargs)
+        context['name'] = self.name
+        return context
+
+
+class PublicationCorrectionUpdate(UpdateView):
+    model = Publication
+    name = "Correct publication"
+    form_class = PublicationCorrectForm
+    success_url = reverse_lazy("index")
+    template_name = 'publications/publication_form.html'
+
+    def get_context_data(self, **kwargs):
+        """
+        add the name to the context (useful for the template)
+        :param kwargs: named arguments
+        :return: the context
+        """
+        context = super(PublicationCorrectionUpdate, self).get_context_data(**kwargs)
         context['name'] = self.name
         return context
 

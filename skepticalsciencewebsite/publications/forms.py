@@ -48,8 +48,18 @@ class PublicationCreateForm(ScienceModelForm):
                    'resume': forms.Textarea()}
 
 
-class PublicationCorrectForm():
-    pass
+class PublicationCorrectForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(PublicationCorrectForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_id = 'id_publicationcorrectionupdateForm'
+        self.helper.add_input(Submit('submit', _('Submit')))
+
+    class Meta:
+        model = Publication
+        fields = ["resume", "pdf_final", "source_final"]
+        widgets = {'resume': forms.Textarea()}
 
 
 class PublicationAbortForm():
