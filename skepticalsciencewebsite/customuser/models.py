@@ -61,6 +61,7 @@ class User(AbstractUser):
     mean_impact_factor = MinMaxFloat(min_value=0.0, max_value=1000.0, default=0.0, verbose_name=_("Mean impact factor"))
     # estimator score (when estimate the impact factor of a publication make good estimation)
     estimator_score = MinMaxFloat(min_value=0.0, max_value=1.0, default=0.0, verbose_name=_("Estimator Score"))
+    # reviewer score to add
 
     def get_full_name(self):
         full_name = self.last_name+" "+self.middle_name+" "+self.first_name

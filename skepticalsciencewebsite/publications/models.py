@@ -56,6 +56,7 @@ class Publication(models.Model):
                                     verbose_name=_("Publication final (sources)"))
     resume = models.CharField(max_length=1024, blank=False, verbose_name=_("Resume"))
     status = models.IntegerField(choices=PUBLICATION_STATUS, db_index=True, default=1, verbose_name=_('Status'))
+    update_status_date = models.DateTimeField(auto_now_add=True, verbose_name=_('Update status date'))
     # or just resume ?
     # tags = models.ManyToManyField(KeyWord, blank= False, symmetrical=False, verbose_name=_("Keywords"))
     licence = models.ForeignKey(Licence, verbose_name=_("Licence"))
