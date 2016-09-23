@@ -62,8 +62,18 @@ class PublicationCorrectForm(forms.ModelForm):
         widgets = {'resume': forms.Textarea()}
 
 
-class PublicationAbortForm():
-    pass
+class PublicationAbortForm(forms.ModelForm):
+    abort = forms.BooleanField()
+
+    def __init__(self, *args, **kwargs):
+        super(PublicationAbortForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_id = 'id_publicationabortupdateForm'
+        self.helper.add_input(Submit('submit', _('Abort publication')))
+
+    class Meta:
+        model = Publication
+        fields = ["abort"]
 
 
 class CommentForm(forms.ModelForm):
