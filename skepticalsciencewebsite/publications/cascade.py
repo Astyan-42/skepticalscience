@@ -44,7 +44,7 @@ def update_comment(comment_id):
     res_correction = False
     if comment.publication.status == VALIDATION:
         res_correction = update_comment_correction(comment_id)
-    return (res_validation and res_correction)
+    return res_validation and res_correction
 
 
 def update_user_skeptic_score(comment_id):
@@ -57,6 +57,49 @@ def update_user_skeptic_score(comment_id):
     user.skeptic_score = user.valid_bias_found / (user.valid_bias_found + user.invalid_bias_found) * 10.
     user.save()
     return True
+
+
+def update_publication_score_peer_review(publication_id):
+    comments = Comment.objects.filter(publication=publication_id, validated=VALIDATE, comment_type=CONTENT)
+    comments_seriousness = Counter([comment.seriousness for comment in comments]).most_common()
+    publication_score = 10.
+    for key, value in comments_seriousness:
+        if key == MINOR:
+            publication_score -= 1*value
+        elif key == MAJOR:
+            publication_score -= 2*value
+        elif key == CRITICAL:
+            publication_score -= 3*value
+    publication_score = max(publication_score, 0.)
+    publication = Publication.objects.get(publication=publication_id)
+    if comments.exists():
+        publication.publication_score = publication_score
+        publication.save()
+        return True
+    else:
+        return False
+
+
+def update_publication_score_validation(publication_id):
+    comments = Comment.objects.filter(publication=publication_id, validated=VALIDATE,
+                                      comment_type=CONTENT, corrected=True)
+    comments_seriousness = Counter([comment.seriousness for comment in comments]).most_common()
+    publication = Publication.objects.get(publication=publication_id)
+    publication_score = publication.publication_score
+    for key, value in comments_seriousness:
+        if key == MINOR:
+            publication_score += 0.5*value
+        elif key == MAJOR:
+            publication_score += 1*value
+        elif key == CRITICAL:
+            publication_score += 2*value
+    publication_score = min(publication_score, 10.)
+    if comments.exists():
+        publication.publication_score = publication_score
+        publication.save()
+        return True
+    else:
+        return False
 
 
 def update_user_mean_publication_score(publication_id):
