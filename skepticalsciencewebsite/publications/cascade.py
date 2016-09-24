@@ -5,6 +5,7 @@ from publications.models import Publication, Comment, Reviewer, EstimatedImpactF
 from publications.constants import *
 
 
+# VALIDATE COMMENT IF ENOUGH REVIEW
 def update_comment_validation(comment_id):
     comment = Comment.objects.get(pk=comment_id)
     comment_reviews = CommentReview.objects.filter(comment=comment_id)
@@ -47,6 +48,7 @@ def update_comment(comment_id):
     return res_validation and res_correction
 
 
+# SKEPTIC SCORE
 def update_user_skeptic_score(comment_id):
     comment = Comment.objects.get(pk=comment_id)
     user = User.objects.get(comment.author.id)
@@ -59,6 +61,7 @@ def update_user_skeptic_score(comment_id):
     return True
 
 
+# PUBLICATION SCORE
 def update_publication_score_peer_review(publication_id):
     comments = Comment.objects.filter(publication=publication_id, validated=VALIDATE, comment_type=CONTENT)
     comments_seriousness = Counter([comment.seriousness for comment in comments]).most_common()
@@ -104,6 +107,10 @@ def update_publication_score_validation(publication_id):
 
 def update_user_mean_publication_score(publication_id):
     pass
+    # for all user add the score of the publication to there mean score
+
+
+# REVIEWER SCORE
 
 
 def update_mean_impact_factor(publication_id):

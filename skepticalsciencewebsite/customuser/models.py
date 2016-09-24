@@ -62,6 +62,9 @@ class User(AbstractUser):
     # estimator score (when estimate the impact factor of a publication make good estimation)
     estimator_score = MinMaxFloat(min_value=0.0, max_value=1.0, default=0.0, verbose_name=_("Estimator Score"))
     # reviewer score to add
+    comments_evaluated = models.IntegerField(default=0, verbose_name=_("Comments evaluated"))
+    comments_not_evaluated = models.IntegerField(default=0, verbose_name=_("Comments not evaluated"))
+    reviewer_score = MinMaxFloat(min_value=0.0, max_value=1.0, default=0.0, verbose_name=_("Reviewer score"))
 
     def get_full_name(self):
         full_name = self.last_name+" "+self.middle_name+" "+self.first_name
