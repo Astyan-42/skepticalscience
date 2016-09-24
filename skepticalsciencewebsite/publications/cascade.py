@@ -111,7 +111,7 @@ def update_user_mean_publication_score(publication_id):
 
 
 # REVIEWER SCORE
-def update_reviewers_score_validation(publication_id):
+def update_reviewers_score_peer_review(publication_id):
     comments = Comment.objects.filter(publication=publication_id)
     reviewers = Reviewer.objects.filter(publication=publication_id, actif=True)
     for reviewer in reviewers:
@@ -128,6 +128,10 @@ def update_reviewers_score_validation(publication_id):
         user.reviewer_score = float(user.comments_evaluated)/float(user.comments_evaluated+user.comments_not_evaluated)
         user.save()
     return True
+
+
+def update_reviewers_score_validation(publication_id):
+    pass
 
 # ESTIMATED IMPACT FACTOR
 def update_mean_impact_factor(publication_id):
