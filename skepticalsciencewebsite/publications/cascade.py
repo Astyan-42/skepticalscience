@@ -111,9 +111,30 @@ def update_user_mean_publication_score(publication_id):
 
 
 # REVIEWER SCORE
+def update_reviewers_score_validation(publication_id):
+    comments = Comment.objects.filter(publication=publication_id)
+    reviewers = Reviewer.objects.filter(publication=publication_id, actif=True)
+    for reviewer in reviewers:
+        evaluated_comments = 0
+        non_evaluated_comments = 0
+        user = User.objects.get(pk=reviewer.scientist)
+        for comment in comments:
+            if CommentReview.objects.filter(comment=comment).exists():
+                evaluated_comments += 1
+            else:
+                non_evaluated_comments += 1
+        user.comments_evaluated += evaluated_comments
+        user.comments_not_evaluated += non_evaluated_comments
+        user.reviewer_score = float(user.comments_evaluated)/float(user.comments_evaluated+user.comments_not_evaluated)
+        user.save()
+    return True
 
-
+# ESTIMATED IMPACT FACTOR
 def update_mean_impact_factor(publication_id):
+    # compute with all impact factor and take the median ?
     pass
+
+
+# ESTIMATOR SCORE (not done yet)
 
 
