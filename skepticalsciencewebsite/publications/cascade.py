@@ -1,3 +1,4 @@
+import statistics
 from collections import Counter
 from django.utils import timezone
 from customuser.models import User
@@ -111,7 +112,7 @@ def update_user_mean_publication_score(publication_id):
         sum_score = author.mean_publication_score*author.nb_publication
         sum_score += publication.publication_score
         author.nb_publication += 1
-        publication.publication_score = sum_score/author.nb_publication
+        author.mean_publication_score = sum_score/author.nb_publication
         author.save()
     return True
 
@@ -154,12 +155,28 @@ def update_reviewers_score_validation(publication_id):
         user.save()
     return True
 
+
 # ESTIMATED IMPACT FACTOR
-def update_mean_impact_factor(publication_id):
+def update_median_impact_factor_publication(publication_id):
     # compute with all impact factor and take the median ?
-    pass
+    publication = Publication.objects.get(pk=publication_id)
+    estimated_impact_factors = EstimatedImpactFactor(publication=publication_id)
+    estimated_impact_factors_list = [ estimated_impact_factor.estimated_impact_factor for
+                                      estimated_impact_factor in estimated_impact_factors]
+    publication.estimated_impact_factor =  statistics.median(estimated_impact_factors_list)
+    publication.save()
+    return True
+
+
+def update_mean_impact_factor_users(publication_id):
+    publication = Publication.objects.get(pk=publication_id)
+    for author in publication.get_all_authors:
+        default_score = author.mean_impact_factor*(author.nb_publication-1) # -1 because publication score
+        default_score += publication.mean_impact_factor
+        default_score = default_score/author.nb_publication
+        author.mean_publication_score = default_score
+        author.save()
+    return True
 
 
 # ESTIMATOR SCORE (not done yet)
-
-
