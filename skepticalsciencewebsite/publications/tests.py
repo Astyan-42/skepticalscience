@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.utils import timezone
 from publications.models import Publication, Licence, Comment, CommentReview, Reviewer
-from publications.cascade import (update_comment_validation, update_comment_correction)
+from publications.cascade import (update_comment_validation, update_comment_correction, update_user_skeptic_score)
 from publications.constants import *
 from customuser.models import User
 
@@ -138,3 +138,24 @@ class CascadeTestCase(TestCase):
         self.assertEqual(True, update_comment_correction(self.comment.pk))
         self.assertNotEqual(None, Comment.objects.get(pk=self.comment.pk).corrected_date)
         self.assertEqual(True, Comment.objects.get(pk=self.comment.pk).corrected)
+
+    def test_update_user_skeptic_score_not_yet(self):
+        self.assertEqual(False, update_user_skeptic_score(self.comment.pk))
+        self.assertEqual(0, User.objects.get_by_natural_key(self.fsm).valid_bias_found)
+        self.assertEqual(0, User.objects.get_by_natural_key(self.fsm).invalid_bias_found)
+
+    def test_update_user_skeptic_score_dismiss(self):
+        self.comment.validated = DISMISS
+        self.comment.save()
+        self.assertEqual(True, update_user_skeptic_score(self.comment.pk))
+        self.assertEqual(0, User.objects.get_by_natural_key(self.fsm).valid_bias_found)
+        self.assertEqual(1, User.objects.get_by_natural_key(self.fsm).invalid_bias_found)
+        self.assertEqual(0, User.objects.get_by_natural_key(self.fsm).skeptic_score)
+
+    def test_update_user_skeptic_score_validated(self):
+        self.comment.validated = VALIDATE
+        self.comment.save()
+        self.assertEqual(True, update_user_skeptic_score(self.comment.pk))
+        self.assertEqual(1, User.objects.get_by_natural_key(self.fsm).valid_bias_found)
+        self.assertEqual(0, User.objects.get_by_natural_key(self.fsm).invalid_bias_found)
+        self.assertEqual(10., User.objects.get_by_natural_key(self.fsm).skeptic_score)

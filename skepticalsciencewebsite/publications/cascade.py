@@ -57,11 +57,13 @@ def update_comment(comment_id):
 # SKEPTIC SCORE
 def update_user_skeptic_score(comment_id):
     comment = Comment.objects.get(pk=comment_id)
-    user = User.objects.get(comment.author.id)
-    if comment.validated:
+    user = User.objects.get(pk=comment.author.id)
+    if comment.validated == VALIDATE :
         user.valid_bias_found = user.valid_bias_found + 1
-    else:
+    elif comment.validated == DISMISS:
         user.invalid_bias_found = user.invalid_bias_found + 1
+    elif comment.validated == IN_PROGRESS:
+        return False
     user.skeptic_score = user.valid_bias_found / (user.valid_bias_found + user.invalid_bias_found) * 10.
     user.save()
     return True
