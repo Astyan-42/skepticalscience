@@ -608,7 +608,7 @@ class CommentDetailView(View):
         return view(request, *args, **kwargs)
 
     @staticmethod
-    def post(self, request, *args, **kwargs):
+    def post(request, *args, **kwargs):
         if request.POST["submit"].lower() == _("Validate").lower():
             view = CommentReviewValidationInterest.as_view()
         else:
