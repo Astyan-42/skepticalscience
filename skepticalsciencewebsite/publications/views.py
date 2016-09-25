@@ -87,6 +87,7 @@ class PublicationUpdate(UpdateView):
     model = Publication
     name = "Edit publication"
     form_class = PublicationCreateForm
+    template_name = 'publications/publication_correct_form.html'
 
     def form_valid(self, form):
         """
@@ -110,6 +111,7 @@ class PublicationUpdate(UpdateView):
         """
         context = super(PublicationUpdate, self).get_context_data(**kwargs)
         context['name'] = self.name
+        context['constants'] = CONSTANTS_TEMPLATE
         return context
 
     def get_success_url(self):
