@@ -17,7 +17,7 @@ def update_comment_validation(comment_id):
         else:
             comment.validated = VALIDATE
         seriousness_l = [comment_review.seriousness for comment_review in comment_reviews]
-        seriousness, = Counter(seriousness_l).most_common(1)[0]
+        seriousness, other = Counter(seriousness_l).most_common(1)[0]
         comment.seriousness = seriousness
         comment.save()
         return True
