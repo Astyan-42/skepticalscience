@@ -52,6 +52,7 @@ class PublicationCreate(CreateView):
     model = Publication
     name = "Submit publication"
     form_class = PublicationCreateForm
+    object = None
 
     def form_valid(self, form):
         """
@@ -88,6 +89,7 @@ class PublicationUpdate(UpdateView):
     name = "Edit publication"
     form_class = PublicationCreateForm
     template_name = 'publications/publication_correct_form.html'
+    object = None
 
     def form_valid(self, form):
         """
@@ -126,6 +128,8 @@ class PublicationCorrectionUpdate(UpdateView):
     name = "Correct publication"
     form_class = PublicationCorrectForm
     template_name = 'publications/publication_edit_form.html'
+    object = None
+    request = None
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -157,10 +161,12 @@ class PublicationAbortUpdate(UpdateView):
     form_class = PublicationAbortForm
     success_url = reverse_lazy("index")
     template_name = 'publications/publication_edit_form.html'
+    object = None
+    request = None
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
-        if int(self.object.editor_id) != int(self.request.user.id): # check of the correction in the form
+        if int(self.object.editor_id) != int(self.request.user.id):  # check of the correction in the form
             raise PermissionDenied
         return super(PublicationAbortUpdate, self).form_valid(form)
 
@@ -186,6 +192,8 @@ class PublicationFilteredTableView(SingleTableView):
     filter_class = None
     formhelper_class = None
     context_filter_name = 'filter'
+    request = None
+    filter = None
 
     def get_queryset(self, **kwargs):
         qs = super(PublicationFilteredTableView, self).get_queryset()
@@ -231,7 +239,10 @@ class PublicationSpecialTableView(SingleTableView):
     table_class = PublicationTable
     template_name = 'publications/publication_special_list.html'
     paginate_by = 20
-    science_filter=True
+    science_filter = True
+    object = None
+    request = None
+    filter = None
 
     def fill_user_science(self):
         user = User.objects.get(pk=self.request.session['_auth_user_id'])
@@ -282,7 +293,7 @@ class PublicationToEvaluateTableView(PublicationSpecialTableView):
     Only for user in the scientist group
     """
     name = "to evaluate"
-    filter_dict = {'status' : 'evaluation'}
+    filter_dict = {'status': 'evaluation'}
 
 
 class PublicationOwnedTableView(PublicationSpecialTableView):
@@ -322,6 +333,8 @@ class PublicationDisplay(DetailView):
     # template_name = 'publications/publication_detail.html'
     fields = ["title", "sciences", "resume", "status", "licence", "publication_score", "estimated_impact_factor",
               "pdf_creation", "source_creation", "pdf_final", "source_final"]
+    kwargs = None
+    request = None
 
     def get_alert_status(self, context):
         """
@@ -369,20 +382,25 @@ class PublicationDisplay(DetailView):
     def get_context_data(self, **kwargs):
         context = super(PublicationDisplay, self).get_context_data(**kwargs)
         # adding comment to the view, better order by
-        context['is_editor'] = self.get_is_editor(context["publication_detail"].editor)
         context['comments'] = Comment.objects.filter(publication=self.kwargs["pk"]).order_by('validated',
                                                                                              '-comment_type',
                                                                                              'corrected',
                                                                                              '-seriousness',
                                                                                              'creation_date')
         # put the initial licence as the licence of the publication
-        context['is_reviewer'] = self.get_is_reviewer()
-        context['evaluated'] = self.get_evaluated()
+        try:
+            context['is_editor'] = self.get_is_editor(context["publication_detail"].editor)
+            context['is_reviewer'] = self.get_is_reviewer()
+            context['evaluated'] = self.get_evaluated()
+            if context['is_reviewer']:
+                context['reviewer_registration'] = reviewer_action(self.request.user, self.kwargs["pk"], "leave")
+            else:
+                context['reviewer_registration'] = reviewer_action(self.request.user, self.kwargs["pk"], "become")
+        except KeyError:
+            context['is_editor'] = False
+            context['is_reviewer'] = False
+            context['evaluated'] = False
         context['constants'] = CONSTANTS_TEMPLATE
-        if context['is_reviewer']:
-            context['reviewer_registration'] = reviewer_action(self.request.user, self.kwargs["pk"], "leave")
-        else:
-            context['reviewer_registration'] = reviewer_action(self.request.user, self.kwargs["pk"], "become")
         context['alert'] = self.get_alert_status(context)
         context['form_comment'] = CommentForm()
         context['form_eif'] = EstimatedImpactFactorForm()
@@ -394,6 +412,7 @@ class PublicationInterest(CreateView):
     # template_name = 'publications/publication_detail.html'
     form_class = CommentForm
     model = Comment
+    object = None
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -421,6 +440,7 @@ class EstimatedImpactFactorInterest(CreateView):
     # template_name = 'publications/publication_detail.html'
     form_class = EstimatedImpactFactorForm
     model = EstimatedImpactFactor
+    object = None
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -438,11 +458,13 @@ class EstimatedImpactFactorInterest(CreateView):
 
 class PublicationDetailView(View):
 
-    def get(self, request, *args, **kwargs):
+    @staticmethod
+    def get(request, *args, **kwargs):
         view = PublicationDisplay.as_view()
         return view(request, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
+    @staticmethod
+    def post(request, *args, **kwargs):
         if request.POST["submit"].lower() == _("Evaluate").lower():
             view = EstimatedImpactFactorInterest.as_view()
         else:
@@ -458,7 +480,7 @@ def become_reviewer_view(request, publication_id):
     if reviewer_action(request.user, publication_id, "become"):
         if Reviewer.objects.filter(publication=publication_id, scientist=request.user).exists():
             reviewer = Reviewer.objects.get(publication=publication_id, scientist=request.user)
-            reviewer.actif=True
+            reviewer.actif = True
             reviewer.save()
         else:
             publication = Publication.objects.get(pk=publication_id)
@@ -487,20 +509,20 @@ class CommentDisplay(DetailView):
     model = Comment
     fields = ["publication", "author", "author_fake_pseudo", "creation_date", "comment_type", "seriousness",
               "content", "title", "validated", "corrected", "licence"]
+    request = None
+    kwargs = None
 
     def get_review_state(self, comment_context):
         publication_id = comment_context.publication.pk
         try:
             reviewer = Reviewer.objects.get(scientist=self.request.session['_auth_user_id'],
                                             publication=publication_id, actif=True)
-        except ObjectDoesNotExist:
+        except (ObjectDoesNotExist, KeyError):
             return "not_reviewer"
-        try:
-            comment_review = CommentReview.objects.get(comment=self.kwargs["pk"], reviewer=reviewer)
-        except ObjectDoesNotExist:
+        if not CommentReview.objects.filter(comment=self.kwargs["pk"], reviewer=reviewer).exists():
             if comment_context.validated == IN_PROGRESS:
                 return "to_review_validation"
-        if comment_context.validated == VALIDATE and not comment_context.corrected:
+        elif comment_context.validated == VALIDATE and not comment_context.corrected:
             return "to_review_correction"
         return "nothing_to_do"
 
@@ -521,6 +543,7 @@ class CommentDisplay(DetailView):
 class CommentReviewValidationInterest(CreateView):
     form_class = CommentReviewValidationForm
     model = CommentReview
+    object = None
 
     def cascade_modifications(self):
         res = update_comment_validation(self.kwargs["pk"])
@@ -549,6 +572,7 @@ class CommentReviewValidationInterest(CreateView):
 class CommentReviewCorrectionInterest(UpdateView):
     form_class = CommentReviewCorrectionForm
     model = CommentReview
+    object = None
 
     def cascade_modifications(self):
         update_comment_correction(self.kwargs["pk"])
@@ -578,10 +602,12 @@ class CommentReviewCorrectionInterest(UpdateView):
 
 class CommentDetailView(View):
 
-    def get(self, request, *args, **kwargs):
+    @staticmethod
+    def get(request, *args, **kwargs):
         view = CommentDisplay.as_view()
         return view(request, *args, **kwargs)
 
+    @staticmethod
     def post(self, request, *args, **kwargs):
         if request.POST["submit"].lower() == _("Validate").lower():
             view = CommentReviewValidationInterest.as_view()
