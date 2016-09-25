@@ -40,12 +40,24 @@
                         {% endif %}
                     {% endif %}
                 {% endif %}
-                {% if perms.publications.can_change_publication and publication_detail.status == constants.CORRECTION and is_editor%}
+                {% if perms.publications.can_change_publication and publication_detail.status == constants.CORRECTION and is_editor %}
                     <!-- to do as a link-->
                     <p><a href="{% url 'correct_publication' object.pk %}">{% trans "Correct " %}</a>
                     {% trans "or " %}
                     <a href="{% url 'abort_publication' object.pk %}">{% trans "abort " %}</a>
                     {% trans "this publication" %}.</p>
+                {% elif perms.publications.can_change_publication and publication_detail.status == constants.WAITING_PAYMENT and is_editor %}
+                    <p><a href="{% url 'update_publication' object.pk %}">{% trans "Edit " %}</a>
+                    {% trans "or " %}
+                    <a href="{% url 'update_publication' object.pk %}">{% trans "pay to submit " %}</a>
+                    {% trans "the publication" %}.
+                    </p>
+                    <p class="text-danger">
+                        {% blocktrans %}
+                            When the publication is payed it's submit for the peer review and
+                            cannot be edited until the correction process.
+                        {% endblocktrans %}
+                    </p>
                 {% endif %}
 
                 <!-- participate at the rewiew in add_peer, user scientist with phd and not in author-->
