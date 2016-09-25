@@ -1,5 +1,5 @@
 from django import forms
-from registration.forms import RegistrationForm
+from registration.forms import RegistrationFormTermsOfService
 from django.utils.translation import ugettext_lazy as _
 from customuser.models import User
 from django_select2.forms import Select2MultipleWidget
@@ -8,7 +8,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
 
-class CustomUserForm(RegistrationForm):
+class CustomUserForm(RegistrationFormTermsOfService):
     """
     Registration for, using, username and email (password is automaticaly add)
     """
