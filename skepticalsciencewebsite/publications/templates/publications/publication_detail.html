@@ -152,8 +152,8 @@ corrected green, if not red, if comment after the validation and valid then oran
                              {% endblocktrans %} </p>
         {% crispy form_comment %}
         {{ form.media.js }}
-    {% else %}
-        <p class="text_info">{% trans "Only payed publications can receive comments." %}</p>
+    {% elif user.is_authenticated %}
+        <p class="text-info">{% trans "Only payed publications can receive comments." %}</p>
     {% endif %}
 
 {% endblock %}

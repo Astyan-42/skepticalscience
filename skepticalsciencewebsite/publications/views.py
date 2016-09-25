@@ -52,7 +52,6 @@ class PublicationCreate(CreateView):
     model = Publication
     name = "Submit publication"
     form_class = PublicationCreateForm
-    success_url = reverse_lazy("index")
 
     def form_valid(self, form):
         """
@@ -65,7 +64,7 @@ class PublicationCreate(CreateView):
         # add the editor in object
         self.object.editor = self.request.user
         # call the parent to save correctly the ManyToManyField (sciences)
-        return super(CreateView, self).form_valid(form)
+        return super(PublicationCreate, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
         """
@@ -74,6 +73,42 @@ class PublicationCreate(CreateView):
         :return: the context
         """
         context = super(PublicationCreate, self).get_context_data(**kwargs)
+        context['name'] = self.name
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy('publication_view', kwargs={'pk': self.object.id})
+
+
+@method_decorator(login_required, name='dispatch')
+@method_decorator(permission_required('publications.publication.can_change_publication', raise_exception=True),
+                  name='dispatch')
+class PublicationUpdate(UpdateView):
+    model = Publication
+    name = "Edit publication"
+    form_class = PublicationCreateForm
+
+    def form_valid(self, form):
+        """
+        form_valid modified method to add the user as the editor
+        :param form: the form
+        :return: the form_valid function of the parent applied to the form
+        """
+        # get the object from the form
+        self.object = form.save(commit=False)
+        # add the editor in object
+        if self.object.editor != self.request.user or self.object.status != WAITING_PAYMENT:
+            raise PermissionDenied
+        # call the parent to save correctly the ManyToManyField (sciences)
+        return super(UpdateView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        """
+        add the name to the context (useful for the template)
+        :param kwargs: named arguments
+        :return: the context
+        """
+        context = super(PublicationUpdate, self).get_context_data(**kwargs)
         context['name'] = self.name
         return context
 

@@ -2,7 +2,6 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
-from django.core.exceptions import ValidationError
 from simple_history.models import HistoricalRecords
 from sciences.models import Science
 from customuser.models import User, MinMaxFloat
@@ -30,7 +29,7 @@ class Publication(models.Model):
     """
     # other author problem ? What to do if no account, if account ?
     editor = models.ForeignKey(User, verbose_name=_('Editor'))
-    #create the publication before paying for
+    # create the publication before paying for
     creation_date = models.DateTimeField(auto_now_add=True, verbose_name=_('Creation date'))
     payment_date = models.DateTimeField(null=True, blank=True, default=None, verbose_name=_('Payment date'))
     validation_date = models.DateTimeField(null=True, blank=True, default=None, verbose_name=_('Validation date'))
@@ -76,7 +75,7 @@ class EstimatedImpactFactor(models.Model):
     """
     EstimatedImpactFactor Model
     """
-    #must be in researcher group and have a related sciences
+    # must be in researcher group and have a related sciences
     estimator = models.ForeignKey(User, verbose_name=_('Estimator'))
     publication = models.ForeignKey(Publication, verbose_name=_('Publication'))
     estimated_impact_factor = MinMaxFloat(min_value=0.0, max_value=1000.0, verbose_name=_("Estimated impact factor"))
