@@ -27,7 +27,7 @@ def update_comment_validation(comment_id):
 def update_comment_correction(comment_id):
     comment = Comment.objects.get(pk=comment_id)
     comment_reviews = CommentReview.objects.filter(comment=comment_id)
-    correction_dates = [comment_review.corrected for comment_review in comment_reviews]
+    correction_dates = [comment_review.corrected_date for comment_review in comment_reviews]
     if None not in correction_dates and comment.validated == VALIDATE:
         corrections = [comment_review.corrected for comment_review in comment_reviews]
         comment.corrected_date = timezone.now()
@@ -41,12 +41,17 @@ def update_comment_correction(comment_id):
 
 
 def update_comment(comment_id):
+    """
+    Useless for now
+    :param comment_id:
+    :return:
+    """
     comment = Comment.objects.get(pk=comment_id)
     res_validation = update_comment_validation(comment_id)
     res_correction = False
     if comment.publication.status == VALIDATION:
         res_correction = update_comment_correction(comment_id)
-    return res_validation and res_correction
+    return res_validation or res_correction
 
 
 # SKEPTIC SCORE

@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.utils import timezone
 from publications.models import Publication, Licence, Comment, CommentReview, Reviewer
 from publications.cascade import (update_comment_validation, update_comment_correction)
 from publications.constants import *
@@ -53,7 +54,7 @@ class CascadeTestCase(TestCase):
         CommentReview.objects.create(reviewer=self.rfsm, comment=self.comment, seriousness=MINOR,
                                      reason_validation="lol")
         self.assertEqual(False, update_comment_validation(self.comment.pk))
-        self.assertEqual(IN_PROGRESS, self.comment.validated)
+        self.assertEqual(IN_PROGRESS, Comment.objects.get(pk=self.comment.pk).validated)
 
     def test_update_comment_validation_DISMISS(self):
         CommentReview.objects.create(reviewer=self.rfsm, comment=self.comment, seriousness=MINOR,
@@ -80,3 +81,60 @@ class CascadeTestCase(TestCase):
         self.assertEqual(True, update_comment_validation(self.comment.pk))
         self.assertEqual(VALIDATE, Comment.objects.get(pk=self.comment.pk).validated)
         self.assertEqual(CRITICAL, Comment.objects.get(pk=self.comment.pk).seriousness)
+
+    def test_update_comment_correction_not_enough(self):
+        self.comment.validated = VALIDATE
+        self.comment.seriousness = MAJOR
+        self.comment.save()
+        CommentReview.objects.create(reviewer=self.rfsm, comment=self.comment, seriousness=MINOR,
+                                     reason_validation="lol", valid=True)
+        CommentReview.objects.create(reviewer=self.rrael, comment=self.comment, seriousness=MAJOR,
+                                     reason_validation="lol", valid=True)
+        CommentReview.objects.create(reviewer=self.ripu, comment=self.comment, seriousness=MAJOR,
+                                     reason_validation="lol", valid=True)
+        CommentReview.objects.create(reviewer=self.rft, comment=self.comment, seriousness=CRITICAL,
+                                     reason_validation="lol", valid=True, corrected_date=timezone.now(),
+                                     corrected=True, reason_correction="lol")
+        self.assertEqual(False, update_comment_correction(self.comment.pk))
+        self.assertEqual(False, Comment.objects.get(pk=self.comment.pk).corrected)
+        self.assertEqual(None, Comment.objects.get(pk=self.comment.pk).corrected_date)
+
+    def test_update_comment_correction_not_corrected(self):
+        self.comment.validated = VALIDATE
+        self.comment.seriousness = MAJOR
+        self.comment.save()
+        CommentReview.objects.create(reviewer=self.rfsm, comment=self.comment, seriousness=MINOR,
+                                     reason_validation="lol", valid=True, corrected_date=timezone.now(),
+                                     corrected=False, reason_correction="lol")
+        CommentReview.objects.create(reviewer=self.rrael, comment=self.comment, seriousness=MAJOR,
+                                     reason_validation="lol", valid=True, corrected_date=timezone.now(),
+                                     corrected=True, reason_correction="lol")
+        CommentReview.objects.create(reviewer=self.ripu, comment=self.comment, seriousness=MAJOR,
+                                     reason_validation="lol", valid=True, corrected_date=timezone.now(),
+                                     corrected=True, reason_correction="lol")
+        CommentReview.objects.create(reviewer=self.rft, comment=self.comment, seriousness=CRITICAL,
+                                     reason_validation="lol", valid=True, corrected_date=timezone.now(),
+                                     corrected=True, reason_correction="lol")
+        self.assertEqual(True, update_comment_correction(self.comment.pk))
+        self.assertNotEqual(None, Comment.objects.get(pk=self.comment.pk).corrected_date)
+        self.assertEqual(False, Comment.objects.get(pk=self.comment.pk).corrected)
+
+    def test_update_comment_correction_corrected(self):
+        self.comment.validated = VALIDATE
+        self.comment.seriousness = MAJOR
+        self.comment.save()
+        CommentReview.objects.create(reviewer=self.rfsm, comment=self.comment, seriousness=MINOR,
+                                     reason_validation="lol", valid=True, corrected_date=timezone.now(),
+                                     corrected=True, reason_correction="lol")
+        CommentReview.objects.create(reviewer=self.rrael, comment=self.comment, seriousness=MAJOR,
+                                     reason_validation="lol", valid=True, corrected_date=timezone.now(),
+                                     corrected=True, reason_correction="lol")
+        CommentReview.objects.create(reviewer=self.ripu, comment=self.comment, seriousness=MAJOR,
+                                     reason_validation="lol", valid=True, corrected_date=timezone.now(),
+                                     corrected=True, reason_correction="lol")
+        CommentReview.objects.create(reviewer=self.rft, comment=self.comment, seriousness=CRITICAL,
+                                     reason_validation="lol", valid=True, corrected_date=timezone.now(),
+                                     corrected=True, reason_correction="lol")
+        self.assertEqual(True, update_comment_correction(self.comment.pk))
+        self.assertNotEqual(None, Comment.objects.get(pk=self.comment.pk).corrected_date)
+        self.assertEqual(True, Comment.objects.get(pk=self.comment.pk).corrected)
