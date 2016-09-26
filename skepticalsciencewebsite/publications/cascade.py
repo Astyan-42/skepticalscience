@@ -70,7 +70,11 @@ def update_user_skeptic_score(comment_id):
 
 
 # PUBLICATION SCORE
-def update_publication_score_peer_review(publication_id):
+def update_publication_score_peer_review_to_correction(publication_id):
+    publication = Publication.objects.get(pk=publication_id)
+    # correction because the publication just passed from peer review to correction
+    if publication.status != CORRECTION:
+        return False
     comments = Comment.objects.filter(publication=publication_id, validated=VALIDATE, comment_type=CONTENT)
     comments_seriousness = Counter([comment.seriousness for comment in comments]).most_common()
     publication_score = 10.
@@ -82,13 +86,9 @@ def update_publication_score_peer_review(publication_id):
         elif key == CRITICAL:
             publication_score -= 3*value
     publication_score = max(publication_score, 0.)
-    publication = Publication.objects.get(publication=publication_id)
-    if comments.exists():
-        publication.publication_score = publication_score
-        publication.save()
-        return True
-    else:
-        return False
+    publication.publication_score = publication_score
+    publication.save()
+    return True
 
 
 def update_publication_score_validation(publication_id):

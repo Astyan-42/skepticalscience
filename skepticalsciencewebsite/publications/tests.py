@@ -1,7 +1,8 @@
 from django.test import TestCase
 from django.utils import timezone
 from publications.models import Publication, Licence, Comment, CommentReview, Reviewer
-from publications.cascade import (update_comment_validation, update_comment_correction, update_user_skeptic_score)
+from publications.cascade import (update_comment_validation, update_comment_correction, update_user_skeptic_score,
+                                  update_publication_score_peer_review_to_correction)
 from publications.constants import *
 from customuser.models import User
 
@@ -41,13 +42,13 @@ class CascadeTestCase(TestCase):
         self.ft = User.objects.create(username="testuser5", password="azerty123", phd=True, first_name="Flying",
                                       last_name="Teapot", email="testcasc5@test.com")
         l = Licence.objects.create(short_name="lol", full_name="lol", url="http://google.com")
-        publication = Publication.objects.create(editor=self.jesus, title="lol", first_author=self.jesus,
-                                                resume="lol", licence=l)
-        self.rfsm = Reviewer.objects.create(scientist=self.fsm, publication=publication)
-        self.rrael = Reviewer.objects.create(scientist=self.rael, publication=publication)
-        self.ripu = Reviewer.objects.create(scientist=self.ipu, publication=publication)
-        self.rft = Reviewer.objects.create(scientist=self.ft, publication=publication)
-        self.comment = Comment.objects.create(author=self.fsm, author_fake_pseudo="", publication=publication,
+        self.publication = Publication.objects.create(editor=self.jesus, title="lol", first_author=self.jesus,
+                                                      resume="lol", licence=l)
+        self.rfsm = Reviewer.objects.create(scientist=self.fsm, publication=self.publication)
+        self.rrael = Reviewer.objects.create(scientist=self.rael, publication=self.publication)
+        self.ripu = Reviewer.objects.create(scientist=self.ipu, publication=self.publication)
+        self.rft = Reviewer.objects.create(scientist=self.ft, publication=self.publication)
+        self.comment = Comment.objects.create(author=self.fsm, author_fake_pseudo="", publication=self.publication,
                                               comment_type=CONTENT, title="lol", content="lol", licence=l)
 
     def test_update_comment_validation_not_enough(self):
@@ -159,3 +160,6 @@ class CascadeTestCase(TestCase):
         self.assertEqual(1, User.objects.get_by_natural_key(self.fsm).valid_bias_found)
         self.assertEqual(0, User.objects.get_by_natural_key(self.fsm).invalid_bias_found)
         self.assertEqual(10., User.objects.get_by_natural_key(self.fsm).skeptic_score)
+
+    def test_update_publication_score_peer_review_to_correction_bad_status(self):
+        self.assertEqual(False, update_publication_score_peer_review_to_correction(self.publication.pk))

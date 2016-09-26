@@ -27,6 +27,7 @@ class PublicationUpdateCronJob(CronJobBase):
                 publication.update_status_date = timezone.now()
                 publication.save()
                 # modification of the reviewer score (number of comment rated, number of comment not rated) (validated)
+                # modification of the publication score
 
     def update_correction_to_validation(self, publications):
         for publication in publications:
