@@ -202,4 +202,14 @@ class CascadeTestCase(TestCase):
         self.assertEqual(True, update_publication_score_validation_to_evaluation(self.publication.pk))
         self.assertEqual(9., Publication.objects.get(pk=self.publication.pk).publication_score)
 
+    def test_add_publication_to_user(self):
+        self.assertEqual(True, add_publication_to_user(self.publication.pk))
+        self.assertEqual(1, User.objects.get_by_natural_key(self.jesus).nb_publication)
 
+    def test_update_user_mean_publication_score(self):
+        self.publication.publication_score = 4.2
+        self.publication.save()
+        self.jesus.nb_publication = 1.
+        self.jesus.save()
+        self.assertEqual(True, update_user_mean_publication_score(self.publication.pk))
+        self.assertEqual(4.2, User.objects.get_by_natural_key(self.jesus).mean_publication_score)

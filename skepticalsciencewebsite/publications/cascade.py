@@ -123,7 +123,10 @@ def add_publication_to_user(publication_id):
 def update_user_mean_publication_score(publication_id):
     publication = Publication.objects.get(pk=publication_id)
     for author in publication.get_all_authors:
-        sum_score = author.mean_publication_score*(author.nb_publication-1)
+        try:
+            sum_score = author.mean_publication_score*(author.nb_publication-1)
+        except TypeError:
+            sum_score = 0.
         sum_score += publication.publication_score
         author.mean_publication_score = sum_score/author.nb_publication
         author.save()
