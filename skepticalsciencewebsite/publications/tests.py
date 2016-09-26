@@ -2,7 +2,8 @@ from django.test import TestCase
 from django.utils import timezone
 from publications.models import Publication, Licence, Comment, CommentReview, Reviewer
 from publications.cascade import (update_comment_validation, update_comment_correction, update_user_skeptic_score,
-                                  update_publication_score_peer_review_to_correction)
+                                  update_publication_score_peer_review_to_correction,
+                                  update_publication_score_validation_to_evaluation)
 from publications.constants import *
 from customuser.models import User
 
@@ -170,7 +171,7 @@ class CascadeTestCase(TestCase):
         self.assertEqual(True,  update_publication_score_peer_review_to_correction(self.publication.pk))
         self.assertEqual(10., Publication.objects.get(pk=self.publication.pk).publication_score)
 
-    def test_update_publication_score_peer_review_to_correction_no_comment(self):
+    def test_update_publication_score_peer_review_to_correction_comment(self):
         self.publication.status = CORRECTION
         self.publication.save()
         self.comment.validated = VALIDATE
@@ -178,3 +179,26 @@ class CascadeTestCase(TestCase):
         self.comment.save()
         self.assertEqual(True,  update_publication_score_peer_review_to_correction(self.publication.pk))
         self.assertEqual(8., Publication.objects.get(pk=self.publication.pk).publication_score)
+
+    def test_update_publication_score_validation_to_evaluation_bad_status(self):
+        self.assertEqual(False, update_publication_score_validation_to_evaluation(self.publication.pk))
+
+    def test_update_publication_score_validation_to_evaluation_no_comment(self):
+        self.publication.status = EVALUATION
+        self.publication.publication_score = 8.
+        self.publication.save()
+        self.assertEqual(False, update_publication_score_validation_to_evaluation(self.publication.pk))
+        self.assertEqual(8., Publication.objects.get(pk=self.publication.pk).publication_score)
+
+    def test_update_publication_score_peer_review_to_correction_comment(self):
+        self.publication.status = EVALUATION
+        self.publication.publication_score = 8.
+        self.publication.save()
+        self.comment.validated = VALIDATE
+        self.comment.seriousness = MAJOR
+        self.comment.corrected = True
+        self.comment.save()
+        self.assertEqual(True, update_publication_score_validation_to_evaluation(self.publication.pk))
+        self.assertEqual(9., Publication.objects.get(pk=self.publication.pk).publication_score)
+
+

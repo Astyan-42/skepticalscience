@@ -91,11 +91,13 @@ def update_publication_score_peer_review_to_correction(publication_id):
     return True
 
 
-def update_publication_score_validation(publication_id):
+def update_publication_score_validation_to_evaluation(publication_id):
+    publication = Publication.objects.get(pk=publication_id)
     comments = Comment.objects.filter(publication=publication_id, validated=VALIDATE,
                                       comment_type=CONTENT, corrected=True)
+    if publication.status != EVALUATION or len(comments) == 0:
+        return False
     comments_seriousness = Counter([comment.seriousness for comment in comments]).most_common()
-    publication = Publication.objects.get(publication=publication_id)
     publication_score = publication.publication_score
     for key, value in comments_seriousness:
         if key == MINOR:
@@ -105,12 +107,9 @@ def update_publication_score_validation(publication_id):
         elif key == CRITICAL:
             publication_score += 2*value
     publication_score = min(publication_score, 10.)
-    if comments.exists():
-        publication.publication_score = publication_score
-        publication.save()
-        return True
-    else:
-        return False
+    publication.publication_score = publication_score
+    publication.save()
+    return True
 
 
 def update_user_mean_publication_score(publication_id):
