@@ -163,3 +163,18 @@ class CascadeTestCase(TestCase):
 
     def test_update_publication_score_peer_review_to_correction_bad_status(self):
         self.assertEqual(False, update_publication_score_peer_review_to_correction(self.publication.pk))
+
+    def test_update_publication_score_peer_review_to_correction_no_comment(self):
+        self.publication.status = CORRECTION
+        self.publication.save()
+        self.assertEqual(True,  update_publication_score_peer_review_to_correction(self.publication.pk))
+        self.assertEqual(10., Publication.objects.get(pk=self.publication.pk).publication_score)
+
+    def test_update_publication_score_peer_review_to_correction_no_comment(self):
+        self.publication.status = CORRECTION
+        self.publication.save()
+        self.comment.validated = VALIDATE
+        self.comment.seriousness = MAJOR
+        self.comment.save()
+        self.assertEqual(True,  update_publication_score_peer_review_to_correction(self.publication.pk))
+        self.assertEqual(8., Publication.objects.get(pk=self.publication.pk).publication_score)
