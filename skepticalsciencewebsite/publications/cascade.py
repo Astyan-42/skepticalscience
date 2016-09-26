@@ -112,12 +112,19 @@ def update_publication_score_validation_to_evaluation(publication_id):
     return True
 
 
+def add_publication_to_user(publication_id):
+    publication = Publication.objects.get(pk=publication_id)
+    for author in publication.get_all_authors:
+        author.nb_publication += 1
+        author.save()
+    return True
+
+
 def update_user_mean_publication_score(publication_id):
     publication = Publication.objects.get(pk=publication_id)
     for author in publication.get_all_authors:
-        sum_score = author.mean_publication_score*author.nb_publication
+        sum_score = author.mean_publication_score*(author.nb_publication-1)
         sum_score += publication.publication_score
-        author.nb_publication += 1
         author.mean_publication_score = sum_score/author.nb_publication
         author.save()
     return True

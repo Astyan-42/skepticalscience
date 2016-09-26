@@ -36,6 +36,7 @@ class PublicationUpdateCronJob(CronJobBase):
                     publication.status = VALIDATION
                     publication.update_status_date = timezone.now()
                     publication.save()
+                    #add publication here for all author
 
     def update_validation_to_evaluation(self, publications):
         for publication in publications:

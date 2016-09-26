@@ -3,7 +3,8 @@ from django.utils import timezone
 from publications.models import Publication, Licence, Comment, CommentReview, Reviewer
 from publications.cascade import (update_comment_validation, update_comment_correction, update_user_skeptic_score,
                                   update_publication_score_peer_review_to_correction,
-                                  update_publication_score_validation_to_evaluation)
+                                  update_publication_score_validation_to_evaluation, add_publication_to_user,
+                                  update_user_mean_publication_score)
 from publications.constants import *
 from customuser.models import User
 
