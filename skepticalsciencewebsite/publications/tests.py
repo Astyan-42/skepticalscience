@@ -6,7 +6,7 @@ from publications.cascade import (update_comment_validation, update_comment_corr
                                   update_publication_score_validation_to_evaluation, add_publication_to_user,
                                   update_user_mean_publication_score, update_reviewers_score_peer_review_to_correction,
                                   update_reviewers_score_validation_to_evaluation,
-                                  update_median_impact_factor_publication)
+                                  update_median_impact_factor_publication, update_mean_impact_factor_users)
 from publications.constants import *
 from customuser.models import User
 
@@ -282,3 +282,12 @@ class CascadeTestCase(TestCase):
         self.assertEqual(True, update_median_impact_factor_publication(self.publication.pk))
         publication = Publication.objects.get(pk=self.publication.pk)
         self.assertEqual(20., publication.estimated_impact_factor)
+
+    def test_update_mean_impact_factor_users(self):
+        self.publication.estimated_impact_factor = 23.
+        self.publication.save()
+        self.jesus.nb_publication = 1
+        self.jesus.save()
+        self.assertEqual(True, update_mean_impact_factor_users(self.publication.pk))
+        jesus = User.objects.get_by_natural_key(self.jesus)
+        self.assertEqual(23., jesus.mean_impact_factor)

@@ -190,10 +190,10 @@ def update_median_impact_factor_publication(publication_id):
 def update_mean_impact_factor_users(publication_id):
     publication = Publication.objects.get(pk=publication_id)
     for author in publication.get_all_authors:
-        default_score = author.mean_impact_factor*(author.nb_publication-1) # -1 because publication score
-        default_score += publication.mean_impact_factor
+        default_score = author.mean_impact_factor*(author.nb_publication-1) # -1 because publication added earlier
+        default_score += publication.estimated_impact_factor
         default_score = default_score/author.nb_publication
-        author.mean_publication_score = default_score
+        author.mean_impact_factor = default_score
         author.save()
     return True
 
