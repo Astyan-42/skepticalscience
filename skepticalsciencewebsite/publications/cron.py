@@ -50,7 +50,7 @@ class PublicationUpdateCronJob(CronJobBase):
     def update_evaluation_to_published(self, publications):
         for publication in publications:
             if (timezone.now() - publication.update_status_date).days >= EVALUATION_DAYS:
-                # update the estimated impact factor of the publication
+                # update the estimated impact factor of the publication if true do:
                 publication.status = PUBLISHED
                 publication.update_status_date = timezone.now()
                 publication.save()

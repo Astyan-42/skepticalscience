@@ -1,11 +1,12 @@
 from django.test import TestCase
 from django.utils import timezone
-from publications.models import Publication, Licence, Comment, CommentReview, Reviewer
+from publications.models import Publication, Licence, Comment, CommentReview, Reviewer, EstimatedImpactFactor
 from publications.cascade import (update_comment_validation, update_comment_correction, update_user_skeptic_score,
                                   update_publication_score_peer_review_to_correction,
                                   update_publication_score_validation_to_evaluation, add_publication_to_user,
                                   update_user_mean_publication_score, update_reviewers_score_peer_review_to_correction,
-                                  update_reviewers_score_validation_to_evaluation)
+                                  update_reviewers_score_validation_to_evaluation,
+                                  update_median_impact_factor_publication)
 from publications.constants import *
 from customuser.models import User
 
@@ -192,7 +193,7 @@ class CascadeTestCase(TestCase):
         self.assertEqual(False, update_publication_score_validation_to_evaluation(self.publication.pk))
         self.assertEqual(8., Publication.objects.get(pk=self.publication.pk).publication_score)
 
-    def test_update_publication_score_peer_review_to_correction_comment(self):
+    def test_update_publication_score_validation_to_evaluation_comment(self):
         self.publication.status = EVALUATION
         self.publication.publication_score = 8.
         self.publication.save()
@@ -267,3 +268,17 @@ class CascadeTestCase(TestCase):
         self.assertEqual(0, fsm.comments_evaluated)
         self.assertEqual(1, fsm.comments_not_evaluated)
         self.assertEqual(0.0, fsm.reviewer_score)
+
+    def test_update_median_impact_factor_publication_empty(self):
+        self.assertEqual(False, update_median_impact_factor_publication(self.publication.pk))
+
+    def test_update_median_impact_factor_publication_not_empty(self):
+        EstimatedImpactFactor.objects.create(publication=self.publication, estimator=self.fsm,
+                                             estimated_impact_factor=20.)
+        EstimatedImpactFactor.objects.create(publication=self.publication, estimator=self.ipu,
+                                             estimated_impact_factor=10.)
+        EstimatedImpactFactor.objects.create(publication=self.publication, estimator=self.rael,
+                                             estimated_impact_factor=30.)
+        self.assertEqual(True, update_median_impact_factor_publication(self.publication.pk))
+        publication = Publication.objects.get(pk=self.publication.pk)
+        self.assertEqual(20., publication.estimated_impact_factor)

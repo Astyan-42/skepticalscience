@@ -176,10 +176,13 @@ def update_reviewers_score_validation_to_evaluation(publication_id):
 def update_median_impact_factor_publication(publication_id):
     # compute with all impact factor and take the median ?
     publication = Publication.objects.get(pk=publication_id)
-    estimated_impact_factors = EstimatedImpactFactor(publication=publication_id)
+    estimated_impact_factors = EstimatedImpactFactor.objects.filter(publication=publication)
     estimated_impact_factors_list = [ estimated_impact_factor.estimated_impact_factor for
                                       estimated_impact_factor in estimated_impact_factors]
-    publication.estimated_impact_factor =  statistics.median(estimated_impact_factors_list)
+    try:
+        publication.estimated_impact_factor = statistics.median(estimated_impact_factors_list)
+    except statistics.StatisticsError:
+        return False
     publication.save()
     return True
 
