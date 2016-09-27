@@ -140,9 +140,9 @@ def update_reviewers_score_peer_review(publication_id):
     for reviewer in reviewers:
         evaluated_comments = 0
         non_evaluated_comments = 0
-        user = User.objects.get(pk=reviewer.scientist)
+        user = User.objects.get_by_natural_key(reviewer.scientist)
         for comment in comments:
-            if CommentReview.objects.filter(comment=comment).exists():
+            if CommentReview.objects.filter(comment=comment, reviewer=reviewer).exists():
                 evaluated_comments += 1
             else:
                 non_evaluated_comments += 1

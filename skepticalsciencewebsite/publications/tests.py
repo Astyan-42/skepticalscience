@@ -4,7 +4,7 @@ from publications.models import Publication, Licence, Comment, CommentReview, Re
 from publications.cascade import (update_comment_validation, update_comment_correction, update_user_skeptic_score,
                                   update_publication_score_peer_review_to_correction,
                                   update_publication_score_validation_to_evaluation, add_publication_to_user,
-                                  update_user_mean_publication_score)
+                                  update_user_mean_publication_score, update_reviewers_score_peer_review)
 from publications.constants import *
 from customuser.models import User
 
@@ -213,3 +213,27 @@ class CascadeTestCase(TestCase):
         self.jesus.save()
         self.assertEqual(True, update_user_mean_publication_score(self.publication.pk))
         self.assertEqual(4.2, User.objects.get_by_natural_key(self.jesus).mean_publication_score)
+
+    def test_update_reviewers_score_peer_review(self):
+        self.comment.validated = VALIDATE
+        self.comment.seriousness = MAJOR
+        self.comment.save()
+        CommentReview.objects.create(reviewer=self.rrael, comment=self.comment, seriousness=MAJOR,
+                                     reason_validation="lol", valid=True)
+        CommentReview.objects.create(reviewer=self.ripu, comment=self.comment, seriousness=MAJOR,
+                                     reason_validation="lol", valid=True)
+        CommentReview.objects.create(reviewer=self.rft, comment=self.comment, seriousness=CRITICAL,
+                                     reason_validation="lol", valid=True)
+        self.assertEqual(True, update_reviewers_score_peer_review(self.publication.pk))
+        rael = User.objects.get_by_natural_key(self.rael)
+        self.assertEqual(1, rael.comments_evaluated)
+        self.assertEqual(0, rael.comments_not_evaluated)
+        self.assertEqual(1.0, rael.reviewer_score)
+        ipu = User.objects.get_by_natural_key(self.ipu)
+        self.assertEqual(1, ipu.comments_evaluated)
+        self.assertEqual(0, ipu.comments_not_evaluated)
+        self.assertEqual(1.0, ipu.reviewer_score)
+        fsm = User.objects.get_by_natural_key(self.fsm)
+        self.assertEqual(0, fsm.comments_evaluated)
+        self.assertEqual(1, fsm.comments_not_evaluated)
+        self.assertEqual(0.0, fsm.reviewer_score)
