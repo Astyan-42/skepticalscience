@@ -134,7 +134,7 @@ def update_user_mean_publication_score(publication_id):
 
 
 # REVIEWER SCORE
-def update_reviewers_score_peer_review(publication_id):
+def update_reviewers_score_peer_review_to_correction(publication_id):
     comments = Comment.objects.filter(publication=publication_id)
     reviewers = Reviewer.objects.filter(publication=publication_id, actif=True)
     for reviewer in reviewers:
@@ -153,15 +153,15 @@ def update_reviewers_score_peer_review(publication_id):
     return True
 
 
-def update_reviewers_score_validation(publication_id):
+def update_reviewers_score_validation_to_evaluation(publication_id):
     comments = Comment.objects.filter(publication=publication_id, validated=VALIDATE)
     reviewers = Reviewer.objects.filter(publication=publication_id, actif=True)
     for reviewer in reviewers:
         evaluated_comments = 0
         non_evaluated_comments = 0
-        user = User.objects.get(pk=reviewer.scientist)
+        user = User.objects.get_by_natural_key(reviewer.scientist)
         for comment in comments:
-            if CommentReview.objects.filter(comment=comment).exclude(corrected_date=None).exists():
+            if CommentReview.objects.filter(comment=comment, reviewer=reviewer).exclude(corrected_date=None).exists():
                 evaluated_comments += 1
             else:
                 non_evaluated_comments += 1
