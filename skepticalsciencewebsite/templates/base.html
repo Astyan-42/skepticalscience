@@ -4,6 +4,7 @@
 <!--{% bootstrap_css %}-->
 <!--{% bootstrap_javascript %}-->
 {% bootstrap_messages %}
+{% load analytical %}
 
 {% load staticfiles %}
 
@@ -12,6 +13,7 @@
 <html lang="en">
 
 <head>
+    {% analytical_head_top %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/personal.css' %}" />
     <!--to change in  the futur-->
@@ -22,9 +24,11 @@
     {{ form.media.css }}
     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
     <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    {% analytical_head_bottom %}
 </head>
 
 <body>
+    {% analytical_body_top %}
     <div id="header">
         <div class="navbar navbar-default navbar-static-top">
           <div class="container">
@@ -116,6 +120,7 @@
     {% block footer %}
     {% endblock %}
     </div>
+    {% analytical_body_bottom %}
 </body>
 
 </html>
