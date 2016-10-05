@@ -8,6 +8,11 @@ from publications.constants import *
 
 # VALIDATE COMMENT IF ENOUGH REVIEW
 def update_comment_validation(comment_id):
+    """
+    not linked to cron
+    :param comment_id:
+    :return:
+    """
     comment = Comment.objects.get(pk=comment_id)
     comment_reviews = CommentReview.objects.filter(comment=comment_id)
     if comment.validated == IN_PROGRESS and len(comment_reviews) == NB_REVIEWER_PER_ARTICLE:
@@ -25,6 +30,11 @@ def update_comment_validation(comment_id):
 
 
 def update_comment_correction(comment_id):
+    """
+    not linked to cron
+    :param comment_id:
+    :return:
+    """
     comment = Comment.objects.get(pk=comment_id)
     comment_reviews = CommentReview.objects.filter(comment=comment_id)
     correction_dates = [comment_review.corrected_date for comment_review in comment_reviews]
@@ -56,6 +66,11 @@ def update_comment(comment_id):
 
 # SKEPTIC SCORE
 def update_user_skeptic_score(comment_id):
+    """
+    not linked to cron
+    :param comment_id:
+    :return:
+    """
     comment = Comment.objects.get(pk=comment_id)
     user = User.objects.get(pk=comment.author.id)
     if comment.validated == VALIDATE :
@@ -113,6 +128,11 @@ def update_publication_score_validation_to_evaluation(publication_id):
 
 
 def add_publication_to_user(publication_id):
+    """
+    to do when going in validation ?
+    :param publication_id:
+    :return:
+    """
     publication = Publication.objects.get(pk=publication_id)
     for author in publication.get_all_authors:
         author.nb_publication += 1

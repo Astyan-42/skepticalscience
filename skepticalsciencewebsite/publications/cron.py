@@ -1,6 +1,14 @@
 from django.utils import timezone
 from django_cron import CronJobBase, Schedule
 from publications.models import Publication, Reviewer
+from publications.cascade import (update_reviewers_score_peer_review_to_correction,
+                                  update_publication_score_peer_review_to_correction,
+                                  add_publication_to_user,
+                                  update_reviewers_score_validation_to_evaluation,
+                                  update_user_mean_publication_score,
+                                  update_median_impact_factor_publication,
+                                  update_mean_impact_factor_users)
+
 from publications.constants import *
 
 
@@ -26,8 +34,8 @@ class PublicationUpdateCronJob(CronJobBase):
                 publication.status = CORRECTION
                 publication.update_status_date = timezone.now()
                 publication.save()
-                # modification of the reviewer score (number of comment rated, number of comment not rated) (validated)
-                # modification of the publication score
+                update_reviewers_score_peer_review_to_correction(publication.pk)
+                update_publication_score_peer_review_to_correction(publication.pk)
 
     def update_correction_to_validation(self, publications):
         for publication in publications:
@@ -36,7 +44,7 @@ class PublicationUpdateCronJob(CronJobBase):
                     publication.status = VALIDATION
                     publication.update_status_date = timezone.now()
                     publication.save()
-                    #add publication here for all author
+                    add_publication_to_user(publication.pk)
 
     def update_validation_to_evaluation(self, publications):
         for publication in publications:
@@ -44,17 +52,17 @@ class PublicationUpdateCronJob(CronJobBase):
                 publication.status = EVALUATION
                 publication.update_status_date = timezone.now()
                 publication.save()
-                # modification of the reviewer score (number of comment rated, number of comment not rated) (corrected)
-                # modification of the publication score of all authors (also in peer review to correction ?)
+                update_reviewers_score_validation_to_evaluation(publication.pk)
+                update_user_mean_publication_score(publication.pk)
 
     def update_evaluation_to_published(self, publications):
         for publication in publications:
             if (timezone.now() - publication.update_status_date).days >= EVALUATION_DAYS:
-                # update the estimated impact factor of the publication if true do:
-                publication.status = PUBLISHED
-                publication.update_status_date = timezone.now()
-                publication.save()
-                # modification of the estimated impact factor of all author
+                if update_median_impact_factor_publication(publication.pk):
+                    publication.status = PUBLISHED
+                    publication.update_status_date = timezone.now()
+                    publication.save()
+                    update_mean_impact_factor_users(publication.pk)
 
     def do(self):
         self.update_adding_peer_to_peer_review(Publication.objects.filter(status=ADDING_PEER))
