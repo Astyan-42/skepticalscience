@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'sciences',
     'customuser',
     'publications',
+    'faq',
 ]
 
 MIDDLEWARE = [

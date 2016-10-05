@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% load bootstrap3 %}
+
+
+{% block content %}
+    {% if topic_list %}
+    {% for topic in topic_list %}
+        <div>
+            <h2>{{ topic.name }}</h2>
+
+            <ul>
+                {% for question in topic.qanda_set.all %}
+                    <li>{{ question.question }} <br /> {{ question.answer }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endfor %}
+    {% else %}
+        <p>No topics have been created.</p>
+    {% endif %}
+{% endblock content%}
