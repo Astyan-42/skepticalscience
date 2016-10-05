@@ -217,3 +217,6 @@ CRON_CLASSES = [
 ]
 
 FAILED_RUNS_CRONJOB_EMAIL_PREFIX = "[Cronjob failed]: "
+
+#fake google analytics
+GOOGLE_ANALYTICS_PROPERTY_ID = 'UA-1234567-8'
