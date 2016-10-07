@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sites',
     'django.contrib.staticfiles',
     'bootstrap3',
     'django_select2',
@@ -46,6 +47,7 @@ INSTALLED_APPS = [
     'simple_history',
     'django_cron',
     'analytical',
+    #'payments',
     'sciences',
     'customuser',
     'publications',
@@ -221,3 +223,8 @@ FAILED_RUNS_CRONJOB_EMAIL_PREFIX = "[Cronjob failed]: "
 
 #fake google analytics
 GOOGLE_ANALYTICS_PROPERTY_ID = 'UA-1234567-8'
+
+PAYMENT_HOST = 'localhost:8000'
+PAYMENT_USES_SSL = False
+PAYMENT_MODEL = 'custompayment.Payment'
+PAYMENT_VARIANTS = {'default': ('payments.dummy.DummyProvider', {})}
