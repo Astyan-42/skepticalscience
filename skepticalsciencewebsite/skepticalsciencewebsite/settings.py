@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'simple_history',
     'django_cron',
     'analytical',
-    # 'payments',
+    'payments',
     'sciences',
     'customuser',
     'publications',
