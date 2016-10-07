@@ -1,6 +1,8 @@
 from django.test import TestCase
 from decimal import Decimal
 from payments import get_payment_model
+from django.shortcuts import redirect
+from custompayment.views import payment_details
 # Create your tests here.
 
 
@@ -24,3 +26,4 @@ class PaymentTestCase(TestCase):
             billing_country_code='UK',
             billing_country_area='Greater London',
             customer_ip_address='127.0.0.1')
+        redirect(payment)

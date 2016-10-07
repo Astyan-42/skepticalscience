@@ -14,5 +14,6 @@ class Payment(BasePayment):
 
     def get_purchased_items(self):
         # you'll probably want to retrieve these from an associated order
+        # either scientific account or posting a publication
         yield PurchasedItem(name='The Hound of the Baskervilles', sku='BSKV',
                             quantity=9, price=Decimal(10), currency='USD')
