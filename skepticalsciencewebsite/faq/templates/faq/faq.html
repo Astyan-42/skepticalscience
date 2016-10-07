@@ -7,18 +7,23 @@
 {% block content %}
     <h1>{% trans "F.A.Q." %}</h1>
     {% if topic_list %}
-    <ul>
+    <ol>
         {% for topic in topic_list %}
-            <li><a href="#{{ topic.pk }}"><p>{{ topic.name }}</p></a></li>
+            <h4><li><a href="#{{ topic.slug }}">{{ topic.name }}</a></li></h4>
+            <ul>
+            {% for question in topic.qanda_set.all %}
+                <li><a href="#{{ question.slug }}">{{ question.question }}</a></li>
+            {% endfor %}
+            </ul>
         {% endfor %}
-    </ul>
+    </ol>
     {% for topic in topic_list %}
         <div>
-            <a id="{{ topic.pk }}"><h2>{{ topic.name }}</h2></a>
+            <a id="{{ topic.slug }}"><h2>{{ topic.name }}</h2></a>
 
             <ul>
                 {% for question in topic.qanda_set.all %}
-                    <li>{{ question.question }} <br /> {{ question.answer }}</li>
+                    <li><a id="{{ question.slug }}">{{ question.question }}</a> <br /> {{ question.answer }}</li>
                 {% endfor %}
             </ul>
         </div>
