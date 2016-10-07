@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'simple_history',
     'django_cron',
     'analytical',
-    #'payments',
+    # 'payments',
     'sciences',
     'customuser',
     'publications',
@@ -143,7 +143,7 @@ STATICFILES_DIRS = (
 
 STATIC_URL = '/static/'
 
-#sendfile settings
+# sendfile settings
 SENDFILE_BACKEND = 'sendfile.backends.development'
 SENDFILE_ROOT = os.path.join(BASE_DIR, 'media')
 SENDFILE_URL = '/media/'
@@ -221,7 +221,7 @@ CRON_CLASSES = [
 
 FAILED_RUNS_CRONJOB_EMAIL_PREFIX = "[Cronjob failed]: "
 
-#fake google analytics
+# fake google analytics
 GOOGLE_ANALYTICS_PROPERTY_ID = 'UA-1234567-8'
 
 PAYMENT_HOST = 'localhost:8000'
