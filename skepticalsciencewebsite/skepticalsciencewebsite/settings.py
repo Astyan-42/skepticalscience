@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'customuser',
     'publications',
     'faq',
+    'custompayment',
 ]
 
 MIDDLEWARE = [
