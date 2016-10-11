@@ -3,14 +3,21 @@ from django.utils.translation import ugettext_lazy as _
 from decimal import Decimal
 from payments import PurchasedItem
 from payments.models import BasePayment
-
+from custompayment.constants import *
+from customuser.models import User
 
 # to complete Order and Payment
 # to add Billing address and Discount code
 
+
 class Order(models.Model):
 
     order_id = models.CharField(verbose_name=_("OrderID"), max_length=50, unique=True)
+    status = models.CharField(_('order status'), max_length=32, choices=ORDER_CHOICES, default=NEW)
+    creation_date = models.DateTimeField(_('created'), auto_now_add=True)
+    last_status_change = models.DateTimeField(_('last status change'), auto_now=True)
+    user = models.ForeignKey(User, verbose_name=_('buyer'))
+    # billing_address = models.ForeignKey(Address)
 
 
 class Payment(BasePayment):
