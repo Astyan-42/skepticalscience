@@ -229,3 +229,7 @@ PAYMENT_HOST = 'localhost:8000'
 PAYMENT_USES_SSL = False
 PAYMENT_MODEL = 'custompayment.Payment'
 PAYMENT_VARIANTS = {'default': ('payments.dummy.DummyProvider', {})}
+
+CHECKOUT_PAYMENT_CHOICES = [
+    ('default', 'Dummy provider')
+]

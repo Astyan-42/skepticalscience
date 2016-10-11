@@ -22,7 +22,8 @@ urlpatterns = [
     url(r'^accounts/', include('customuser.urls')),
     url(r'^select2/', include('django_select2.urls')),
     url(r'^faq/', include('faq.urls')),
-    url('^payments/', include('payments.urls')),
+    url(r'^checkout/', include('custompayment.urls')),
+    url('^checkout/', include('payments.urls')),
     # https://github.com/incuna/django-registration/blob/master/registration/urls.py under accounts
     url(r'^accounts/', include('registration.backends.hmac.urls')),
     url(r'^publications/', include('publications.urls')),
