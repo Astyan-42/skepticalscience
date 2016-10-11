@@ -5,6 +5,9 @@ from payments import PurchasedItem
 from payments.models import BasePayment
 
 
+# to complete Order and Payment
+# to add Billing address and Discount code
+
 class Order(models.Model):
 
     order_id = models.CharField(verbose_name=_("OrderID"), max_length=50, unique=True)
