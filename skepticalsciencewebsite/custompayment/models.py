@@ -12,6 +12,12 @@ from customuser.models import User
 # to add Billing address and Discount code
 
 
+class Item(models.Model):
+
+    name = models.CharField(_('item name'), max_length=32, choices=ITEM_CHOICES)
+    sku = models.IntegerField(_('SKU'))  # used for the pk of the publication or the pk of the user
+
+
 class Order(models.Model):
 
     token = models.CharField(_('token'), max_length=36, unique=True, null=True, blank=True)
@@ -20,6 +26,7 @@ class Order(models.Model):
     last_status_change = models.DateTimeField(_('last status change'), auto_now=True)
     user = models.ForeignKey(User, verbose_name=_('buyer'))
     # billing_address = models.ForeignKey(Address)
+    item = models.OneToOneField(Item, verbose_name=_('item'))
     history = HistoricalRecords()
 
     def save(self, *args, **kwargs):
@@ -45,5 +52,8 @@ class Payment(BasePayment):
     def get_purchased_items(self):
         # you'll probably want to retrieve these from an associated order
         # either scientific account or posting a publication
-        yield PurchasedItem(name='The Hound of the Baskervilles', sku='BSKV',
-                            quantity=9, price=Decimal(10), currency='USD')
+        item = self.order.item
+        default_price = PRODUCTS_PRICES[item.name]
+        # adjusted_price = depend of country + (user quality if for publication) + promotion
+        yield PurchasedItem(name=item.name, sku=str(item.sku),
+                            quantity=1, price=Decimal(default_price), currency='USD')
