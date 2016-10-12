@@ -12,6 +12,7 @@ from customuser.models import User
 # to complete Order and Payment
 # to add Billing address and Discount code => billing address https://chriskief.com/2015/01/19/create-or-update-with-a-django-modelform/
 
+
 class Address(models.Model):
     first_name = models.CharField(_('first name'), max_length=255)
     last_name = models.CharField(_('last name'), max_length=255)
@@ -24,6 +25,7 @@ class Address(models.Model):
     country = CountryField(_('country'))
     country_area = models.CharField(_('state or province'), max_length=127, blank=True)
     phone = models.CharField(_('phone number'), max_length=30, blank=True)
+
 
 class Item(models.Model):
 
