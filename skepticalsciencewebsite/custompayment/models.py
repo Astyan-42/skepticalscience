@@ -9,7 +9,7 @@ from custompayment.constants import *
 from customuser.models import User
 
 # to complete Order and Payment
-# to add Billing address and Discount code
+# to add Billing address and Discount code => billing address https://chriskief.com/2015/01/19/create-or-update-with-a-django-modelform/
 
 
 class Item(models.Model):
