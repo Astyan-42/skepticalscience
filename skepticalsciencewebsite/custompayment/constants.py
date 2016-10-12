@@ -29,3 +29,12 @@ PRODUCTS_PRICES = [
     (PUBLICATION, PUBLICATION_PRICE),
     (SCIENTIST_ACCOUNT, SCIENTIST_ACCOUNT_PRICE)
 ]
+
+# discount type
+PERCENT = 'percent'
+FIXED = 'fixed'
+
+DISCOUNT_CHOICES = [
+    (PERCENT, 'percent'),
+    (FIXED, 'fixed')
+]

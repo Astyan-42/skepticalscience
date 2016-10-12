@@ -18,6 +18,17 @@ class Item(models.Model):
     sku = models.IntegerField(_('SKU'))  # used for the pk of the publication or the pk of the user
 
 
+class Discount(models.Model):
+
+    name = models.CharField(_('Name'), max_length=255)
+    code = models.CharField(_('discount code'), max_length=32)
+    discount_for = models.CharField(_('item'), max_length=32, choices=ITEM_CHOICES),
+    discount_type = models.CharField(_('type'), max_length=32, choices=DISCOUNT_CHOICES)
+    discount_value = models.FloatField(_('value'))
+    starting_date = models.DateField(_('starting'))
+    ending_date = models.DateField(_('ending'))
+
+
 class Order(models.Model):
 
     token = models.CharField(_('token'), max_length=36, unique=True, null=True, blank=True)
@@ -25,6 +36,7 @@ class Order(models.Model):
     creation_date = models.DateTimeField(_('created'), auto_now_add=True)
     last_status_change = models.DateTimeField(_('last status change'), auto_now=True)
     user = models.ForeignKey(User, verbose_name=_('buyer'))
+    discount = models.OneToOneField(Discount, verbose_name=('discount'), null=True, blank=True)
     # billing_address = models.ForeignKey(Address)
     item = models.OneToOneField(Item, verbose_name=_('item'))
     history = HistoricalRecords()
@@ -50,7 +62,6 @@ class Payment(BasePayment):
         return 'http://example.com/success/'
 
     def get_purchased_items(self):
-        # you'll probably want to retrieve these from an associated order
         # either scientific account or posting a publication
         item = self.order.item
         default_price = PRODUCTS_PRICES[item.name]
