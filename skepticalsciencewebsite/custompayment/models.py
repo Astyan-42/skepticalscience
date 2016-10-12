@@ -1,8 +1,10 @@
+from uuid import uuid4
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from decimal import Decimal
 from payments import PurchasedItem
 from payments.models import BasePayment
+from simple_history.models import HistoricalRecords
 from custompayment.constants import *
 from customuser.models import User
 
@@ -12,12 +14,23 @@ from customuser.models import User
 
 class Order(models.Model):
 
-    order_id = models.CharField(verbose_name=_("OrderID"), max_length=50, unique=True)
+    token = models.CharField(_('token'), max_length=36, unique=True, null=True, blank=True)
     status = models.CharField(_('order status'), max_length=32, choices=ORDER_CHOICES, default=NEW)
     creation_date = models.DateTimeField(_('created'), auto_now_add=True)
     last_status_change = models.DateTimeField(_('last status change'), auto_now=True)
     user = models.ForeignKey(User, verbose_name=_('buyer'))
     # billing_address = models.ForeignKey(Address)
+    history = HistoricalRecords()
+
+    def save(self, *args, **kwargs):
+        if not self.token:
+            self.token = str(uuid4())
+            return super(Order, self).save(*args, **kwargs)
+
+    def change_status(self, status):
+        if status != self.status:
+            self.status = status
+            self.save()
 
 
 class Payment(BasePayment):

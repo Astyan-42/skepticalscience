@@ -12,21 +12,21 @@ from custompayment.models import Order, Payment
 from custompayment.forms import PaymentMethodsForm
 
 
-def details(request, order):
-    order = get_object_or_404(Order, order_id=order)
+def details(request, token):
+    order = get_object_or_404(Order, token=token)
     return TemplateResponse(request, 'custompayment/details.html',
                             {'order': order})
 
 
-def payment_choice(request, order):
-    order = get_object_or_404(Order, order_id=order)
+def payment_choice(request, token):
+    order = get_object_or_404(Order, token=token)
     payments = order.payments.all()
     form_data = request.POST or None
     payment_form = PaymentMethodsForm(form_data)
     # redirect if the form have been send
     if payment_form.is_valid():
         payment_method = payment_form.cleaned_data['method']
-        return redirect(start_payment, order=order.order_id, variant=payment_method)
+        return redirect(start_payment, token=token, variant=payment_method)
     # if the form havent been send the render the form to choose the payment method
     return TemplateResponse(request, 'custompayment/payment.html',
                             {'order': order,
@@ -34,10 +34,10 @@ def payment_choice(request, order):
                              'payments': payments})
 
 
-def start_payment(request, order, variant):
-    order = get_object_or_404(Order, order_id=order)
+def start_payment(request, token, variant):
+    order = get_object_or_404(Order, token=token)
     if order.payments.filter(status='waiting').exists():
-        return redirect(payment_choice, order=order.order_id)
+        return redirect(payment_choice, token=token)
     variant_choices = settings.CHECKOUT_PAYMENT_CHOICES
     if variant not in [code for code, dummy_name in variant_choices]:
         raise Http404('%r is not a valid payment variant' % (variant,))
@@ -57,7 +57,7 @@ def start_payment(request, order, variant):
                 'billing_country_area': 'Greater London',
                 'customer_ip_address': '127.0.0.1'}
     with transaction.atomic():
-        # order.change_status('payment-pending')
+        order.change_status('payment-pending')
         payment, dummy_created = Payment.objects.get_or_create(
             variant=variant, status='waiting', order=order, defaults=defaults)
         try:
@@ -69,7 +69,7 @@ def start_payment(request, order, variant):
             messages.error(request,
                            _('Oops, it looks like we were unable to contact the selected payment service'))
             payment.change_status('error')
-            return redirect(payment_choice, order=order.order_id)
+            return redirect(payment_choice, token=token)
     # template to use before the default template
     template = 'custompayment/method/%s.html' % variant
     return TemplateResponse(request, [template, 'custompayment/method/default.html'],
