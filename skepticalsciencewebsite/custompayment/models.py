@@ -5,12 +5,25 @@ from decimal import Decimal
 from payments import PurchasedItem
 from payments.models import BasePayment
 from simple_history.models import HistoricalRecords
+from django_countries.fields import CountryField
 from custompayment.constants import *
 from customuser.models import User
 
 # to complete Order and Payment
 # to add Billing address and Discount code => billing address https://chriskief.com/2015/01/19/create-or-update-with-a-django-modelform/
 
+class Address(models.Model):
+    first_name = models.CharField(_('first name'), max_length=255)
+    last_name = models.CharField(_('last name'), max_length=255)
+    company_name = models.CharField(_('company or organization'), max_length=255, blank=True)
+    street_address_1 = models.CharField(_('address'), max_length=255, blank=True)
+    street_address_2 = models.CharField(_('address'), max_length=255, blank=True)
+    city = models.CharField(_('city'), max_length=255, blank=True)
+    city_area = models.CharField(_('district'), max_length=127, blank=True)
+    postal_code = models.CharField(_('postal code'), max_length=20, blank=True)
+    country = CountryField(_('country'))
+    country_area = models.CharField(_('state or province'), max_length=127, blank=True)
+    phone = models.CharField(_('phone number'), max_length=30, blank=True)
 
 class Item(models.Model):
 

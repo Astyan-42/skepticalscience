@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'sendfile',
     'simple_history',
     'django_cron',
+    'django_countries',
     'analytical',
     'payments',
     'sciences',
