@@ -9,7 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.views.generic import UpdateView
+from django.views.generic import UpdateView, DetailView
 from django.urls import reverse_lazy
 from payments import RedirectNeeded
 from custompayment.models import Order, Payment, Address
@@ -41,6 +41,17 @@ class DiscountOrderUpdate(UpdateView):
 
     def get_success_url(self):
         return reverse_lazy("detail_order", kwargs={'token':self.kwargs["token"]})
+
+
+@method_decorator(login_required, name='dispatch')
+class OrderDisplay(DetailView):
+    context_object_name = "order_detail"
+    model = Order
+    fields = ["status", "creation_date", "user", "discount", "billing_address", "item"]
+
+    def get_context_data(self, **kwargs):
+        context = super(OrderDisplay, self).get_context_data(**kwargs)
+        return context
 
 
 def details(request, token):
