@@ -10,10 +10,10 @@ from custompayment.constants import *
 from customuser.models import User
 
 # to complete Order and Payment
-# to add Billing address and Discount code => billing address https://chriskief.com/2015/01/19/create-or-update-with-a-django-modelform/
 
 
 class Address(models.Model):
+    scientist = models.OneToOneField(User, verbose_name=_("Scientist"), null=True, blank=True)
     first_name = models.CharField(_('first name'), max_length=255)
     last_name = models.CharField(_('last name'), max_length=255)
     company_name = models.CharField(_('company or organization'), max_length=255, blank=True)
@@ -52,7 +52,7 @@ class Order(models.Model):
     last_status_change = models.DateTimeField(_('last status change'), auto_now=True)
     user = models.ForeignKey(User, verbose_name=_('buyer'))
     discount = models.OneToOneField(Discount, verbose_name=('discount'), null=True, blank=True)
-    # billing_address = models.ForeignKey(Address)
+    billing_address = models.ForeignKey(Address, null=True, blank=True)
     item = models.OneToOneField(Item, verbose_name=_('item'))
     history = HistoricalRecords()
 

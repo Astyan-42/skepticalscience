@@ -7,9 +7,23 @@ from django.conf import settings
 from django.db import transaction
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.views.generic import UpdateView
 from payments import RedirectNeeded
-from custompayment.models import Order, Payment
-from custompayment.forms import PaymentMethodsForm
+from custompayment.models import Order, Payment, Address
+from custompayment.forms import PaymentMethodsForm, AddressForm
+
+
+# billing address https://chriskief.com/2015/01/19/create-or-update-with-a-django-modelform/
+
+@method_decorator(login_required, name='dispatch')
+class BillingAddressUpdate(UpdateView):
+    form_class = AddressForm
+
+    def get_object(self, queryset=None):
+        obj, created = Address.objects.get_or_create(scientist=self.request.user)
+        return obj
 
 
 def details(request, token):
