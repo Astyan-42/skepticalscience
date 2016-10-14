@@ -10,6 +10,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import UpdateView
+from django.urls import reverse_lazy
 from payments import RedirectNeeded
 from custompayment.models import Order, Payment, Address
 from custompayment.forms import PaymentMethodsForm, AddressForm
@@ -24,6 +25,9 @@ class BillingAddressUpdate(UpdateView):
     def get_object(self, queryset=None):
         obj, created = Address.objects.get_or_create(scientist=self.request.user)
         return obj
+
+    def get_success_url(self):
+        return reverse_lazy("payment", kwargs={'token':self.kwargs["token"]})
 
 
 def details(request, token):
