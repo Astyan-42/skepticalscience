@@ -2,17 +2,10 @@
 {% load i18n %}
 
 {% load bootstrap3 %}
+{% load crispy_forms_tags %}
 
 {% block content %}
-    <form method="post" action="{% url 'payment' order.token %}">
-        {% csrf_token %}
-        {{ payment_form }}
-        <div class="form-group text-right">
-            {% block form_submit %}
-                <button type="submit" class="btn btn-primary">
-                    {% trans "Proceed to payment" %}
-                </button>
-            {% endblock %}
-        </div>
-    </form>
+    <h1>{% trans "Payment method" %}</h1>
+    {% crispy payment_form %}
+    {{ form.media.js }}
 {% endblock %}

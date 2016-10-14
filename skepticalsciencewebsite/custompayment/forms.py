@@ -10,10 +10,9 @@ class AddressForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(AddressForm, self).__init__(*args, **kwargs)
-        print("test")
         self.helper = FormHelper(self)
         self.helper.form_id = 'id_addressForm'
-        self.helper.add_input(Submit('submit', _('Submit')))
+        self.helper.add_input(Submit('submit', _('Save')))
 
     class Meta:
         model = Address
@@ -25,3 +24,9 @@ class PaymentMethodsForm(forms.Form):
     method = forms.ChoiceField(
         choices=settings.CHECKOUT_PAYMENT_CHOICES, widget=forms.RadioSelect,
         initial=settings.CHECKOUT_PAYMENT_CHOICES[0][0])
+
+    def __init__(self, *args, **kwargs):
+        super(PaymentMethodsForm, self).__init__(*args, ** kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_id = 'id_paymentmethodForm'
+        self.helper.add_input(Submit('submit', _('Proceed to payment')))
