@@ -39,10 +39,6 @@ class DiscountOrderUpdate(UpdateView):
         obj, created = Order.objects.get_or_create(token=self.kwargs["token"])
         return obj
 
-    def form_valid(self, form):
-        print("ok")
-        return super(DiscountOrderUpdate, self).form_valid(form)
-
     def get_success_url(self):
         return reverse_lazy("detail_order", kwargs={'token':self.kwargs["token"]})
 

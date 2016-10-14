@@ -1,9 +1,10 @@
 from django import forms
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
+from django.utils import timezone
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
-from custompayment.models import Address, Order
+from custompayment.models import Address, Order, Discount
 
 
 class AddressForm(forms.ModelForm):
@@ -27,6 +28,20 @@ class DiscountOrderForm(forms.ModelForm):
         self.helper = FormHelper(self)
         self.helper.form_id = 'id_discountorderForm'
         self.helper.add_input(Submit('submit', _('Apply')))
+
+    def is_valid(self):
+        valid = super(DiscountOrderForm, self).is_valid()
+        if not valid:
+            return valid
+        discount = self.cleaned_data['discount']
+        today = timezone.now().date()
+        if today < discount.starting_date:
+            self.add_error('discount', forms.ValidationError(_("This discount code didn't started yet")))
+            return False
+        elif today > discount.ending_date:
+            self.add_error('discounts', forms.ValidationError(_("This discount code is over")))
+            return False
+        return True
 
     class Meta:
         model = Order
