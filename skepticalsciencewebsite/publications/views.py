@@ -103,7 +103,7 @@ class PublicationUpdate(UpdateView):
         if self.object.editor != self.request.user or self.object.status != WAITING_PAYMENT:
             raise PermissionDenied
         # call the parent to save correctly the ManyToManyField (sciences)
-        return super(UpdateView, self).form_valid(form)
+        return super(PublicationUpdate, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
         """

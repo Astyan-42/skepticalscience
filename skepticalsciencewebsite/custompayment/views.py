@@ -13,7 +13,7 @@ from django.views.generic import UpdateView
 from django.urls import reverse_lazy
 from payments import RedirectNeeded
 from custompayment.models import Order, Payment, Address
-from custompayment.forms import PaymentMethodsForm, AddressForm
+from custompayment.forms import PaymentMethodsForm, AddressForm, DiscountOrderForm
 
 
 # billing address https://chriskief.com/2015/01/19/create-or-update-with-a-django-modelform/
@@ -28,6 +28,23 @@ class BillingAddressUpdate(UpdateView):
 
     def get_success_url(self):
         return reverse_lazy("payment", kwargs={'token':self.kwargs["token"]})
+
+
+@method_decorator(login_required, name='dispatch')
+class DiscountOrderUpdate(UpdateView):
+    form_class = DiscountOrderForm
+    template_name = "custompayment/discount_form.html"
+
+    def get_object(self, queryset=None):
+        obj, created = Order.objects.get_or_create(token=self.kwargs["token"])
+        return obj
+
+    def form_valid(self, form):
+        print("ok")
+        return super(DiscountOrderUpdate, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy("detail_order", kwargs={'token':self.kwargs["token"]})
 
 
 def details(request, token):
