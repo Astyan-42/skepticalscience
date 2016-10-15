@@ -9,7 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.views.generic import UpdateView, DetailView
+from django.views.generic import UpdateView, DetailView, View
 from django.urls import reverse_lazy
 from payments import RedirectNeeded
 from custompayment.models import Order, Payment, Address
@@ -48,15 +48,35 @@ class OrderDisplay(DetailView):
     context_object_name = "order_detail"
     model = Order
     fields = ["status", "creation_date", "user", "discount", "billing_address", "item"]
+    object = None
+
+    def get(self, request, token, *args, **kwargs):
+        self.object = get_object_or_404(Order, token=token)
+        context = self.get_context_data(object=self.object)
+        return self.render_to_response(context)
 
     def get_context_data(self, **kwargs):
         context = super(OrderDisplay, self).get_context_data(**kwargs)
         return context
 
 
+@method_decorator(login_required, name='dispatch')
+class OrderDetailView(View):
+
+    @staticmethod
+    def get(request, *args, **kwargs):
+        view = OrderDisplay.as_view()
+        return view(request, *args, **kwargs)
+
+    # @staticmethod
+    # def post(request, *args, **kwargs):
+    #     view = EstimatedImpactFactorInterest.as_view()
+    #     return view(request, *args, **kwargs)
+
+
 def details(request, token):
     order = get_object_or_404(Order, token=token)
-    return TemplateResponse(request, 'custompayment/details.html',
+    return TemplateResponse(request, 'custompayment/order_detail.html',
                             {'order': order})
 
 
