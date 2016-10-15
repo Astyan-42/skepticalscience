@@ -57,6 +57,7 @@ class OrderDisplay(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(OrderDisplay, self).get_context_data(**kwargs)
+        context["form"] = DiscountOrderForm()
         return context
 
 
@@ -68,16 +69,10 @@ class OrderDetailView(View):
         view = OrderDisplay.as_view()
         return view(request, *args, **kwargs)
 
-    # @staticmethod
-    # def post(request, *args, **kwargs):
-    #     view = EstimatedImpactFactorInterest.as_view()
-    #     return view(request, *args, **kwargs)
-
-
-def details(request, token):
-    order = get_object_or_404(Order, token=token)
-    return TemplateResponse(request, 'custompayment/order_detail.html',
-                            {'order': order})
+    @staticmethod
+    def post(request, *args, **kwargs):
+        view = DiscountOrderUpdate.as_view()
+        return view(request, *args, **kwargs)
 
 
 def payment_choice(request, token):

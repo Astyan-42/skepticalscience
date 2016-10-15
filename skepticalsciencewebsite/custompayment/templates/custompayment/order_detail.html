@@ -2,7 +2,11 @@
 {% load i18n %}
 
 {% load bootstrap3 %}
+{% load crispy_forms_tags %}
 
 {% block content %}
     {{ order_detail.token }}
+    <hr>
+    {% crispy form %}
+    {{ form.media.js }}
 {% endblock %}
