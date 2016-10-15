@@ -3,8 +3,9 @@ from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
-from custompayment.models import Address, Order, Discount
+from crispy_forms.layout import Layout, Submit, Div
+from crispy_forms.bootstrap import Field
+from custompayment.models import Address, Order
 
 
 class AddressForm(forms.ModelForm):
@@ -26,8 +27,8 @@ class DiscountOrderForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(DiscountOrderForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
-        self.helper.form_class = 'form-inline'
-        self.helper.field_template = 'bootstrap3/layout/inline_field.html'
+        # self.helper.form_class = 'form-inline' STUPID INLINE FORM
+        # self.helper.field_template = 'bootstrap3/layout/inline_field.html'
         self.helper.form_id = 'id_discountorderForm'
         self.helper.add_input(Submit('submit', _('Apply')))
 
@@ -36,6 +37,9 @@ class DiscountOrderForm(forms.ModelForm):
         if not valid:
             return valid
         discount = self.cleaned_data['discount']
+        if discount is None:
+            self.add_error('discount', forms.ValidationError(_("Empty value not authorised")))
+            return False
         today = timezone.now().date()
         if today < discount.starting_date:
             self.add_error('discount', forms.ValidationError(_("This discount code didn't started yet")))

@@ -25,6 +25,7 @@ class Address(models.Model):
     country = CountryField(_('country'))
     country_area = models.CharField(_('state or province'), max_length=127, blank=True)
     phone = models.CharField(_('phone number'), max_length=30, blank=True)
+    history = HistoricalRecords()
 
 
 class Item(models.Model):
@@ -52,14 +53,14 @@ class Order(models.Model):
     last_status_change = models.DateTimeField(_('last status change'), auto_now=True)
     user = models.ForeignKey(User, verbose_name=_('buyer'))
     discount = models.OneToOneField(Discount, verbose_name=_('discount code'), null=True, blank=True)
-    billing_address = models.ForeignKey(Address, null=True, blank=True)
+    billing_address = models.ForeignKey(Address, verbose_name=_('billing address'), null=True, blank=True)
     item = models.OneToOneField(Item, verbose_name=_('item'))
     history = HistoricalRecords()
 
     def save(self, *args, **kwargs):
         if not self.token:
             self.token = str(uuid4())
-            return super(Order, self).save(*args, **kwargs)
+        return super(Order, self).save(*args, **kwargs)
 
     def change_status(self, status):
         if status != self.status:

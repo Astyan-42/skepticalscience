@@ -27,17 +27,25 @@ class BillingAddressUpdate(UpdateView):
         return obj
 
     def get_success_url(self):
-        return reverse_lazy("payment", kwargs={'token':self.kwargs["token"]})
+        return reverse_lazy("detail_order", kwargs={'token':self.kwargs["token"]})
 
 
 @method_decorator(login_required, name='dispatch')
 class DiscountOrderUpdate(UpdateView):
     form_class = DiscountOrderForm
-    template_name = "custompayment/discount_form.html"
+    model = Order
+    template_name = "custompayment/order_detail.html"
 
     def get_object(self, queryset=None):
         obj, created = Order.objects.get_or_create(token=self.kwargs["token"])
         return obj
+
+    def get_context_data(self, **kwargs):
+        """ done in case of form invalid"""
+        context = super(DiscountOrderUpdate, self).get_context_data(**kwargs)
+        context["view"] = OrderDisplay.as_view()
+        context["order_detail"] = context["order"]
+        return context
 
     def get_success_url(self):
         return reverse_lazy("detail_order", kwargs={'token':self.kwargs["token"]})
@@ -50,8 +58,8 @@ class OrderDisplay(DetailView):
     fields = ["status", "creation_date", "user", "discount", "billing_address", "item"]
     object = None
 
-    def get(self, request, token, *args, **kwargs):
-        self.object = get_object_or_404(Order, token=token)
+    def get(self, request, *args, **kwargs):
+        self.object = get_object_or_404(Order, token=kwargs["token"])
         context = self.get_context_data(object=self.object)
         return self.render_to_response(context)
 

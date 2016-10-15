@@ -4,9 +4,19 @@
 {% load bootstrap3 %}
 {% load crispy_forms_tags %}
 
+
 {% block content %}
-    {{ order_detail.token }}
-    <hr>
-    {% crispy form %}
-    {{ form.media.js }}
+    <h1> {% trans "Order status" %}</h1>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="bs-component">
+                {{ order_detail.token }}
+                {{ order_detail.billing_address }}
+            </div>
+        </div>
+        <div class="col-md-4">
+            {% crispy form %}
+            {% include 'bootstrap3/layout/help_text_and_errors.html' %}
+            {{ form.media.js }}
+        </div>
 {% endblock %}
