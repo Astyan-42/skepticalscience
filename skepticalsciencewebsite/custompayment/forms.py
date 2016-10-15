@@ -3,8 +3,7 @@ from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Div
-from crispy_forms.bootstrap import Field
+from crispy_forms.layout import Submit
 from custompayment.models import Address, Order
 
 

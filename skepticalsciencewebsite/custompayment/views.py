@@ -15,8 +15,8 @@ from payments import RedirectNeeded
 from custompayment.models import Order, Payment, Address
 from custompayment.forms import PaymentMethodsForm, AddressForm, DiscountOrderForm
 
+# need a my order list
 
-# billing address https://chriskief.com/2015/01/19/create-or-update-with-a-django-modelform/
 
 @method_decorator(login_required, name='dispatch')
 class BillingAddressUpdate(UpdateView):
