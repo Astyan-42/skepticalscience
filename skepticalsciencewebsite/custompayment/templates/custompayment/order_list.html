@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% load staticfiles %}
+{% load bootstrap3 %}
+{% load django_tables2 crispy_forms_tags %}
+
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/table2.css' %}" />
+{% endblock %}
+
+{% block content %}
+    <h1>{% trans "My orders" %}</h1>
+    {% render_table table %}
+{% endblock %}

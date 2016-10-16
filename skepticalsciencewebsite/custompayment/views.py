@@ -11,9 +11,12 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import UpdateView, DetailView, View
 from django.urls import reverse_lazy
+from django_tables2 import SingleTableView, RequestConfig
 from payments import RedirectNeeded
 from custompayment.models import Order, Payment, Address
 from custompayment.forms import PaymentMethodsForm, AddressForm, DiscountOrderForm
+from custompayment.tables import OrderTable
+from custompayment.filters import OrderFilter
 
 # need a my order list
 
@@ -81,6 +84,37 @@ class OrderDetailView(View):
     def post(request, *args, **kwargs):
         view = DiscountOrderUpdate.as_view()
         return view(request, *args, **kwargs)
+
+
+class OrderOwnedTableView(SingleTableView):
+    science_filter = False
+    filter_class = OrderFilter
+    context_filter_name = 'filter'
+    filter_dict = {}
+    model = Order
+    table_class = OrderTable
+    template_name = 'custompayment/order_list.html'
+    paginate_by = 20
+    object = None
+    request = None
+    filter = None
+
+    def get_queryset(self, **kwargs):
+        qs = super(OrderOwnedTableView, self).get_queryset()
+        self.filter_dict = {'user': self.request.session['_auth_user_id']}
+        self.filter = self.filter_class(self.filter_dict, queryset=qs)
+        return self.filter.qs
+
+    def get_table(self, **kwargs):
+        table = super(OrderOwnedTableView, self).get_table()
+        RequestConfig(self.request, paginate={'page': self.page_kwarg,
+                      "per_page": self.paginate_by}).configure(table)
+        return table
+
+    def get_context_data(self, **kwargs):
+        context = super(OrderOwnedTableView, self).get_context_data()
+        context[self.context_filter_name] = self.filter
+        return context
 
 
 def payment_choice(request, token):
