@@ -52,10 +52,10 @@ class Order(models.Model):
     creation_date = models.DateTimeField(_('created'), auto_now_add=True)
     last_status_change = models.DateTimeField(_('last status change'), auto_now=True)
     user = models.ForeignKey(User, verbose_name=_('buyer'))
-    discount = models.OneToOneField(Discount, verbose_name=_('discount code'), null=True, blank=True)
+    discount = models.ForeignKey(Discount, verbose_name=_('discount code'), null=True, blank=True)
     billing_address = models.ForeignKey(Address, verbose_name=_('billing address'), null=True, blank=True)
     item = models.OneToOneField(Item, verbose_name=_('item'))
-    history = HistoricalRecords()
+    # yhistory = HistoricalRecords()
 
     def save(self, *args, **kwargs):
         if not self.token:

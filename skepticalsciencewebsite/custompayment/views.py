@@ -17,7 +17,6 @@ from custompayment.models import Order, Payment, Address
 from custompayment.forms import PaymentMethodsForm, AddressForm, DiscountOrderForm
 from custompayment.tables import OrderTable
 from custompayment.filters import OrderFilter
-
 # need a my order list
 
 
@@ -86,6 +85,7 @@ class OrderDetailView(View):
         return view(request, *args, **kwargs)
 
 
+@method_decorator(login_required, name='dispatch')
 class OrderOwnedTableView(SingleTableView):
     model = Order
     filter_class = OrderFilter
@@ -93,7 +93,6 @@ class OrderOwnedTableView(SingleTableView):
     table_class = OrderTable
     template_name = 'custompayment/order_list.html'
     paginate_by = 20
-
     object = None
     request = None
     filter = None
