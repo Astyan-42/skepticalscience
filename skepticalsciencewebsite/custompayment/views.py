@@ -87,22 +87,21 @@ class OrderDetailView(View):
 
 
 class OrderOwnedTableView(SingleTableView):
-    science_filter = False
+    model = Order
     filter_class = OrderFilter
     context_filter_name = 'filter'
-    filter_dict = {}
-    model = Order
     table_class = OrderTable
     template_name = 'custompayment/order_list.html'
     paginate_by = 20
+
     object = None
     request = None
     filter = None
 
     def get_queryset(self, **kwargs):
         qs = super(OrderOwnedTableView, self).get_queryset()
-        self.filter_dict = {'user': self.request.session['_auth_user_id']}
-        self.filter = self.filter_class(self.filter_dict, queryset=qs)
+        filter_dict = {'user': self.request.session['_auth_user_id']}
+        self.filter = self.filter_class(filter_dict, queryset=qs)
         return self.filter.qs
 
     def get_table(self, **kwargs):

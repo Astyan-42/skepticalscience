@@ -276,7 +276,7 @@ class PublicationToReviewTableView(PublicationSpecialTableView):
     Only for the user in scientist group
     """
     name = "to review"
-    filter_dict = {'status': 'adding_peer'}
+    filter_dict = {'status': ADDING_PEER}
 
 
 class PublicationInReviewTableView(PublicationSpecialTableView):
@@ -284,7 +284,7 @@ class PublicationInReviewTableView(PublicationSpecialTableView):
     show the publications about the science of the user and in review. In need of comment
     """
     name = "to comment"
-    filter_dict = {'status': 'peer_review'}
+    filter_dict = {'status': PEER_REVIEW}
 
 
 class PublicationToEvaluateTableView(PublicationSpecialTableView):
@@ -293,7 +293,7 @@ class PublicationToEvaluateTableView(PublicationSpecialTableView):
     Only for user in the scientist group
     """
     name = "to evaluate"
-    filter_dict = {'status': 'evaluation'}
+    filter_dict = {'status': EVALUATION}
 
 
 class PublicationOwnedTableView(PublicationSpecialTableView):
@@ -343,8 +343,8 @@ class PublicationDisplay(DetailView):
         """
         status = context["publication_detail"].status
         alert = {}
-        if status < 7:
-            if status == 5:
+        if status < EVALUATION:
+            if status == ABORTED:
                 alert["class"] = "alert-danger"
                 alert["title"] = _("Publication canceled")
                 alert["message"] = _("This publication haven't been validated. Be careful. We appreciate your help!")
