@@ -6,21 +6,57 @@
 
 
 {% block content %}
-    <h1> {% trans "Order status" %}</h1>
+    <h1> {% trans "Order" %}</h1>
     <div class="row">
         <div class="col-md-8">
             <div class="bs-component">
                 {{ order_detail.token }}
-                {{ order_detail.billing_address }}
-                do the stuff to see the see if there is a billing address
-                compute the price to pay, show if there is a discount code
-                like to the billing address change, payment link,
-                other information about the order
+
+                <p> show the price </p>
+
+                <hr>
+
+                {% if order_detail.billing_address is None %}
+                    <p class="text-info"> {% trans "You have to enter a billing address before being able to pay" %}</p>
+                {% else %}
+                    <h2>{% trans "Address" %}</h2>
+                    <p><b>{% trans "Billing name" %}</b>: {{ order_detail.billing_address }}</p>
+                    {% if order_detail.billing_address.company_name != "" %}
+                        <p><b>{% trans "Company" %}</b>: {{ order_detail.billing_address.company_name }}</p>
+                    {% endif %}
+                    {% if order_detail.billing_address.street_address_1 != "" %}
+                        <p><b>{% trans "Street address 1" %}</b>: {{ order_detail.billing_address.street_address_1 }}</p>
+                    {% endif %}
+                    {% if order_detail.billing_address.street_address_2 != "" %}
+                        <p><b>{% trans "Street address 2" %}</b>: {{ order_detail.billing_address.street_address_2 }}</p>
+                    {% endif %}
+                    {% if order_detail.billing_address.city != "" %}
+                        <p><b>{% trans "City" %}</b>: {{ order_detail.billing_address.city }}</p>
+                    {% endif %}
+                    {% if order_detail.billing_address.city_area != "" %}
+                        <p><b>{% trans "City area" %}</b>: {{ order_detail.billing_address.city_area }}</p>
+                    {% endif %}
+                    {% if order_detail.billing_address.postal_code != "" %}
+                        <p><b>{% trans "Postal code" %}</b>: {{ order_detail.billing_address.postal_code }}</p>
+                    {% endif %}
+                    {% if order_detail.billing_address.country != "" %}
+                        <p><b>{% trans "Country" %}</b>: {{ order_detail.billing_address.country.name }}</p>
+                    {% endif %}
+                    {% if order_detail.billing_address.country_area != "" %}
+                        <p><b>{% trans "Country area" %}</b>: {{ order_detail.billing_address.country_area }}</p>
+                    {% endif %}
+                    {% if order_detail.billing_address.phone != "" %}
+                        <p><b>{% trans "Phone number" %}</b>: {{ order_detail.billing_address.phone }}</p>
+                    {% endif %}
+
+                    <p> button to pay</p>
+                {% endif %}
+                <p> buton to edit the address</p>
+                <p> link to the selling contract</p>
             </div>
         </div>
         <div class="col-md-4">
             {% crispy form %}
-            {% include 'bootstrap3/layout/help_text_and_errors.html' %}
             {{ form.media.js }}
         </div>
 {% endblock %}

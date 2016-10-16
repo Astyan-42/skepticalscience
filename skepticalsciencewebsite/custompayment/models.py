@@ -66,7 +66,7 @@ class Order(models.Model):
     discount = models.ForeignKey(Discount, verbose_name=_('discount code'), null=True, blank=True)
     billing_address = models.ForeignKey(Address, verbose_name=_('billing address'), null=True, blank=True)
     item = models.OneToOneField(Item, verbose_name=_('item'))
-    # yhistory = HistoricalRecords()
+    history = HistoricalRecords()
 
     def save(self, *args, **kwargs):
         if not self.token:
