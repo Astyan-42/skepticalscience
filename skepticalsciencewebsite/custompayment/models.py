@@ -8,8 +8,7 @@ from simple_history.models import HistoricalRecords
 from django_countries.fields import CountryField
 from custompayment.constants import *
 from customuser.models import User
-
-# to complete Order and Payment
+from publications.models import Publication
 
 
 class Address(models.Model):
@@ -27,11 +26,20 @@ class Address(models.Model):
     phone = models.CharField(_('phone number'), max_length=30, blank=True)
     history = HistoricalRecords()
 
+    def __str__(self):
+        return self.first_name+" "+self.last_name
+
 
 class Item(models.Model):
 
     name = models.CharField(_('item name'), max_length=32, choices=ITEM_CHOICES)
     sku = models.IntegerField(_('SKU'))  # used for the pk of the publication or the pk of the user
+
+    def __str__(self):
+        if self.name == SCIENTIST_ACCOUNT:
+            return ITEM_CHOICES[SCIENTIST_ACCOUNT]
+        else:
+            return Publication.objects.get(pk=self.sku).__str__()
 
 
 class Discount(models.Model):
@@ -43,6 +51,9 @@ class Discount(models.Model):
     discount_value = models.FloatField(_('value'))
     starting_date = models.DateField(_('starting'))
     ending_date = models.DateField(_('ending'))
+
+    def __str__(self):
+        return self.name
 
 
 class Order(models.Model):
@@ -67,6 +78,9 @@ class Order(models.Model):
             self.status = status
             self.save()
 
+    def __str__(self):
+        return self.token
+
 
 class Payment(BasePayment):
     order = models.ForeignKey(Order, related_name='payments')
@@ -84,3 +98,6 @@ class Payment(BasePayment):
         # adjusted_price = depend of country + (user quality if for publication) + promotion
         yield PurchasedItem(name=item.name, sku=str(item.sku),
                             quantity=1, price=Decimal(default_price), currency='USD')
+
+    def __str__(self):
+        return self.order.__str__()
