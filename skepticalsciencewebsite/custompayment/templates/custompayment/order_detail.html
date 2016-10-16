@@ -48,7 +48,6 @@
                     {% if order_detail.billing_address.phone != "" %}
                         <p><b>{% trans "Phone number" %}</b>: {{ order_detail.billing_address.phone }}</p>
                     {% endif %}
-
                     <p> button to pay</p>
                 {% endif %}
                 <p> buton to edit the address</p>
@@ -59,4 +58,5 @@
             {% crispy form %}
             {{ form.media.js }}
         </div>
+    </div>
 {% endblock %}
