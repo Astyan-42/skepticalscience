@@ -1,16 +1,44 @@
 {% extends "base.html" %}
 {% load i18n %}
 
+{% load staticfiles %}
 {% load bootstrap3 %}
 {% load crispy_forms_tags %}
 
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/table2.css' %}" />
+{% endblock %}
 
 {% block content %}
     <h1> {% trans "Order" %}</h1>
+
     <div class="row">
         <div class="col-md-8">
             <div class="bs-component">
                 {{ order_detail.token }}
+                <div class="table-container">
+                    <table class="table table-responsive paleblue">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Object</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="even">
+                                    <td>Test1</td>
+                                    <td>Test1</td>
+                                    <td>Test1</td>
+                            </tr>
+                            <tr class="even">
+                                    <td>Test2</td>
+                                    <td>Test2</td>
+                                    <td>Test2</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
                 <p> show the price </p>
 
