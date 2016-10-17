@@ -13,9 +13,11 @@
     <h1> {% trans "Order" %}</h1>
 
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-7">
             <div class="bs-component">
+                <h2>Detail</h2>
                 {{ order_detail.token }}
+                show order status and link to the billing if the order have been done
                 <div class="table-container">
                     <table class="table table-responsive paleblue">
                         <thead>
@@ -42,47 +44,49 @@
 
                 <p> show the price </p>
 
-                <hr>
-
-                {% if order_detail.billing_address is None %}
-                    <p class="text-info"> {% trans "You have to enter a billing address before being able to pay" %}</p>
-                {% else %}
-                    <h2>{% trans "Address" %}</h2>
-                    <p><b>{% trans "Billing name" %}</b>: {{ order_detail.billing_address }}</p>
-                    {% if order_detail.billing_address.company_name != "" %}
-                        <p><b>{% trans "Company" %}</b>: {{ order_detail.billing_address.company_name }}</p>
-                    {% endif %}
-                    {% if order_detail.billing_address.street_address_1 != "" %}
-                        <p><b>{% trans "Street address 1" %}</b>: {{ order_detail.billing_address.street_address_1 }}</p>
-                    {% endif %}
-                    {% if order_detail.billing_address.street_address_2 != "" %}
-                        <p><b>{% trans "Street address 2" %}</b>: {{ order_detail.billing_address.street_address_2 }}</p>
-                    {% endif %}
-                    {% if order_detail.billing_address.city != "" %}
-                        <p><b>{% trans "City" %}</b>: {{ order_detail.billing_address.city }}</p>
-                    {% endif %}
-                    {% if order_detail.billing_address.city_area != "" %}
-                        <p><b>{% trans "City area" %}</b>: {{ order_detail.billing_address.city_area }}</p>
-                    {% endif %}
-                    {% if order_detail.billing_address.postal_code != "" %}
-                        <p><b>{% trans "Postal code" %}</b>: {{ order_detail.billing_address.postal_code }}</p>
-                    {% endif %}
-                    {% if order_detail.billing_address.country != "" %}
-                        <p><b>{% trans "Country" %}</b>: {{ order_detail.billing_address.country.name }}</p>
-                    {% endif %}
-                    {% if order_detail.billing_address.country_area != "" %}
-                        <p><b>{% trans "Country area" %}</b>: {{ order_detail.billing_address.country_area }}</p>
-                    {% endif %}
-                    {% if order_detail.billing_address.phone != "" %}
-                        <p><b>{% trans "Phone number" %}</b>: {{ order_detail.billing_address.phone }}</p>
-                    {% endif %}
-                    <p> button to pay</p>
-                {% endif %}
-                <p> buton to edit the address</p>
+                <p> button to pay</p>
                 <p> link to the selling contract</p>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
+            <h2>{% trans "Billing address" %}</h2>
+            test if billing address
+            if not then warning
+            <p>{{ order_detail.billing_address }}</p>
+            {% if order_detail.billing_address.company_name != "" %}
+                <p>{{ order_detail.billing_address.company_name }}</p>
+            {% endif %}
+            {% if order_detail.billing_address.street_address_1 != "" %}
+                <p>{{ order_detail.billing_address.street_address_1 }}</p>
+            {% endif %}
+            {% if order_detail.billing_address.street_address_2 != "" %}
+                <p>{{ order_detail.billing_address.street_address_2 }}</p>
+            {% endif %}
+            {% if order_detail.billing_address.city != "" %}
+                <p>{{ order_detail.billing_address.city }}</p>
+            {% endif %}
+            {% if order_detail.billing_address.city_area != "" %}
+                <p>{{ order_detail.billing_address.city_area }}</p>
+            {% endif %}
+            {% if order_detail.billing_address.postal_code != "" %}
+                <p>{{ order_detail.billing_address.postal_code }}</p>
+            {% endif %}
+            {% if order_detail.billing_address.country != "" %}
+                <p>{{ order_detail.billing_address.country.name }}</p>
+            {% endif %}
+            {% if order_detail.billing_address.country_area != "" %}
+                <p>{{ order_detail.billing_address.country_area }}</p>
+            {% endif %}
+            {% if order_detail.billing_address.phone != "" %}
+                <p>{{ order_detail.billing_address.phone }}</p>
+            {% endif %}
+            <p> buton to edit the address</p>
+        </div>
+        <div class="col-md-2">
+            <h2>Miscellious</h2>
+            <p> Show order status </p>
+            <p>link to selling contract</p>
+            <p>link to the billing</p>
             {% crispy form %}
             {{ form.media.js }}
         </div>

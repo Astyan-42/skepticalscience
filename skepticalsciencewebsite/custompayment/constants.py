@@ -38,3 +38,6 @@ DISCOUNT_CHOICES = [
     (PERCENT, 'percent'),
     (FIXED, 'fixed')
 ]
+
+# tax
+TAX = 20
