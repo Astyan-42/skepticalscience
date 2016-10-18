@@ -33,6 +33,36 @@ class BillingAddressUpdate(UpdateView):
         return reverse_lazy("detail_order", kwargs={'token':self.kwargs["token"]})
 
 
+def add_price_context(context):
+    prices = []
+    initial_price = {"t_type": "order "+context["order_detail"].item.name,
+                     "t_object": context["order_detail"].item,
+                      "t_price": PRODUCTS_PRICES[context["order_detail"].item.name]}
+    country_reduction = {"t_type": "country compensation",
+                         "t_object": context["order_detail"].billing_address.country.name,
+                         "t_price": -10.} # reduction in amount (always)
+    scientific_score = {"t_type": "scientist score compensation",
+                        "t_object": "score :0,5",
+                        "t_price": 0.}
+    discount_score = {"t_type": "discount code",
+                      "t_object": context["order_detail"].discount,
+                      "t_price": 0.}
+    tax = {"t_type": "taxes",
+           "t_object": "tva",
+           "t_price": str(TAX) + "%"}
+    final_price = {"t_type": "final price",
+                   "t_object": "",
+                   "t_price": 42.}
+    prices.append(initial_price)
+    prices.append(country_reduction)
+    prices.append(scientific_score)
+    prices.append(discount_score)
+    prices.append(tax)
+    prices.append(final_price)
+    context["prices"] = prices
+    return context
+
+
 @method_decorator(login_required, name='dispatch')
 class DiscountOrderUpdate(UpdateView):
     form_class = DiscountOrderForm
@@ -48,7 +78,7 @@ class DiscountOrderUpdate(UpdateView):
         context = super(DiscountOrderUpdate, self).get_context_data(**kwargs)
         context["view"] = OrderDisplay.as_view()
         context["order_detail"] = context["order"]
-        return context
+        return add_price_context(context)
 
     def get_success_url(self):
         return reverse_lazy("detail_order", kwargs={'token':self.kwargs["token"]})
@@ -70,27 +100,7 @@ class OrderDisplay(DetailView):
         context = super(OrderDisplay, self).get_context_data(**kwargs)
         context["form"] = DiscountOrderForm()
         # context of the price
-        print(context["order_detail"].__dict__)
-        context["initial_price"] = {"t_type": context["order_detail"].item.name,
-                                    "t_object": context["order_detail"].item,
-                                    "t_price": PRODUCTS_PRICES[context["order_detail"].item.name]}
-        context["country_reduction"] = {"t_type": "country reduction",
-                                        "t_object": context["order_detail"].billing_address.country,
-                                        "t_price": 10.} # reduction in amount (always
-        context["scientific_score"] = {"t_type": "scientist score compensation",
-                                         "t_object": "score :0,5",
-                                         "t_price": 0.}
-        context["discount_code"] = {"t_type": "discount code",
-                                    "t_object": context["order_detail"].discount,
-                                    "t_price": 0.}
-        context["tax"] = {"t_type": "taxes",
-                          "t_object": "tva",
-                          "t_price": TAX+"%"}
-        context["final_price"] = {"t_type": "final price",
-                                  "t_object": "",
-                                  "t_price": 42.}
-
-        return context
+        return add_price_context(context)
 
 
 @method_decorator(login_required, name='dispatch')

@@ -53,7 +53,7 @@ class Discount(models.Model):
     ending_date = models.DateField(_('ending'))
 
     def __str__(self):
-        return self.name+" "+self.code
+        return self.name+": "+str(self.code)
 
 
 class Order(models.Model):

@@ -28,16 +28,17 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="even">
-                                    <td>Test1</td>
-                                    <td>Test1</td>
-                                    <td>Test1</td>
-                            </tr>
-                            <tr class="even">
-                                    <td>Test2</td>
-                                    <td>Test2</td>
-                                    <td>Test2</td>
-                            </tr>
+                            {% for price in prices %}
+                                {% if forloop.first or forloop.last %}
+                                    <tr class="odd">
+                                {% else %}
+                                    <tr class="even">
+                                {% endif %}
+                                    <td>{{ price.t_type }}</td>
+                                    <td>{{ price.t_object }}</td>
+                                    <td>{{ price.t_price }}</td>
+                                </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
