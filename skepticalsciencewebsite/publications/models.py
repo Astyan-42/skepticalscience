@@ -59,6 +59,7 @@ class Publication(models.Model):
     # or just resume ?
     # tags = models.ManyToManyField(KeyWord, blank= False, symmetrical=False, verbose_name=_("Keywords"))
     licence = models.ForeignKey(Licence, verbose_name=_("Licence"))
+    doi = models.CharField(max_length=255, blank=True, null=True, verbose_name=_("DOI"))
     history = HistoricalRecords()
 
     @property
