@@ -17,6 +17,7 @@ from custompayment.models import Order, Payment, Address
 from custompayment.forms import PaymentMethodsForm, AddressForm, DiscountOrderForm
 from custompayment.tables import OrderTable
 from custompayment.filters import OrderFilter
+from custompayment.constants import *
 # need a my order list
 
 
@@ -69,6 +70,26 @@ class OrderDisplay(DetailView):
         context = super(OrderDisplay, self).get_context_data(**kwargs)
         context["form"] = DiscountOrderForm()
         # context of the price
+        print(context["order_detail"].__dict__)
+        context["initial_price"] = {"t_type": context["order_detail"].item.name,
+                                    "t_object": context["order_detail"].item,
+                                    "t_price": PRODUCTS_PRICES[context["order_detail"].item.name]}
+        context["country_reduction"] = {"t_type": "country reduction",
+                                        "t_object": context["order_detail"].billing_address.country,
+                                        "t_price": 10.} # reduction in amount (always
+        context["scientific_score"] = {"t_type": "scientist score compensation",
+                                         "t_object": "score :0,5",
+                                         "t_price": 0.}
+        context["discount_code"] = {"t_type": "discount code",
+                                    "t_object": context["order_detail"].discount,
+                                    "t_price": 0.}
+        context["tax"] = {"t_type": "taxes",
+                          "t_object": "tva",
+                          "t_price": TAX+"%"}
+        context["final_price"] = {"t_type": "final price",
+                                  "t_object": "",
+                                  "t_price": 42.}
+
         return context
 
 
