@@ -16,7 +16,6 @@
         <div class="col-md-7">
             <div class="bs-component">
                 <h2>Detail</h2>
-                {{ order_detail.token }}
                 show order status and link to the billing if the order have been done
                 <div class="table-container">
                     <table class="table table-responsive paleblue">
@@ -42,11 +41,13 @@
                         </tbody>
                     </table>
                 </div>
-
-                <p> show the price </p>
-
-                <p> button to pay</p>
-                <p> link to the selling contract</p>
+                <p class="text-info">{% trans 'By clicking on "Accept and Pay" you accept the' %}
+                    <a href="{% url 'payment' order_detail.token %}">{% trans "selling contract" %}</a>
+                    {% trans "and you certify the validity of the informations you enter." %}
+                </p>
+                <a href="{% url 'payment' order_detail.token %}"><div class="btn btn-primary">
+                    {% trans "Accept and pay" %}
+                </div></a>
             </div>
         </div>
         <div class="col-md-3">
@@ -82,6 +83,7 @@
                 <p>{{ order_detail.billing_address.phone }}</p>
             {% endif %}
             <p> buton to edit the address</p>
+            <a href="{% url 'address' order_detail.token %}"><div class="btn btn-primary">Edit the address</div></a>
         </div>
         <div class="col-md-2">
             <h2>Miscellious</h2>
