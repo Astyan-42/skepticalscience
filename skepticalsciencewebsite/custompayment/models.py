@@ -46,7 +46,7 @@ class Discount(models.Model):
 
     name = models.CharField(_('Name'), max_length=255)
     code = models.CharField(_('discount code'), primary_key=True, max_length=32)
-    discount_for = models.CharField(_('item'), max_length=32, choices=ITEM_CHOICES),
+    discount_for = models.CharField(_('item'), max_length=32, choices=ITEM_CHOICES)
     discount_type = models.CharField(_('type'), max_length=32, choices=DISCOUNT_CHOICES)
     discount_value = models.FloatField(_('value'))
     starting_date = models.DateField(_('starting'))

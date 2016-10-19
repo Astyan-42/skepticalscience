@@ -35,13 +35,13 @@ class BillingAddressUpdate(UpdateView):
 
 
 def add_price_context(context):
+
     def fill_scientific_score(user, current_price):
         skeptic_score = SKEPTIC_SCORE_NORMALIZE(user.skeptic_score)
         mean_publication_score = MEAN_PUBLICATION_SCORE_NORMALIZE(user.mean_publication_score)
         mean_impact_factor = MEAN_IMPACT_FACTOR_NORMALIZE(user.mean_impact_factor)
         estimator_score = ESTIMATOR_SCORE_NORMALIZE(user.estimator_score)
         reviewer_score = REVIEWER_SCORE_NORMALIZE(user.reviewer_score)
-        print(skeptic_score, mean_publication_score, mean_impact_factor, estimator_score, reviewer_score)
         mean_score = (skeptic_score+mean_publication_score+mean_impact_factor+estimator_score+reviewer_score)/5.
         payement_percent = -0.08+(1+0.08)/(1+(mean_score/0.1214766)**1.137504)
         new_price = round(current_price*payement_percent, 2)
@@ -51,19 +51,36 @@ def add_price_context(context):
                 "t_price": diff_price}
         return res, new_price
 
+    def fill_country_reduction(country, current_price):
+        pass
+        # get country and get country pib, if none message, if not supported message
+
+    def fill_discount_score(discount, current_price):
+        if discount is not None:
+            if discount.discount_type == FIXED:
+                new_price = discount.discount_value
+            elif discount.discount_type == PERCENT:
+                new_price = round(-current_price*(discount.discount_value/100.), 2)
+            res = {"t_type": "discount code",
+                   "t_object": discount,
+                   "t_price": new_price}
+            current_price = current_price + new_price
+        else:
+            res = None
+        return res, current_price
 
     prices = []
+    current_price = PRODUCTS_PRICES[context["order_detail"].item.name]
     initial_price = {"t_type": "order "+context["order_detail"].item.name,
                      "t_object": context["order_detail"].item,
-                      "t_price": PRODUCTS_PRICES[context["order_detail"].item.name]}
+                      "t_price": current_price}
     country_reduction = {"t_type": "country compensation",
                          "t_object": context["order_detail"].billing_address.country.name,
                          "t_price": -10.} # reduction in amount (always)
-    scientific_score, osef = fill_scientific_score(context["order_detail"].user,
-                                                   PRODUCTS_PRICES[context["order_detail"].item.name])
-    discount_score = {"t_type": "discount code",
-                      "t_object": context["order_detail"].discount,
-                      "t_price": 0.}
+    scientific_score, current_price = fill_scientific_score(context["order_detail"].user,
+                                                            current_price)
+    discount_score, current_price = fill_discount_score(context["order_detail"].discount,
+                                                        current_price)
     tax = {"t_type": "taxes",
            "t_object": "tva",
            "t_price": str(TAX) + "%"}

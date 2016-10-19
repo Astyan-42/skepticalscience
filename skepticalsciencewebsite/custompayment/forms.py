@@ -44,7 +44,7 @@ class DiscountOrderForm(forms.ModelForm):
             self.add_error('discount', forms.ValidationError(_("This discount code didn't started yet")))
             return False
         elif today > discount.ending_date:
-            self.add_error('discounts', forms.ValidationError(_("This discount code is over")))
+            self.add_error('discount', forms.ValidationError(_("This discount code is over")))
             return False
         return True
 
