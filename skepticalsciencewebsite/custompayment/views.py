@@ -43,8 +43,8 @@ def add_price_context(context):
         estimator_score = ESTIMATOR_SCORE_NORMALIZE(user.estimator_score)
         reviewer_score = REVIEWER_SCORE_NORMALIZE(user.reviewer_score)
         mean_score = (skeptic_score+mean_publication_score+mean_impact_factor+estimator_score+reviewer_score)/5.
-        payement_percent = -0.08+(1+0.08)/(1+(mean_score/0.1214766)**1.137504)
-        new_price = round(current_price*payement_percent, 2)
+        payment_percent = -0.08+(1+0.08)/(1+(mean_score/0.1214766)**1.137504)
+        new_price = round(current_price*payment_percent, 2)
         diff_price = new_price-current_price
         res = {"t_type": "scientist score compensation",
                "t_object": "score :"+str(round(mean_score, 2)),
@@ -62,11 +62,19 @@ def add_price_context(context):
             elif discount.discount_type == PERCENT:
                 new_price = round(-current_price*(discount.discount_value/100.), 2)
             res = {"t_type": "discount code",
-                   "t_object": discount,
+                   "t_object": discount.code,
                    "t_price": new_price}
             current_price = current_price + new_price
         else:
             res = None
+        return res, current_price
+
+    def fill_taxes(percent, current_price):
+        taxes_amount = current_price*(percent/100)
+        current_price = current_price + taxes_amount
+        res = {"t_type": "taxes",
+               "t_object": str(percent)+"%",
+               "t_price": taxes_amount}
         return res, current_price
 
     prices = []
@@ -81,12 +89,10 @@ def add_price_context(context):
                                                             current_price)
     discount, current_price = fill_discount(context["order_detail"].discount,
                                             current_price)
-    tax = {"t_type": "taxes",
-           "t_object": "tva",
-           "t_price": str(TAX) + "%"}
+    tax, current_price = fill_taxes(TAX, current_price)
     final_price = {"t_type": "final price",
                    "t_object": "",
-                   "t_price": 42.}
+                   "t_price": current_price}
     prices.append(initial_price)
     prices.append(country_reduction)
     prices.append(scientific_score)
