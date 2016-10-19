@@ -1,4 +1,5 @@
 from django import forms
+from django.core.exceptions import ValidationError
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
@@ -30,6 +31,10 @@ class DiscountOrderForm(forms.ModelForm):
         # self.helper.field_template = 'bootstrap3/layout/inline_field.html'
         self.helper.form_id = 'id_discountorderForm'
         self.helper.add_input(Submit('submit', _('Apply')))
+
+    def clean(self):
+        discount = self.cleaned_data['discount']
+
 
     def is_valid(self):
         valid = super(DiscountOrderForm, self).is_valid()

@@ -55,7 +55,7 @@ def add_price_context(context):
         pass
         # get country and get country pib, if none message, if not supported message
 
-    def fill_discount_score(discount, current_price):
+    def fill_discount(discount, current_price):
         if discount is not None:
             if discount.discount_type == FIXED:
                 new_price = discount.discount_value
@@ -79,8 +79,8 @@ def add_price_context(context):
                          "t_price": -10.} # reduction in amount (always)
     scientific_score, current_price = fill_scientific_score(context["order_detail"].user,
                                                             current_price)
-    discount_score, current_price = fill_discount_score(context["order_detail"].discount,
-                                                        current_price)
+    discount, current_price = fill_discount(context["order_detail"].discount,
+                                            current_price)
     tax = {"t_type": "taxes",
            "t_object": "tva",
            "t_price": str(TAX) + "%"}
@@ -90,7 +90,8 @@ def add_price_context(context):
     prices.append(initial_price)
     prices.append(country_reduction)
     prices.append(scientific_score)
-    prices.append(discount_score)
+    if discount is not None:
+        prices.append(discount)
     prices.append(tax)
     prices.append(final_price)
     context["prices"] = prices

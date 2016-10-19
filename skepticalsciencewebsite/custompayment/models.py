@@ -80,8 +80,9 @@ class Order(models.Model):
             self.save()
 
     def clean(self):
-        if self.discount.discount_for != self.item.name:
-            raise ValidationError(_('The discount code is not for this type of item'))
+        if self.discount is not None:
+            if self.discount.discount_for != self.item.name:
+                raise ValidationError({'discount': ('The discount code is not for this type of item')})
 
     def __str__(self):
         return self.token
