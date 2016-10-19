@@ -101,6 +101,7 @@ def add_price_context(context):
 @method_decorator(login_required, name='dispatch')
 class DiscountOrderUpdate(UpdateView):
     form_class = DiscountOrderForm
+    context_object_name = "order_detail"
     model = Order
     template_name = "custompayment/order_detail.html"
 
@@ -111,8 +112,8 @@ class DiscountOrderUpdate(UpdateView):
     def get_context_data(self, **kwargs):
         """ done in case of form invalid"""
         context = super(DiscountOrderUpdate, self).get_context_data(**kwargs)
-        context["view"] = OrderDisplay.as_view()
-        context["order_detail"] = context["order"]
+        # only called when bug ?
+        context["order_detail"].discount = self.get_object().discount
         return add_price_context(context)
 
     def get_success_url(self):
