@@ -22,7 +22,7 @@ MEAN_PUBLICATION_SCORE_NORMALIZE = lambda score: (score or MEAN_PUBLICATION_SCOR
 
 def MEAN_IMPACT_FACTOR_NORMALIZE(score):
     score = (score or MEAN_IMPACT_FACTOR_DEFAULT)
-    score = 1.15183+(-4.547744e-17-1.15183)/(1+(score/0.1328398)**0.9338062)
+    score = 1.35074 + (1.041878e-16 - 1.35074)/(1 + (score/217.0499)**0.6858419)
     return score
 
 

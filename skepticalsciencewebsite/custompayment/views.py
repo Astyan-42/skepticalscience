@@ -36,11 +36,21 @@ class BillingAddressUpdate(UpdateView):
 
 def add_price_context(context):
     def fill_scientific_score(user, current_price):
-        normalize_skeptic_score = SKEPTIC_SCORE_NORMALIZE(user.skeptic_score)
-        normalize_mean_publication_score = MEAN_PUBLICATION_SCORE_NORMALIZE(user.mean_publication_score)
-        normalize_mean_impact_factor = MEAN_IMPACT_FACTOR_NORMALIZE(user.mean_impact_factor)
-        normalize_estimator_score = ESTIMATOR_SCORE_NORMALIZE(user.estimator_score)
-        normalize_reviewer_score = REVIEWER_SCORE_NORMALIZE(user.reviewer_score)
+        skeptic_score = SKEPTIC_SCORE_NORMALIZE(user.skeptic_score)
+        mean_publication_score = MEAN_PUBLICATION_SCORE_NORMALIZE(user.mean_publication_score)
+        mean_impact_factor = MEAN_IMPACT_FACTOR_NORMALIZE(user.mean_impact_factor)
+        estimator_score = ESTIMATOR_SCORE_NORMALIZE(user.estimator_score)
+        reviewer_score = REVIEWER_SCORE_NORMALIZE(user.reviewer_score)
+        print(skeptic_score, mean_publication_score, mean_impact_factor, estimator_score, reviewer_score)
+        mean_score = (skeptic_score+mean_publication_score+mean_impact_factor+estimator_score+reviewer_score)/5.
+        payement_percent = -0.08+(1+0.08)/(1+(mean_score/0.1214766)**1.137504)
+        new_price = round(current_price*payement_percent, 2)
+        diff_price = new_price-current_price
+        res = {"t_type": "scientist score compensation",
+               "t_object": "score :"+str(round(mean_score, 2)),
+                "t_price": diff_price}
+        return res, new_price
+
 
     prices = []
     initial_price = {"t_type": "order "+context["order_detail"].item.name,
@@ -49,9 +59,8 @@ def add_price_context(context):
     country_reduction = {"t_type": "country compensation",
                          "t_object": context["order_detail"].billing_address.country.name,
                          "t_price": -10.} # reduction in amount (always)
-    scientific_score = {"t_type": "scientist score compensation",
-                        "t_object": "score :0,5",
-                        "t_price": 0.}
+    scientific_score, osef = fill_scientific_score(context["order_detail"].user,
+                                                   PRODUCTS_PRICES[context["order_detail"].item.name])
     discount_score = {"t_type": "discount code",
                       "t_object": context["order_detail"].discount,
                       "t_price": 0.}
