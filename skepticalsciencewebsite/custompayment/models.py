@@ -27,8 +27,12 @@ class Address(models.Model):
     phone = models.CharField(_('phone number'), max_length=30, blank=True)
     history = HistoricalRecords()
 
+    def billing_name(self):
+        return self.first_name + " " + self.last_name
+
     def __str__(self):
-        return self.first_name+" "+self.last_name
+        return self.billing_name()
+
 
 
 class Item(models.Model):

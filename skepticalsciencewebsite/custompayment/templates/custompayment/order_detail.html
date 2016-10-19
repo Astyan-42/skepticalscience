@@ -53,44 +53,48 @@
         </div>
         <div class="col-md-3">
             <h2>{% trans "Billing address" %}</h2>
-            test if billing address
-            if not then warning
-            <p>{{ order_detail.billing_address }}</p>
-            {% if order_detail.billing_address.company_name != "" %}
-                <p>{{ order_detail.billing_address.company_name }}</p>
+            {% if order_detail.billing_address is None %}
+                <p class="text-danger">{% trans "You must have a billing address to do proceed to an order" %}</p>
+                <a href="{% url 'address' order_detail.token %}"><div class="btn btn-primary">Create the address</div></a>
+            {% else %}
+                <p>{{ order_detail.billing_address.billing_name }}</p>
+                {% if order_detail.billing_address.company_name != "" %}
+                    <p>{{ order_detail.billing_address.company_name }}</p>
+                {% endif %}
+                {% if order_detail.billing_address.street_address_1 != "" %}
+                    <p>{{ order_detail.billing_address.street_address_1 }}</p>
+                {% endif %}
+                {% if order_detail.billing_address.street_address_2 != "" %}
+                    <p>{{ order_detail.billing_address.street_address_2 }}</p>
+                {% endif %}
+                {% if order_detail.billing_address.city != "" %}
+                    <p>{{ order_detail.billing_address.city }}</p>
+                {% endif %}
+                {% if order_detail.billing_address.city_area != "" %}
+                    <p>{{ order_detail.billing_address.city_area }}</p>
+                {% endif %}
+                {% if order_detail.billing_address.postal_code != "" %}
+                    <p>{{ order_detail.billing_address.postal_code }}</p>
+                {% endif %}
+                {% if order_detail.billing_address.country != "" %}
+                    <p>{{ order_detail.billing_address.country.name }}</p>
+                {% endif %}
+                {% if order_detail.billing_address.country_area != "" %}
+                    <p>{{ order_detail.billing_address.country_area }}</p>
+                {% endif %}
+                {% if order_detail.billing_address.phone != "" %}
+                    <p>{{ order_detail.billing_address.phone }}</p>
+                {% endif %}
+                <a href="{% url 'address' order_detail.token %}"><div class="btn btn-primary">Edit the address</div></a>
+                <p> buton to edit the address must not be here when the order is started</p>
             {% endif %}
-            {% if order_detail.billing_address.street_address_1 != "" %}
-                <p>{{ order_detail.billing_address.street_address_1 }}</p>
-            {% endif %}
-            {% if order_detail.billing_address.street_address_2 != "" %}
-                <p>{{ order_detail.billing_address.street_address_2 }}</p>
-            {% endif %}
-            {% if order_detail.billing_address.city != "" %}
-                <p>{{ order_detail.billing_address.city }}</p>
-            {% endif %}
-            {% if order_detail.billing_address.city_area != "" %}
-                <p>{{ order_detail.billing_address.city_area }}</p>
-            {% endif %}
-            {% if order_detail.billing_address.postal_code != "" %}
-                <p>{{ order_detail.billing_address.postal_code }}</p>
-            {% endif %}
-            {% if order_detail.billing_address.country != "" %}
-                <p>{{ order_detail.billing_address.country.name }}</p>
-            {% endif %}
-            {% if order_detail.billing_address.country_area != "" %}
-                <p>{{ order_detail.billing_address.country_area }}</p>
-            {% endif %}
-            {% if order_detail.billing_address.phone != "" %}
-                <p>{{ order_detail.billing_address.phone }}</p>
-            {% endif %}
-            <p> buton to edit the address</p>
-            <a href="{% url 'address' order_detail.token %}"><div class="btn btn-primary">Edit the address</div></a>
         </div>
         <div class="col-md-2">
             <h2>Miscellious</h2>
             <p> Show order status </p>
             <p>link to selling contract</p>
             <p>link to the billing</p>
+            <hr>
             {% crispy form %}
             {{ form.media.js }}
         </div>

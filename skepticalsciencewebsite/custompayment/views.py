@@ -30,6 +30,14 @@ class BillingAddressUpdate(UpdateView):
         obj, created = Address.objects.get_or_create(scientist=self.request.user)
         return obj
 
+    def form_valid(self, form):
+        res = super(BillingAddressUpdate, self).form_valid(form)
+        order = Order.objects.get(token=self.kwargs["token"])
+        order.billing_address = self.object
+        order.save()
+        return res
+
+
     def get_success_url(self):
         return reverse_lazy("detail_order", kwargs={'token':self.kwargs["token"]})
 
@@ -82,9 +90,9 @@ def add_price_context(context):
     initial_price = {"t_type": "order "+context["order_detail"].item.name,
                      "t_object": context["order_detail"].item,
                       "t_price": current_price}
-    country_reduction = {"t_type": "country compensation",
-                         "t_object": context["order_detail"].billing_address.country.name,
-                         "t_price": -10.} # reduction in amount (always)
+    # country_reduction = {"t_type": "country compensation",
+    #                      "t_object": context["order_detail"].billing_address.country.name,
+    #                      "t_price": -10.} # reduction in amount (always)
     scientific_score, current_price = fill_scientific_score(context["order_detail"].user,
                                                             current_price)
     discount, current_price = fill_discount(context["order_detail"].discount,
@@ -94,7 +102,7 @@ def add_price_context(context):
                    "t_object": "",
                    "t_price": current_price}
     prices.append(initial_price)
-    prices.append(country_reduction)
+    # prices.append(country_reduction)
     prices.append(scientific_score)
     if discount is not None:
         prices.append(discount)
