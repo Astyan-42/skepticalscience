@@ -196,7 +196,12 @@ class OrderOwnedTableView(SingleTableView):
         return context
 
 
-def create_publication_order(request, article):
+def create_publication_order(request, name, iku):
+    # for the publication check if the person who ask is the editor
+    # for the scientist, chek if the person who ask it the same
+    # create an item
+    # create an order
+    # redirect
     pass
 
 
