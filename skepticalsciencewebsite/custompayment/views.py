@@ -37,9 +37,8 @@ class BillingAddressUpdate(UpdateView):
         order.save()
         return res
 
-
     def get_success_url(self):
-        return reverse_lazy("detail_order", kwargs={'token':self.kwargs["token"]})
+        return reverse_lazy("detail_order", kwargs={'token': self.kwargs["token"]})
 
 
 def add_price_context(context):
@@ -56,7 +55,7 @@ def add_price_context(context):
         diff_price = new_price-current_price
         res = {"t_type": "scientist score compensation",
                "t_object": "score :"+str(round(mean_score, 2)),
-                "t_price": diff_price}
+               "t_price": diff_price}
         return res, new_price
 
     def fill_country_reduction(country, current_price):
@@ -67,7 +66,7 @@ def add_price_context(context):
         if discount is not None:
             if discount.discount_type == FIXED:
                 new_price = discount.discount_value
-            elif discount.discount_type == PERCENT:
+            else:
                 new_price = round(-current_price*(discount.discount_value/100.), 2)
             res = {"t_type": "discount code",
                    "t_object": discount.code,
@@ -89,7 +88,7 @@ def add_price_context(context):
     current_price = PRODUCTS_PRICES[context["order_detail"].item.name]
     initial_price = {"t_type": "order "+context["order_detail"].item.name,
                      "t_object": context["order_detail"].item,
-                      "t_price": current_price}
+                     "t_price": current_price}
     # country_reduction = {"t_type": "country compensation",
     #                      "t_object": context["order_detail"].billing_address.country.name,
     #                      "t_price": -10.} # reduction in amount (always)
@@ -131,7 +130,7 @@ class DiscountOrderUpdate(UpdateView):
         return add_price_context(context)
 
     def get_success_url(self):
-        return reverse_lazy("detail_order", kwargs={'token':self.kwargs["token"]})
+        return reverse_lazy("detail_order", kwargs={'token': self.kwargs["token"]})
 
 
 @method_decorator(login_required, name='dispatch')
@@ -195,6 +194,10 @@ class OrderOwnedTableView(SingleTableView):
         context = super(OrderOwnedTableView, self).get_context_data()
         context[self.context_filter_name] = self.filter
         return context
+
+
+def create_publication_order(request, article):
+    pass
 
 
 def payment_choice(request, token):

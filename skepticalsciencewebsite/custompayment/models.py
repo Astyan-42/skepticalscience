@@ -34,6 +34,11 @@ class Address(models.Model):
         return self.billing_name()
 
 
+class CountryPayment(models.Model):
+    country = CountryField(_('country'))
+    pib_per_inhabitant = models.FloatField(_('PIB per inhabitant'))
+    accepted = models.BooleanField(_('Can pay'))
+
 
 class Item(models.Model):
 
