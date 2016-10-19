@@ -1,6 +1,7 @@
 from uuid import uuid4
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.core.exceptions import ValidationError
 from decimal import Decimal
 from payments import PurchasedItem
 from payments.models import BasePayment
@@ -77,6 +78,10 @@ class Order(models.Model):
         if status != self.status:
             self.status = status
             self.save()
+
+    def clean(self):
+        if self.discount.discount_for != self.item.name:
+            raise ValidationError(_('The discount code is not for this type of item'))
 
     def __str__(self):
         return self.token
