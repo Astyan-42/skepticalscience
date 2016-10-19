@@ -13,6 +13,7 @@ from django.views.generic import UpdateView, DetailView, View
 from django.urls import reverse_lazy
 from django_tables2 import SingleTableView, RequestConfig
 from payments import RedirectNeeded
+from customuser.constants import *
 from custompayment.models import Order, Payment, Address
 from custompayment.forms import PaymentMethodsForm, AddressForm, DiscountOrderForm
 from custompayment.tables import OrderTable
@@ -34,6 +35,13 @@ class BillingAddressUpdate(UpdateView):
 
 
 def add_price_context(context):
+    def fill_scientific_score(user, current_price):
+        normalize_skeptic_score = SKEPTIC_SCORE_NORMALIZE(user.skeptic_score)
+        normalize_mean_publication_score = MEAN_PUBLICATION_SCORE_NORMALIZE(user.mean_publication_score)
+        normalize_mean_impact_factor = MEAN_IMPACT_FACTOR_NORMALIZE(user.mean_impact_factor)
+        normalize_estimator_score = ESTIMATOR_SCORE_NORMALIZE(user.estimator_score)
+        normalize_reviewer_score = REVIEWER_SCORE_NORMALIZE(user.reviewer_score)
+
     prices = []
     initial_price = {"t_type": "order "+context["order_detail"].item.name,
                      "t_object": context["order_detail"].item,

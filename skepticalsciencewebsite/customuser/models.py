@@ -52,19 +52,23 @@ class User(AbstractUser):
     # finding biais in publication : or number of valid biais foud and number of ivalid biais found ?
     valid_bias_found = models.IntegerField(default=0, verbose_name=_("Valid bias found"))
     invalid_bias_found = models.IntegerField(default=0, verbose_name=_("Invalid bias found"))
-    skeptic_score = MinMaxFloat(min_value=0.0, max_value=10.0, default=None, verbose_name=_("Skeptic score"))
+    skeptic_score = MinMaxFloat(min_value=0.0, max_value=10.0, default=None, null=True, blank=True,
+                                verbose_name=_("Skeptic score"))
     # publish without biais
     nb_publication = models.IntegerField(default=0, verbose_name=_("Number of publication"))
-    mean_publication_score = MinMaxFloat(min_value=0.0, max_value=10.0, default=None,
+    mean_publication_score = MinMaxFloat(min_value=0.0, max_value=10.0, default=None, null=True, blank=True,
                                          verbose_name=_("Mean publication score"))
     # mean estimated impact factor
-    mean_impact_factor = MinMaxFloat(min_value=0.0, max_value=1000.0, default=None, verbose_name=_("Mean impact factor"))
+    mean_impact_factor = MinMaxFloat(min_value=0.0, max_value=1000.0, default=None, null=True, blank=True,
+                                     verbose_name=_("Mean impact factor"))
     # estimator score (when estimate the impact factor of a publication make good estimation)
-    estimator_score = MinMaxFloat(min_value=0.0, max_value=1.0, default=None, verbose_name=_("Estimator Score"))
+    estimator_score = MinMaxFloat(min_value=0.0, max_value=1.0, default=None, null=True, blank=True,
+                                  verbose_name=_("Estimator Score"))
     # reviewer score to add
     comments_evaluated = models.IntegerField(default=0, verbose_name=_("Comments evaluated"))
     comments_not_evaluated = models.IntegerField(default=0, verbose_name=_("Comments not evaluated"))
-    reviewer_score = MinMaxFloat(min_value=0.0, max_value=1.0, default=None, verbose_name=_("Reviewer score"))
+    reviewer_score = MinMaxFloat(min_value=0.0, max_value=1.0, default=None, null=True, blank=True,
+                                 verbose_name=_("Reviewer score"))
 
     def get_full_name(self):
         full_name = self.last_name+" "+self.middle_name+" "+self.first_name
