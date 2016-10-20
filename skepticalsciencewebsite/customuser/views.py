@@ -6,6 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import get_object_or_404
 from customuser.models import User
 from customuser.forms import CustomUserUpdateForm
+from custompayment.constants import SCIENTIST_ACCOUNT
 # Create your views here.
 
 
@@ -26,6 +27,7 @@ class UserDetailView(DetailView):
             context["account_status"] = _("Scientist")
         else:
             context["account_status"] = _("Skeptic")
+        context["order"] = SCIENTIST_ACCOUNT
         return context
 
 

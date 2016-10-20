@@ -203,6 +203,7 @@ def create_order(request, name, iku):
     # for the publication check if the person who ask is the editor
     # for the scientist edition, check if the person who ask it the same
     # create an item
+    print("test")
     def can_create_publication_order(request, iku):
         if Publication.objects.filter(pk=iku).exists():
             publication = Publication.objects.filter(pk=iku)
