@@ -13,7 +13,9 @@ from publications.models import Publication
 
 
 class Address(models.Model):
-    scientist = models.OneToOneField(User, verbose_name=_("Scientist"), null=True, blank=True)
+    # creation date
+    scientist = models.ForeignKey(User, verbose_name=_("Scientist"), null=True, blank=True)
+    creation_date = models.DateTimeField(_('created'), auto_now_add=True)
     first_name = models.CharField(_('first name'), max_length=255)
     last_name = models.CharField(_('last name'), max_length=255)
     company_name = models.CharField(_('company or organization'), max_length=255, blank=True)
@@ -25,7 +27,6 @@ class Address(models.Model):
     country = CountryField(_('country'))
     country_area = models.CharField(_('state or province'), max_length=127, blank=True)
     phone = models.CharField(_('phone number'), max_length=30, blank=True)
-    history = HistoricalRecords()
 
     def billing_name(self):
         return self.first_name + " " + self.last_name

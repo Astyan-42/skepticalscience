@@ -30,9 +30,18 @@ from custompayment.constants import *
 @method_decorator(login_required, name='dispatch')
 class BillingAddressUpdate(UpdateView):
     form_class = AddressForm
+    template_name = 'custompayment/address_form.html'
 
     def get_object(self, queryset=None):
-        obj, created = Address.objects.get_or_create(scientist=self.request.user)
+        order = Order.objects.get(token=self.kwargs["token"])
+        if order.billing_address is None:
+            if Address.objects.filter(scientist=self.request.user).exists():
+                obj = Address.objects.filter(scientist=self.request.user).order_by("-creation_date")[0]
+                obj.pk = None
+            else:
+                obj = Address(scientist=self.request.user)
+        else:
+            obj = order.billing_address
         return obj
 
     def form_valid(self, form):
@@ -63,14 +72,15 @@ def add_price_context(context):
                "t_price": diff_price}
         return res, new_price
 
-    def fill_country_reduction(country, current_price):
+    def fill_country_reduction(address, current_price):
         db_countriespayment = CountryPayment.objects.all()
         max_pib = db_countriespayment.aggregate(Max('pib_per_inhabitant'))['pib_per_inhabitant__max']
         min_pib = db_countriespayment.aggregate(Min('pib_per_inhabitant'))['pib_per_inhabitant__min']
 
         try:
+            country= address.country
             own_country_payment = CountryPayment.objects.get(country=country)
-        except ObjectDoesNotExist:
+        except (AttributeError, ObjectDoesNotExist):
             return None, current_price
         factor = COUNTRY_PIB_TO_PERCENT(min_pib, max_pib, own_country_payment.pib_per_inhabitant)
         new_price = round(current_price*factor, 2)
@@ -109,7 +119,7 @@ def add_price_context(context):
     initial_price = {"t_type": "order "+context["order_detail"].item.name,
                      "t_object": context["order_detail"].item,
                      "t_price": current_price}
-    country_reduction, current_price = fill_country_reduction(context["order_detail"].billing_address.country,
+    country_reduction, current_price = fill_country_reduction(context["order_detail"].billing_address,
                                                               current_price)
     scientific_score, current_price = fill_scientific_score(context["order_detail"].user,
                                                             current_price)
