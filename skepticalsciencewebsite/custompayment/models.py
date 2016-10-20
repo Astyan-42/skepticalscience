@@ -123,7 +123,7 @@ class Payment(BasePayment):
         default_price = PRODUCTS_PRICES[item.name]
         # adjusted_price = depend of country + (user quality if for publication) + promotion
         yield PurchasedItem(name=item.name, sku=str(item.sku),
-                            quantity=1, price=Decimal(default_price), currency='USD')
+                            quantity=1, price=Decimal(default_price), currency='EUR')
 
     def __str__(self):
         return self.order.__str__()

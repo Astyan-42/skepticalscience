@@ -76,7 +76,6 @@ def add_price_context(context):
         db_countriespayment = CountryPayment.objects.all()
         max_pib = db_countriespayment.aggregate(Max('pib_per_inhabitant'))['pib_per_inhabitant__max']
         min_pib = db_countriespayment.aggregate(Min('pib_per_inhabitant'))['pib_per_inhabitant__min']
-
         try:
             country= address.country
             own_country_payment = CountryPayment.objects.get(country=country)
@@ -118,7 +117,7 @@ def add_price_context(context):
     current_price = PRODUCTS_PRICES[context["order_detail"].item.name]
     initial_price = {"t_type": "order "+context["order_detail"].item.name,
                      "t_object": context["order_detail"].item,
-                     "t_price": current_price}
+                     "t_price": str(current_price)+' €'}
     country_reduction, current_price = fill_country_reduction(context["order_detail"].billing_address,
                                                               current_price)
     scientific_score, current_price = fill_scientific_score(context["order_detail"].user,
@@ -128,7 +127,7 @@ def add_price_context(context):
     tax, current_price = fill_taxes(TAX, current_price)
     final_price = {"t_type": "final price",
                    "t_object": "",
-                   "t_price": round(current_price, 2)}
+                   "t_price": str(round(current_price, 2))+' €'}
     prices.append(initial_price)
     if country_reduction is not None:
         prices.append(country_reduction)
@@ -155,7 +154,7 @@ class DiscountOrderUpdate(UpdateView):
     def get_context_data(self, **kwargs):
         """ done in case of form invalid"""
         context = super(DiscountOrderUpdate, self).get_context_data(**kwargs)
-        # only called when bug ?
+        # seems to be only called when bug
         context["order_detail"].discount = self.get_object().discount
         return add_price_context(context)
 
@@ -178,7 +177,7 @@ class OrderDisplay(DetailView):
     def get_context_data(self, **kwargs):
         context = super(OrderDisplay, self).get_context_data(**kwargs)
         context["form"] = DiscountOrderForm()
-        # context of the price
+        context["constants"] = PAYMENT_CONSTANTS_TEMPLATE
         return add_price_context(context)
 
 

@@ -17,7 +17,7 @@
             <div class="bs-component">
                 <h2>Detail</h2>
                 show order status and link to the billing if the order have been done
-                show the oder date there
+                show the order date and dont show the table but only the price paid
                 <div class="table-container">
                     <table class="table table-responsive paleblue">
                         <thead>
@@ -91,9 +91,12 @@
         </div>
         <div class="col-md-2">
             <h2>Miscellious</h2>
-            <p> Show order status </p>
-            <p>link to selling contract</p>
-            <p>link to the billing</p>
+
+            <p><b>{% trans "Status :" %}</b>{{ order_detail.get_status_display }}</p>
+            <p><a href="{% url 'address' order_detail.token %}">{% trans "Selling contract" %}</a></p>
+            {% if order_detail.status == constants.PAYMENT_PENDING or order_detail.status == constants.FULLY_PAID %}
+                <p><a href="{% url 'address' order_detail.token %}">{% trans "Billing" %}</a></p>
+            {% endif %}
             <hr>
             {% crispy form %}
             {{ form.media.js }}

@@ -33,8 +33,10 @@ class DiscountOrderForm(forms.ModelForm):
         self.helper.add_input(Submit('submit', _('Apply')))
 
     def clean(self):
-        discount = self.cleaned_data['discount']
-
+        try:
+            discount = self.cleaned_data['discount']
+        except KeyError:
+            pass
 
     def is_valid(self):
         valid = super(DiscountOrderForm, self).is_valid()
