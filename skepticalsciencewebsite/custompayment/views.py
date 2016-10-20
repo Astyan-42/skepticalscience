@@ -231,8 +231,12 @@ def create_order(request, name, sku):
         if Publication.objects.filter(pk=sku).exists():
             publication = Publication.objects.get(pk=sku)
             if publication.editor == request.user:
-                # check if not already paid
-                return True
+                if Item.objects.filter(name=name, sku=sku).exists():
+                    item = Item.objects.get(name=name, sku=sku)
+                    if not Order.objects.filter(item=item).exists():
+                        return True
+                else:
+                    return True
         return False
 
     def can_create_scientist_account_order(request, sku):
