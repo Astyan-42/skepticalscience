@@ -69,7 +69,7 @@ def add_price_context(context):
         diff_price = round(new_price-current_price, 2)
         res = {"t_type": "scientist score compensation",
                "t_object": "score :"+str(round(mean_score, 2)),
-               "t_price": diff_price}
+               "t_price": str(diff_price)+' €'}
         return res, new_price
 
     def fill_country_reduction(address, current_price):
@@ -86,7 +86,7 @@ def add_price_context(context):
         diff_price = round(new_price-current_price, 2)
         res = {"t_type": "country compensation",
                "t_object": country.name,
-               "t_price": diff_price}
+               "t_price": str(diff_price)+' €'}
         return res, new_price
         # get country and get country pib, if none message, if not supported message
 
@@ -99,7 +99,7 @@ def add_price_context(context):
             new_price = round(current_price + discount_price, 2)
             res = {"t_type": "discount code",
                    "t_object": discount.code,
-                   "t_price": discount_price}
+                   "t_price": str(discount_price)+' €'}
         else:
             res = None
             new_price = current_price
@@ -110,7 +110,7 @@ def add_price_context(context):
         new_price = round(current_price+taxes_amount, 2)
         res = {"t_type": "taxes",
                "t_object": str(percent)+"%",
-               "t_price": taxes_amount}
+               "t_price": str(taxes_amount)+' €'}
         return res, new_price
 
     prices = []
