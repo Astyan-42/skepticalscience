@@ -238,8 +238,8 @@ def create_order(request, name, sku):
     def can_create_scientist_account_order(request, sku):
         if User.objects.filter(pk=sku).exists():
             if int(request.user.pk) == int(sku):
-                # test if not already a scientist
-                return True
+                if not request.user.groups.filter(name="Scientist").exists():
+                    return True
         return False
 
     if name == PUBLICATION:
