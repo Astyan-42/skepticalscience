@@ -1,7 +1,7 @@
 from decimal import Decimal
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404, redirect
-from django.http import Http404
+from django.http import Http404, HttpResponseForbidden
 from django.template.response import TemplateResponse
 from django.conf import settings
 from django.db import transaction
@@ -14,11 +14,14 @@ from django.urls import reverse_lazy
 from django_tables2 import SingleTableView, RequestConfig
 from payments import RedirectNeeded
 from customuser.constants import *
-from custompayment.models import Order, Payment, Address
+from customuser.models import User
+from publications.models import Publication
+from custompayment.models import Order, Payment, Address, Item
 from custompayment.forms import PaymentMethodsForm, AddressForm, DiscountOrderForm
 from custompayment.tables import OrderTable
 from custompayment.filters import OrderFilter
 from custompayment.constants import *
+
 # need a my order list
 
 
@@ -196,13 +199,38 @@ class OrderOwnedTableView(SingleTableView):
         return context
 
 
-def create_publication_order(request, name, iku):
+def create_order(request, name, iku):
     # for the publication check if the person who ask is the editor
-    # for the scientist, chek if the person who ask it the same
+    # for the scientist edition, check if the person who ask it the same
     # create an item
-    # create an order
-    # redirect
-    pass
+    def can_create_publication_order(request, iku):
+        if Publication.objects.filter(pk=iku).exists():
+            publication = Publication.objects.filter(pk=iku)
+            if publication.editor == request.user:
+                # check if not already paid
+                return True
+        return False
+
+    def can_create_scientist_account_order(request, iku):
+        if User.objects.filter(pk=iku).exists():
+            if request.user.pk == iku:
+                # test if not already a scientist
+                return True
+        return False
+
+    if name == PUBLICATION:
+        if not can_create_publication_order(request, iku):
+            return HttpResponseForbidden()
+    elif name == SCIENTIST_ACCOUNT:
+        if not can_create_scientist_account_order(request, iku):
+            return HttpResponseForbidden()
+    else:
+        return Http404()
+    item = Item(name=name, iku=iku)
+    item.save()
+    order = Order(name=name, user=request.user)
+    order.save()
+    return redirect(OrderDetailView, token=order.token)
 
 
 def payment_choice(request, token):
