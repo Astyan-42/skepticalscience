@@ -47,7 +47,7 @@ class Item(models.Model):
 
     def __str__(self):
         if self.name == SCIENTIST_ACCOUNT:
-            return ITEM_CHOICES[SCIENTIST_ACCOUNT]
+            return [verbose for simple, verbose in ITEM_CHOICES if simple==SCIENTIST_ACCOUNT][0]
         else:
             return Publication.objects.get(pk=self.sku).__str__()
 

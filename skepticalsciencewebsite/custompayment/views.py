@@ -199,39 +199,40 @@ class OrderOwnedTableView(SingleTableView):
         return context
 
 
-def create_order(request, name, iku):
+def create_order(request, name, sku):
     # for the publication check if the person who ask is the editor
     # for the scientist edition, check if the person who ask it the same
     # create an item
     print("test")
-    def can_create_publication_order(request, iku):
-        if Publication.objects.filter(pk=iku).exists():
-            publication = Publication.objects.filter(pk=iku)
+    def can_create_publication_order(request, sku):
+        if Publication.objects.filter(pk=sku).exists():
+            publication = Publication.objects.filter(pk=sku)
             if publication.editor == request.user:
                 # check if not already paid
                 return True
         return False
 
-    def can_create_scientist_account_order(request, iku):
-        if User.objects.filter(pk=iku).exists():
-            if request.user.pk == iku:
+    def can_create_scientist_account_order(request, sku):
+        if User.objects.filter(pk=sku).exists():
+            if int(request.user.pk) == int(sku):
                 # test if not already a scientist
                 return True
         return False
 
     if name == PUBLICATION:
-        if not can_create_publication_order(request, iku):
+        if not can_create_publication_order(request, sku):
             return HttpResponseForbidden()
     elif name == SCIENTIST_ACCOUNT:
-        if not can_create_scientist_account_order(request, iku):
+        if not can_create_scientist_account_order(request, sku):
             return HttpResponseForbidden()
     else:
         return Http404()
-    item = Item(name=name, iku=iku)
+    item = Item(name=name, sku=int(sku))
     item.save()
-    order = Order(name=name, user=request.user)
+    order = Order(item=item, user=request.user)
     order.save()
-    return redirect(OrderDetailView, token=order.token)
+    print("test2")
+    return redirect('detail_order', token=order.token)
 
 
 def payment_choice(request, token):
