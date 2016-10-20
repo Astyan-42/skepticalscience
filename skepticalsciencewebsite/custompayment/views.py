@@ -5,7 +5,7 @@ from django.http import Http404, HttpResponseForbidden
 from django.template.response import TemplateResponse
 from django.conf import settings
 from django.db import transaction
-from django.db.models import Max
+from django.db.models import Max, Min
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
@@ -64,12 +64,15 @@ def add_price_context(context):
         return res, new_price
 
     def fill_country_reduction(country, current_price):
-        max_pib = CountryPayment.objects.all().aggregate(Max('pib_per_inhabitant'))['pib_per_inhabitant__max']
+        db_countriespayment = CountryPayment.objects.all()
+        max_pib = db_countriespayment.aggregate(Max('pib_per_inhabitant'))['pib_per_inhabitant__max']
+        min_pib = db_countriespayment.aggregate(Min('pib_per_inhabitant'))['pib_per_inhabitant__min']
+
         try:
             own_country_payment = CountryPayment.objects.get(country=country)
         except ObjectDoesNotExist:
             return None, current_price
-        factor = own_country_payment.pib_per_inhabitant/max_pib
+        factor = COUNTRY_PIB_TO_PERCENT(min_pib, max_pib, own_country_payment.pib_per_inhabitant)
         new_price = round(current_price*factor, 2)
         diff_price = round(new_price-current_price, 2)
         res = {"t_type": "country compensation",

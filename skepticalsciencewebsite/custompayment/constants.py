@@ -24,6 +24,16 @@ ITEM_CHOICES = [
 # default price
 SCIENTIST_ACCOUNT_PRICE = 100.
 PUBLICATION_PRICE_MAX = 5000.
+COUNTRY_REDUCTION_MAX_PERCENT = 90.
+
+def COUNTRY_PIB_TO_PERCENT(min_pib, max_pib, own_pib):
+    range_pib = max_pib-min_pib
+    own_pib_corrected = own_pib-min_pib
+    min_percent = 100. - COUNTRY_REDUCTION_MAX_PERCENT
+    print((own_pib_corrected/range_pib)*COUNTRY_REDUCTION_MAX_PERCENT)
+    res = round(((own_pib_corrected/range_pib)*COUNTRY_REDUCTION_MAX_PERCENT + min_percent)/100, 2)
+    return res
+
 
 PRODUCTS_PRICES = { PUBLICATION: PUBLICATION_PRICE_MAX,
                     SCIENTIST_ACCOUNT: SCIENTIST_ACCOUNT_PRICE
