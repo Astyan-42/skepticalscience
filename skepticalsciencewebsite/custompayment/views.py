@@ -231,7 +231,7 @@ def create_order(request, name, sku):
         if Publication.objects.filter(pk=sku).exists():
             publication = Publication.objects.get(pk=sku)
             if publication.editor == request.user:
-                # we suppose if the item is created it belong to an order to do in the models
+                # when the item is created and only one (due to the rest of the process of create_order)
                 if not Item.objects.filter(name=name, sku=sku).exists():
                     return True
         return False
@@ -239,7 +239,7 @@ def create_order(request, name, sku):
     def can_create_scientist_account_order(request, sku):
         if User.objects.filter(pk=sku).exists():
             if int(request.user.pk) == int(sku):
-                # we suppose if the item is created it belong to an order to do in the models
+                # when the item is created and only one (due to the rest of the process of create_order)
                 if not Item.objects.filter(name=name, sku=sku).exists():
                     return True
         return False
