@@ -49,7 +49,7 @@
                 {% elif perms.publications.can_change_publication and publication_detail.status == constants.WAITING_PAYMENT and is_editor %}
                     <p><a href="{% url 'update_publication' object.pk %}">{% trans "Edit " %}</a>
                     {% trans "or " %}
-                    <a href="{% url 'update_publication' object.pk %}">{% trans "pay to submit " %}</a>
+                    <a href="{% url 'create_order' name=order sku=object.pk %}">{% trans "pay to submit " %}</a>
                     {% trans "the publication" %}.
                     </p>
                     <p class="text-danger">

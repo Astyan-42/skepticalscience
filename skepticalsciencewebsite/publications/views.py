@@ -11,6 +11,7 @@ from django.utils import timezone
 from sendfile import sendfile
 from django_tables2 import SingleTableView, RequestConfig
 from customuser.models import User
+from custompayment.constants import PUBLICATION
 from publications.models import Publication, Comment, Reviewer, EstimatedImpactFactor, CommentReview
 from publications.forms import (PublicationCreateForm, CommentForm, EstimatedImpactFactorForm,
                                 CommentReviewValidationForm, CommentReviewCorrectionForm, PublicationCorrectForm,
@@ -401,6 +402,7 @@ class PublicationDisplay(DetailView):
             context['is_reviewer'] = False
             context['evaluated'] = False
         context['constants'] = CONSTANTS_TEMPLATE
+        context['order'] = PUBLICATION
         context['alert'] = self.get_alert_status(context)
         context['form_comment'] = CommentForm()
         context['form_eif'] = EstimatedImpactFactorForm()
