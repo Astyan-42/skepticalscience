@@ -5,6 +5,8 @@ from django.http import Http404, HttpResponseForbidden
 from django.template.response import TemplateResponse
 from django.conf import settings
 from django.db import transaction
+from django.db.models import Max
+from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -16,7 +18,7 @@ from payments import RedirectNeeded
 from customuser.constants import *
 from customuser.models import User
 from publications.models import Publication
-from custompayment.models import Order, Payment, Address, Item
+from custompayment.models import Order, Payment, Address, Item, CountryPayment
 from custompayment.forms import PaymentMethodsForm, AddressForm, DiscountOrderForm
 from custompayment.tables import OrderTable
 from custompayment.filters import OrderFilter
@@ -55,46 +57,57 @@ def add_price_context(context):
         mean_score = (skeptic_score+mean_publication_score+mean_impact_factor+estimator_score+reviewer_score)/5.
         payment_percent = -0.08+(1+0.08)/(1+(mean_score/0.1214766)**1.137504)
         new_price = round(current_price*payment_percent, 2)
-        diff_price = new_price-current_price
+        diff_price = round(new_price-current_price, 2)
         res = {"t_type": "scientist score compensation",
                "t_object": "score :"+str(round(mean_score, 2)),
                "t_price": diff_price}
         return res, new_price
 
     def fill_country_reduction(country, current_price):
-        pass
+        max_pib = CountryPayment.objects.all().aggregate(Max('pib_per_inhabitant'))['pib_per_inhabitant__max']
+        try:
+            own_country_payment = CountryPayment.objects.get(country=country)
+        except ObjectDoesNotExist:
+            return None, current_price
+        factor = own_country_payment.pib_per_inhabitant/max_pib
+        new_price = round(current_price*factor, 2)
+        diff_price = round(new_price-current_price, 2)
+        res = {"t_type": "country compensation",
+               "t_object": country.name,
+               "t_price": diff_price}
+        return res, new_price
         # get country and get country pib, if none message, if not supported message
 
     def fill_discount(discount, current_price):
         if discount is not None:
             if discount.discount_type == FIXED:
-                new_price = discount.discount_value
+                discount_price = discount.discount_value
             else:
-                new_price = round(-current_price*(discount.discount_value/100.), 2)
+                discount_price = round(-current_price*(discount.discount_value/100.), 2)
+            new_price = round(current_price + discount_price, 2)
             res = {"t_type": "discount code",
                    "t_object": discount.code,
-                   "t_price": new_price}
-            current_price = current_price + new_price
+                   "t_price": discount_price}
         else:
             res = None
-        return res, current_price
+            new_price = current_price
+        return res, new_price
 
     def fill_taxes(percent, current_price):
-        taxes_amount = current_price*(percent/100)
-        current_price = current_price + taxes_amount
+        taxes_amount = round(current_price*(percent/100), 2)
+        new_price = round(current_price+taxes_amount, 2)
         res = {"t_type": "taxes",
                "t_object": str(percent)+"%",
                "t_price": taxes_amount}
-        return res, current_price
+        return res, new_price
 
     prices = []
     current_price = PRODUCTS_PRICES[context["order_detail"].item.name]
     initial_price = {"t_type": "order "+context["order_detail"].item.name,
                      "t_object": context["order_detail"].item,
                      "t_price": current_price}
-    # country_reduction = {"t_type": "country compensation",
-    #                      "t_object": context["order_detail"].billing_address.country.name,
-    #                      "t_price": -10.} # reduction in amount (always)
+    country_reduction, current_price = fill_country_reduction(context["order_detail"].billing_address.country,
+                                                              current_price)
     scientific_score, current_price = fill_scientific_score(context["order_detail"].user,
                                                             current_price)
     discount, current_price = fill_discount(context["order_detail"].discount,
@@ -102,9 +115,10 @@ def add_price_context(context):
     tax, current_price = fill_taxes(TAX, current_price)
     final_price = {"t_type": "final price",
                    "t_object": "",
-                   "t_price": current_price}
+                   "t_price": round(current_price, 2)}
     prices.append(initial_price)
-    # prices.append(country_reduction)
+    if country_reduction is not None:
+        prices.append(country_reduction)
     prices.append(scientific_score)
     if discount is not None:
         prices.append(discount)
@@ -200,12 +214,10 @@ class OrderOwnedTableView(SingleTableView):
 
 
 def create_order(request, name, sku):
-    # for the publication check if the person who ask is the editor
-    # for the scientist edition, check if the person who ask it the same
-    # create an item
+
     def can_create_publication_order(request, sku):
         if Publication.objects.filter(pk=sku).exists():
-            publication = Publication.objects.filter(pk=sku)
+            publication = Publication.objects.get(pk=sku)
             if publication.editor == request.user:
                 # check if not already paid
                 return True
@@ -230,7 +242,6 @@ def create_order(request, name, sku):
     item.save()
     order = Order(item=item, user=request.user)
     order.save()
-    print("test2")
     return redirect('detail_order', token=order.token)
 
 
