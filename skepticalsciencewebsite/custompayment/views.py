@@ -30,7 +30,7 @@ from custompayment.constants import *
 @method_decorator(login_required, name='dispatch')
 class BillingAddressUpdate(UpdateView):
     form_class = AddressForm
-    template_name = 'custompayment/address_form.html'
+    # template_name = 'custompayment/address_form.html'
 
     def get_object(self, queryset=None):
         order = Order.objects.get(token=self.kwargs["token"])
