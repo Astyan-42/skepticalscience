@@ -48,7 +48,7 @@ def COUNTRY_PPP_TO_PERCENT(min_ppp, max_ppp, own_ppp):
         own_ppp_corrected = own_ppp - PPP_20_PERCENT
         percent = own_ppp_corrected/range_ppp
         percent = percent*70 + 20.
-    res = round(percent/100., 2)
+    res = round(percent/100., 4)
     return res
 
 

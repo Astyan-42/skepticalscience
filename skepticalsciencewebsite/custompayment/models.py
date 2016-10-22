@@ -37,7 +37,7 @@ class Address(models.Model):
 
 class CountryPayment(models.Model):
 
-    country = CountryField(_('country'))
+    country = CountryField(_('country'), unique=True)
     pib_per_inhabitant = models.FloatField(_('PIB per inhabitant'))
     accepted = models.BooleanField(_('Can pay'))
 
