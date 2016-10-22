@@ -102,12 +102,6 @@ class Order(models.Model):
         return self.token
 
 
-class CountryPIB(models.Model):
-
-    country = CountryField(_('country'))
-    pib_inhabitant = models.FloatField(_('pib per inhabitant'))
-
-
 class Payment(BasePayment):
     order = models.ForeignKey(Order, related_name='payments')
 
