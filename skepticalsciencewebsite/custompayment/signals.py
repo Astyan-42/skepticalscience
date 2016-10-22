@@ -5,7 +5,6 @@ from custompayment.constants import FULLY_PAID
 
 @receiver(status_changed)
 def payment_status_change(sender, instance, **kwargs):
-    #instance is payment
     print("test")
     order = instance.order
     order.status = FULLY_PAID
