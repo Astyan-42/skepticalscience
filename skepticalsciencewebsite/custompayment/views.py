@@ -81,7 +81,7 @@ def add_price_context(context):
             own_country_payment = CountryPayment.objects.get(country=country)
         except (AttributeError, ObjectDoesNotExist):
             return None, current_price
-        factor = COUNTRY_PIB_TO_PERCENT(min_pib, max_pib, own_country_payment.pib_per_inhabitant)
+        factor = COUNTRY_PPP_TO_PERCENT(min_pib, max_pib, own_country_payment.pib_per_inhabitant)
         new_price = round(current_price*factor, 2)
         diff_price = round(new_price-current_price, 2)
         res = {"t_type": "country compensation",
