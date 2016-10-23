@@ -57,7 +57,7 @@ class BillingAddressUpdate(UpdateView):
 
 
 def add_price_context(context):
-
+    # this function is the ugliest thing on earth, it need to be exterminated
     def fill_scientific_score(user, order_type, current_price):
         if order_type == SCIENTIST_ACCOUNT:
             return None, current_price
