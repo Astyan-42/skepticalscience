@@ -21,6 +21,9 @@ ITEM_CHOICES = [
     (SCIENTIST_ACCOUNT, 'Scientist account')
 ]
 
+# duration of refound
+REFUND_DAYS = 14
+
 # default price
 SCIENTIST_ACCOUNT_PRICE = 100.
 PUBLICATION_PRICE_MAX = 5000.

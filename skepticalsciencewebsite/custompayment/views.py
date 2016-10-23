@@ -345,3 +345,15 @@ def start_payment(request, token, variant):
     template = 'custompayment/method/%s.html' % variant
     return TemplateResponse(request, [template, 'custompayment/method/default.html'],
                             {'form': form, 'payment': payment})
+
+
+def cancer_order(request, token):
+    order = get_object_or_404(Order, token=token)
+    if order.can_be_cancelled():
+        with transaction.atomic():
+            order.change_status(CANCELLED)
+            order.payments.refund()
+            #everything else is done in signal
+            return redirect('detail_order', token=token)
+    else:
+        return HttpResponseForbidden()

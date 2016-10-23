@@ -3,6 +3,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ValidationError
 from django.db.models import Q
+from django.utils import timezone
 from decimal import Decimal
 from payments import PurchasedItem
 from payments.models import BasePayment
@@ -117,13 +118,17 @@ class Order(models.Model):
             self.token = str(uuid4())
         return super(Order, self).save(*args, **kwargs)
 
-    def change_status(self, status):
-        if status != self.status:
-            self.status = status
-            self.save()
-
     def can_add_payment(self):
         return not self.payments.filter(Q(status='preauth') | Q(status='confirmed') | Q(status='refunded')).exists()
+
+    def can_be_cancelled(self):
+        if self.payment.filter(status='confirmed').exists():
+            payment = self.payments.get(status='confirmed')
+            t_delta = timezone.now() - self.payment.modified
+            if t_delta < REFUND_DAYS:
+                return True
+            else:
+                return False
 
     def clean(self):
         if self.discount is not None:
