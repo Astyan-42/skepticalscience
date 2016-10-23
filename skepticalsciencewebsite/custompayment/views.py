@@ -11,6 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.utils import timezone
 from django.views.generic import UpdateView, DetailView, View
 from django.urls import reverse_lazy
 from django_tables2 import SingleTableView, RequestConfig
@@ -18,12 +19,12 @@ from payments import RedirectNeeded
 from customuser.constants import *
 from customuser.models import User
 from publications.models import Publication
-from custompayment.models import Order, Payment, Address, Item, CountryPayment
+from custompayment.models import Order, Payment, Address, Item, CountryPayment, Price
 from custompayment.forms import PaymentMethodsForm, AddressForm, DiscountOrderForm
 from custompayment.tables import OrderTable
 from custompayment.filters import OrderFilter
 from custompayment.constants import *
-
+from custompayment.utils import get_ip, money_quantize
 # need a my order list
 
 
@@ -67,8 +68,8 @@ def add_price_context(context):
         reviewer_score = REVIEWER_SCORE_NORMALIZE(user.reviewer_score)
         mean_score = (skeptic_score+mean_publication_score+mean_impact_factor+estimator_score+reviewer_score)/5.
         payment_percent = -0.08+(1+0.08)/(1+(mean_score/0.1214766)**1.137504)
-        new_price = round(current_price*payment_percent, 2)
-        diff_price = round(new_price-current_price, 2)
+        new_price = money_quantize(current_price*Decimal(payment_percent))
+        diff_price = money_quantize(new_price-current_price)
         res = {"t_type": "scientist score compensation",
                "t_object": "score :"+str(round(mean_score, 2)),
                "t_price": str(diff_price)+' €'}
@@ -84,20 +85,21 @@ def add_price_context(context):
         except (AttributeError, ObjectDoesNotExist):
             return None, current_price
         factor = COUNTRY_PPP_TO_PERCENT(min_pib, max_pib, own_country_payment.pib_per_inhabitant)
-        new_price = round(current_price*factor, 2)
-        diff_price = round(new_price-current_price, 2)
+        new_price = money_quantize(current_price*Decimal(factor))
+        diff_price = money_quantize(new_price-current_price)
         res = {"t_type": "country compensation",
                "t_object": country.name,
                "t_price": str(diff_price)+' €'}
         return res, new_price
 
     def fill_discount(discount, current_price):
-        if discount is not None:
+        if (discount is not None and discount.starting_date < timezone.now().date() and
+                    discount.ending_date > timezone.now().date()):
             if discount.discount_type == FIXED:
-                discount_price = discount.discount_value
+                discount_price = money_quantize(Decimal(discount.discount_value))
             else:
-                discount_price = round(-current_price*(discount.discount_value/100.), 2)
-            new_price = round(current_price + discount_price, 2)
+                discount_price = money_quantize(-current_price*Decimal(discount.discount_value/100.))
+            new_price = money_quantize(current_price + discount_price)
             res = {"t_type": "discount code",
                    "t_object": discount.code,
                    "t_price": str(discount_price)+' €'}
@@ -107,29 +109,50 @@ def add_price_context(context):
         return res, new_price
 
     def fill_taxes(percent, current_price):
-        taxes_amount = round(current_price*(percent/100), 2)
-        new_price = round(current_price+taxes_amount, 2)
+        taxes_amount = money_quantize(current_price*Decimal(percent/100))
+        new_price = money_quantize(current_price+taxes_amount)
         res = {"t_type": "taxes",
                "t_object": str(percent)+"%",
                "t_price": str(taxes_amount)+' €'}
         return res, new_price
 
+    def change_price(price_instance, current_prices):
+        if price_instance is None:
+            price_instance = Price()
+        price_instance.product_default_price = current_prices[0]
+        price_instance.country_reduction = current_prices[1] - current_prices[0]
+        price_instance.scientist_score_reduction = current_prices[2] - current_prices[1]
+        price_instance.discount = current_prices[3] - current_prices[2]
+        price_instance.tax = current_prices[4] - current_prices[3]
+        price_instance.save()
+        return price_instance
+
     prices = []
-    current_price = PRODUCTS_PRICES[context["order_detail"].item.name]
+    current_prices = []
+    current_price = Decimal(PRODUCTS_PRICES[context["order_detail"].item.name])
+    current_prices.append(current_price)
     initial_price = {"t_type": "order "+context["order_detail"].item.name,
                      "t_object": context["order_detail"].item,
                      "t_price": str(current_price)+' €'}
     country_reduction, current_price = fill_country_reduction(context["order_detail"].billing_address,
                                                               current_price)
+    current_prices.append(current_price)
     scientific_score, current_price = fill_scientific_score(context["order_detail"].user,
                                                             context["order_detail"].item.name,
                                                             current_price)
+    current_prices.append(current_price)
     discount, current_price = fill_discount(context["order_detail"].discount,
                                             current_price)
+    current_prices.append(current_price)
     tax, current_price = fill_taxes(TAX, current_price)
+    current_prices.append(current_price)
     final_price = {"t_type": "final price",
                    "t_object": "",
-                   "t_price": str(round(current_price, 2))+' €'}
+                   "t_price": str(current_price)+' €'}
+    # change price in the model
+    priceobj = change_price(context["order_detail"].price, current_prices)
+    context["order_detail"].price = priceobj
+    context["order_detail"].save()
 
     prices.append(initial_price)
     if country_reduction is not None:
@@ -276,10 +299,8 @@ def payment_choice(request, token):
         return TemplateResponse(request, 'custompayment/payment.html',
                                 {'order': order,
                                  'payment_form': payment_form})
-    else:
-        #if cannot add payment (because already paid, on in payment confirmation, or refundd)
-        return HttpResponseForbidden()
-
+    #if cannot add payment (because already paid, on in payment confirmation, or refundd)
+    return HttpResponseForbidden()
 
 
 def start_payment(request, token, variant):
@@ -290,24 +311,24 @@ def start_payment(request, token, variant):
     if variant not in [code for code, dummy_name in variant_choices]:
         raise Http404('%r is not a valid payment variant' % (variant,))
     # temporary default to check if working
-    defaults = {'total': Decimal(120),
-                'tax': Decimal(20),
-                'currency': 'USD',
-                'delivery': Decimal(10),
-                'billing_first_name': 'Sherlock',
-                'billing_last_name': 'Holmes',
-                'billing_address_1': '221B Baker Street',
-                'billing_address_2': '',
-                'billing_city': 'London',
-                'billing_postcode': 'NW1 6XE',
-                'billing_country_code': 'UK',
+    defaults = {'total': order.price.gross,
+                'tax': order.price.get_taxes(),
+                'currency': order.price.currency,
+                'delivery': Decimal(0),
+                'billing_first_name': order.billing_address.first_name,
+                'billing_last_name': order.billing_address.last_name,
+                'billing_address_1': order.billing_address.street_address_1,
+                'billing_address_2': order.billing_address.street_address_2,
+                'billing_city': order.billing_address.city,
+                'billing_postcode': order.billing_address.postal_code,
+                'billing_country_code': order.billing_address.country,
                 'description': _('Order %(order_number)s') % {'order_number': order},
-                'billing_country_area': 'Greater London',
-                'customer_ip_address': '127.0.0.1'}
+                'billing_country_area': order.billing_address.country_area,
+                'customer_ip_address': get_ip(request)}
     with transaction.atomic():
         order.change_status('payment-pending')
-        payment, dummy_created = Payment.objects.get_or_create(variant=variant, status='waiting',
-                                                               order=order, defaults=defaults)
+        payment, created = Payment.objects.get_or_create(variant=variant, status='waiting',
+                                                         order=order, defaults=defaults)
         try:
             # why we get the data from the form ? Change the status to input with the dummy provider
             form = payment.get_form(data=request.POST or None)

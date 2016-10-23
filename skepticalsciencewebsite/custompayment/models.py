@@ -8,9 +8,11 @@ from payments import PurchasedItem
 from payments.models import BasePayment
 from simple_history.models import HistoricalRecords
 from django_countries.fields import CountryField
-from custompayment.constants import *
 from customuser.models import User
 from publications.models import Publication
+from custompayment.constants import *
+from custompayment.utils import money_quantize
+
 
 
 class Address(models.Model):
@@ -72,6 +74,31 @@ class Discount(models.Model):
         return self.name+": "+str(self.code)
 
 
+class Price(models.Model):
+
+    currency = models.CharField(_("currency"), max_length=3, default="EUR")
+    product_default_price = models.DecimalField(_("default price"), max_digits=10, decimal_places=2)
+    country_reduction = models.DecimalField(_("country reduction"), max_digits=10, decimal_places=2,
+                                            null=True, blank=True, default=None)
+    scientist_score_reduction = models.DecimalField(_("scientist reduction"), max_digits=10, decimal_places=2,
+                                                    null=True, blank=True, default=None)
+    discount = models.DecimalField(_("scientist reduction"), max_digits=10, decimal_places=2,
+                                   null=True, blank=True, default=None)
+    tax = models.DecimalField(_("taxes"), max_digits=10, decimal_places=2)
+
+    @property
+    def gross(self):
+        return money_quantize(self.product_default_price + (self.country_reduction or Decimal(0.)) +
+                              (self.scientist_score_reduction or Decimal(0.)) + (self.discount or Decimal(0.)) +
+                              self.tax)
+
+    def get_taxes(self):
+        return money_quantize(self.tax)
+
+    def __str__(self):
+        return self.currency
+
+
 class Order(models.Model):
 
     token = models.CharField(_('token'), max_length=36, unique=True, null=True, blank=True)
@@ -82,6 +109,7 @@ class Order(models.Model):
     discount = models.ForeignKey(Discount, verbose_name=_('discount code'), null=True, blank=True)
     billing_address = models.ForeignKey(Address, verbose_name=_('billing address'), null=True, blank=True)
     item = models.OneToOneField(Item, verbose_name=_('item'))
+    price = models.ForeignKey(Price, verbose_name=_('price'), null=True, blank=True)
     history = HistoricalRecords()
 
     def save(self, *args, **kwargs):
