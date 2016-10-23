@@ -57,7 +57,9 @@ class BillingAddressUpdate(UpdateView):
 
 def add_price_context(context):
 
-    def fill_scientific_score(user, current_price):
+    def fill_scientific_score(user, order_type, current_price):
+        if order_type == SCIENTIST_ACCOUNT:
+            return None, current_price
         skeptic_score = SKEPTIC_SCORE_NORMALIZE(user.skeptic_score)
         mean_publication_score = MEAN_PUBLICATION_SCORE_NORMALIZE(user.mean_publication_score)
         mean_impact_factor = MEAN_IMPACT_FACTOR_NORMALIZE(user.mean_impact_factor)
@@ -88,7 +90,6 @@ def add_price_context(context):
                "t_object": country.name,
                "t_price": str(diff_price)+' €'}
         return res, new_price
-        # get country and get country pib, if none message, if not supported message
 
     def fill_discount(discount, current_price):
         if discount is not None:
@@ -120,17 +121,16 @@ def add_price_context(context):
                      "t_price": str(current_price)+' €'}
     country_reduction, current_price = fill_country_reduction(context["order_detail"].billing_address,
                                                               current_price)
-    if context["order_detail"].item.name == PUBLICATION:
-        scientific_score, current_price = fill_scientific_score(context["order_detail"].user,
-                                                                current_price)
-    else:
-        scientific_score = None
+    scientific_score, current_price = fill_scientific_score(context["order_detail"].user,
+                                                            context["order_detail"].item.name,
+                                                            current_price)
     discount, current_price = fill_discount(context["order_detail"].discount,
                                             current_price)
     tax, current_price = fill_taxes(TAX, current_price)
     final_price = {"t_type": "final price",
                    "t_object": "",
                    "t_price": str(round(current_price, 2))+' €'}
+
     prices.append(initial_price)
     if country_reduction is not None:
         prices.append(country_reduction)
