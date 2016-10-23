@@ -265,18 +265,21 @@ def create_order(request, name, sku):
 
 def payment_choice(request, token):
     order = get_object_or_404(Order, token=token)
-    payments = order.payments.all()
     form_data = request.POST or None
     payment_form = PaymentMethodsForm(form_data)
     # redirect if the form have been send
-    if payment_form.is_valid():
-        payment_method = payment_form.cleaned_data['method']
-        return redirect(start_payment, token=token, variant=payment_method)
-    # if the form havent been send the render the form to choose the payment method
-    return TemplateResponse(request, 'custompayment/payment.html',
-                            {'order': order,
-                             'payment_form': payment_form,
-                             'payments': payments})
+    if order.can_add_payment():
+        if payment_form.is_valid():
+            payment_method = payment_form.cleaned_data['method']
+            return redirect(start_payment, token=token, variant=payment_method)
+        # if there is no form then show the form to choose the method
+        return TemplateResponse(request, 'custompayment/payment.html',
+                                {'order': order,
+                                 'payment_form': payment_form})
+    else:
+        #if cannot add payment (because already paid, on in payment confirmation, or refundd)
+        return HttpResponseForbidden()
+
 
 
 def start_payment(request, token, variant):
@@ -303,11 +306,13 @@ def start_payment(request, token, variant):
                 'customer_ip_address': '127.0.0.1'}
     with transaction.atomic():
         order.change_status('payment-pending')
-        payment, dummy_created = Payment.objects.get_or_create(
-            variant=variant, status='waiting', order=order, defaults=defaults)
+        payment, dummy_created = Payment.objects.get_or_create(variant=variant, status='waiting',
+                                                               order=order, defaults=defaults)
         try:
+            # why we get the data from the form ? Change the status to input with the dummy provider
             form = payment.get_form(data=request.POST or None)
         except RedirectNeeded as redirect_to:
+            # redirection on success or faillure
             return redirect(str(redirect_to))
         except Exception:
             # logger.exception('Error communicating with the payment gateway')

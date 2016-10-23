@@ -9,7 +9,6 @@ from custompayment.constants import FULLY_PAID, CANCELLED, PUBLICATION, SCIENTIS
 
 @receiver(status_changed)
 def payment_status_change(sender, instance, **kwargs):
-    print("test")
     order = instance.order
     scientist_group = Group.objects.get_by_natural_key("Scientist")
     if instance.status == 'confirmed':

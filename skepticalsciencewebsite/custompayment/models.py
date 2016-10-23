@@ -2,6 +2,7 @@ from uuid import uuid4
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ValidationError
+from django.db.models import Q
 from decimal import Decimal
 from payments import PurchasedItem
 from payments.models import BasePayment
@@ -92,6 +93,9 @@ class Order(models.Model):
         if status != self.status:
             self.status = status
             self.save()
+
+    def can_add_payment(self):
+        return not self.payments.filter(Q(status='preauth') | Q(status='confirmed') | Q(status='refunded')).exists()
 
     def clean(self):
         if self.discount is not None:
