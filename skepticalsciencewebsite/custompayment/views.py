@@ -120,8 +120,11 @@ def add_price_context(context):
                      "t_price": str(current_price)+' €'}
     country_reduction, current_price = fill_country_reduction(context["order_detail"].billing_address,
                                                               current_price)
-    scientific_score, current_price = fill_scientific_score(context["order_detail"].user,
-                                                            current_price)
+    if context["order_detail"].item.name == PUBLICATION:
+        scientific_score, current_price = fill_scientific_score(context["order_detail"].user,
+                                                                current_price)
+    else:
+        scientific_score = None
     discount, current_price = fill_discount(context["order_detail"].discount,
                                             current_price)
     tax, current_price = fill_taxes(TAX, current_price)
@@ -131,7 +134,8 @@ def add_price_context(context):
     prices.append(initial_price)
     if country_reduction is not None:
         prices.append(country_reduction)
-    prices.append(scientific_score)
+    if scientific_score is not None:
+        prices.append(scientific_score)
     if discount is not None:
         prices.append(discount)
     prices.append(tax)

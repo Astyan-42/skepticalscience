@@ -35,4 +35,4 @@ def payment_status_change(sender, instance, **kwargs):
             user = User.objects.get(pk=order.item.sku)
             user.groups.remove(scientist_group)
             user.save()
-        # send a confirmation email 
+        # send a confirmation email
