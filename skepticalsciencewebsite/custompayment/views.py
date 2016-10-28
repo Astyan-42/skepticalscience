@@ -351,7 +351,6 @@ def cancer_order(request, token):
     order = get_object_or_404(Order, token=token)
     if order.can_be_cancelled():
         with transaction.atomic():
-            order.change_status(CANCELLED)
             order.payments.refund()
             #everything else is done in signal
             return redirect('detail_order', token=token)

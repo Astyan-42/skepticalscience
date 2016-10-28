@@ -10,6 +10,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 from sendfile import sendfile
 from django_tables2 import SingleTableView, RequestConfig
+from skepticalsciencewebsite.utils import same_user, check_status
 from customuser.models import User
 from custompayment.constants import PUBLICATION
 from publications.models import Publication, Comment, Reviewer, EstimatedImpactFactor, CommentReview
@@ -92,20 +93,19 @@ class PublicationUpdate(UpdateView):
     template_name = 'publications/publication_correct_form.html'
     object = None
 
+    @same_user("editor")
+    @check_status(WAITING_PAYMENT, "status")
     def form_valid(self, form):
         """
         form_valid modified method to add the user as the editor
         :param form: the form
         :return: the form_valid function of the parent applied to the form
         """
-        # get the object from the form
         self.object = form.save(commit=False)
-        # add the editor in object
-        if self.object.editor != self.request.user or self.object.status != WAITING_PAYMENT:
-            raise PermissionDenied
-        # call the parent to save correctly the ManyToManyField (sciences)
         return super(PublicationUpdate, self).form_valid(form)
 
+    @same_user("editor")
+    @check_status(WAITING_PAYMENT, "status")
     def get_context_data(self, **kwargs):
         """
         add the name to the context (useful for the template)
@@ -132,12 +132,14 @@ class PublicationCorrectionUpdate(UpdateView):
     object = None
     request = None
 
+    @same_user("editor")
+    @check_status(CORRECTION, "status")
     def form_valid(self, form):
         self.object = form.save(commit=False)
-        if int(self.object.editor_id) != int(self.request.user.id):
-            raise PermissionDenied
         return super(PublicationCorrectionUpdate, self).form_valid(form)
 
+    @same_user("editor")
+    @check_status(CORRECTION, "status")
     def get_context_data(self, **kwargs):
         """
         add the name to the context (useful for the template)
@@ -165,12 +167,14 @@ class PublicationAbortUpdate(UpdateView):
     object = None
     request = None
 
+    @same_user("editor")
+    @check_status(CORRECTION, "status")
     def form_valid(self, form):
         self.object = form.save(commit=False)
-        if int(self.object.editor_id) != int(self.request.user.id):  # check of the correction in the form
-            raise PermissionDenied
         return super(PublicationAbortUpdate, self).form_valid(form)
 
+    @same_user("editor")
+    @check_status(CORRECTION, "status")
     def get_context_data(self, **kwargs):
         """
         add the name to the context (useful for the template)
