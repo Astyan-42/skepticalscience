@@ -16,6 +16,7 @@ from django.views.generic import UpdateView, DetailView, View
 from django.urls import reverse_lazy
 from django_tables2 import SingleTableView, RequestConfig
 from payments import RedirectNeeded
+from skepticalsciencewebsite.utils import same_user, check_status
 from customuser.constants import *
 from customuser.models import User
 from publications.models import Publication
@@ -45,6 +46,7 @@ class BillingAddressUpdate(UpdateView):
             obj = order.billing_address
         return obj
 
+    @same_user('scientist')
     def form_valid(self, form):
         res = super(BillingAddressUpdate, self).form_valid(form)
         order = Order.objects.get(token=self.kwargs["token"])
@@ -178,6 +180,7 @@ class DiscountOrderUpdate(UpdateView):
         obj, created = Order.objects.get_or_create(token=self.kwargs["token"])
         return obj
 
+    @same_user('user')
     def get_context_data(self, **kwargs):
         """ done in case of form invalid"""
         context = super(DiscountOrderUpdate, self).get_context_data(**kwargs)
@@ -201,6 +204,7 @@ class OrderDisplay(DetailView):
         context = self.get_context_data(object=self.object)
         return self.render_to_response(context)
 
+    @same_user('user')
     def get_context_data(self, **kwargs):
         context = super(OrderDisplay, self).get_context_data(**kwargs)
         context["form"] = DiscountOrderForm()
@@ -288,13 +292,15 @@ def create_order(request, name, sku):
 
 def payment_choice(request, token):
     order = get_object_or_404(Order, token=token)
+    if order.user != request.user:
+        return HttpResponseForbidden()
     form_data = request.POST or None
     payment_form = PaymentMethodsForm(form_data)
     # redirect if the form have been send
     if order.can_add_payment():
         if payment_form.is_valid():
             payment_method = payment_form.cleaned_data['method']
-            return redirect(start_payment, token=token, variant=payment_method)
+            return redirect('payment', token=token, variant=payment_method)
         # if there is no form then show the form to choose the method
         return TemplateResponse(request, 'custompayment/payment.html',
                                 {'order': order,
@@ -305,8 +311,10 @@ def payment_choice(request, token):
 
 def start_payment(request, token, variant):
     order = get_object_or_404(Order, token=token)
+    if order.user != request.user:
+        return HttpResponseForbidden()
     if order.payments.filter(status='waiting').exists():
-        return redirect(payment_choice, token=token)
+        return redirect('payment', token=token)
     variant_choices = settings.CHECKOUT_PAYMENT_CHOICES
     if variant not in [code for code, dummy_name in variant_choices]:
         raise Http404('%r is not a valid payment variant' % (variant,))
@@ -340,7 +348,7 @@ def start_payment(request, token, variant):
             messages.error(request,
                            _('Oops, it looks like we were unable to contact the selected payment service'))
             payment.change_status('error')
-            return redirect(payment_choice, token=token)
+            return redirect('payment', token=token)
     # template to use before the default template
     template = 'custompayment/method/%s.html' % variant
     return TemplateResponse(request, [template, 'custompayment/method/default.html'],
@@ -349,6 +357,8 @@ def start_payment(request, token, variant):
 
 def cancer_order(request, token):
     order = get_object_or_404(Order, token=token)
+    if order.user != request.user:
+        return HttpResponseForbidden()
     if order.can_be_cancelled():
         with transaction.atomic():
             order.payments.refund()

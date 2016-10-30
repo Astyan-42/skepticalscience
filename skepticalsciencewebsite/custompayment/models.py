@@ -118,13 +118,19 @@ class Order(models.Model):
             self.token = str(uuid4())
         return super(Order, self).save(*args, **kwargs)
 
+    def change_status(self, status):
+        if status != self.status:
+            self.status = status
+            self.save()
+
     def can_add_payment(self):
         return not self.payments.filter(Q(status='preauth') | Q(status='confirmed') | Q(status='refunded')).exists()
 
     def can_be_cancelled(self):
-        if self.payment.filter(status='confirmed').exists():
+        # to check
+        if self.payments.filter(status='confirmed').exists():
             payment = self.payments.get(status='confirmed')
-            t_delta = timezone.now() - self.payment.modified
+            t_delta = timezone.now() - payment.modified
             if t_delta < REFUND_DAYS:
                 return True
             else:
