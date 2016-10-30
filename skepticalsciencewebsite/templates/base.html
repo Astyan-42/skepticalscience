@@ -7,6 +7,7 @@
 {% load analytical %}
 
 {% load staticfiles %}
+{% load template_filters %}
 
 
 <!--<!DOCTYPE html>-->
@@ -43,35 +44,36 @@
             <div class="navbar-collapse collapse" id="navbar-main">
               <ul class="nav navbar-nav">
                 <li class="dropdown">
-                  <a class="dropdown-toggle" data-toggle="dropdown" href="#" >Themes <span class="caret"></span></a>
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#" >{% trans "Publications" %} <span class="caret"></span></a>
                   <ul class="dropdown-menu" >
-                    <li><a href="#">Default</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">Cerulean</a></li>
-                    <li><a href="#">Cosmo</a></li>
-                    <li><a href="#">Cyborg</a></li>
+
+                    <li><a href="{% url 'publication_list' %}">{% trans "List" %}</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'publication_in_review' %}">{% trans "Publications in review" %}</a></li>
+                        {% if user|has_group:'Scientist' %}
+                            <li class="divider"></li>
+                            <li><a href="{% url 'create_publication' %}">{% trans "New Publication" %}</a></li>
+                            <li><a href="{% url 'publication_owned' %}">{% trans "My Publications" %}</a></li>
+                            <li class="divider"></li>
+                            <li><a href="{% url 'publication_to_review' %}">{% trans "Reviewers needed" %}</a></li>
+                            <li><a href="{% url 'publication_to_evaluate' %}">{% trans "Evaluations needed" %}</a></li>
+                        {% endif %}
+                    {% endif %}
                   </ul>
                 </li>
+                {% if user.is_authenticated %}
+                    <li>
+                      <a href="{% url 'list_order' %}">{% trans "My orders" %}</a>
+                    </li>
+                {% endif %}
                 <li>
-                  <a href="#">Help</a>
+                  <a href="{% url 'faq' %}">{% trans "F.A.Q" %}</a>
                 </li>
                 <li>
-                  <a href="http://news.bootswatch.com">Blog</a>
+                  <a href="#">{% trans "TOS" %}</a>
                 </li>
-                <li class="dropdown">
-                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Flatly <span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                    <li><a href="http://jsfiddle.net/bootswatch/jmg3gykg/">Open Sandbox</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">bootstrap.min.css</a></li>
-                    <li><a href="#">bootstrap.css</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">variables.less</a></li>
-                    <li><a href="#">bootswatch.less</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">_variables.scss</a></li>
-                    <li><a href="#">_bootswatch.scss</a></li>
-                  </ul>
+                <li>
+                  <a href="#">{% trans "Commercial agreement" %}</a>
                 </li>
               </ul>
 

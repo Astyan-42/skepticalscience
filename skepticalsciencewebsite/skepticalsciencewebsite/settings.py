@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'publications',
     'faq',
     'custompayment',
+    'skepticalsciencetemplatetags'
 ]
 
 MIDDLEWARE = [
