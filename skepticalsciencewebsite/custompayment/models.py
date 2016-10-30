@@ -1,3 +1,4 @@
+import datetime
 from uuid import uuid4
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -127,11 +128,10 @@ class Order(models.Model):
         return not self.payments.filter(Q(status='preauth') | Q(status='confirmed') | Q(status='refunded')).exists()
 
     def can_be_cancelled(self):
-        # to check
         if self.payments.filter(status='confirmed').exists():
             payment = self.payments.get(status='confirmed')
             t_delta = timezone.now() - payment.modified
-            if t_delta < REFUND_DAYS:
+            if t_delta < datetime.timedelta(days=REFUND_DAYS):
                 return True
             else:
                 return False

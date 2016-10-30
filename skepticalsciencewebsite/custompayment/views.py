@@ -361,7 +361,8 @@ def cancer_order(request, token):
         return HttpResponseForbidden()
     if order.can_be_cancelled():
         with transaction.atomic():
-            order.payments.refund()
+            payment = order.payments.get(status='confirmed')
+            payment.refund()
             #everything else is done in signal
             return redirect('detail_order', token=token)
     else:
