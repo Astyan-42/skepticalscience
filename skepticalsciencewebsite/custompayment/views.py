@@ -96,7 +96,7 @@ def add_price_context(context):
 
     def fill_discount(discount, current_price):
         if (discount is not None and discount.starting_date < timezone.now().date() and
-                    discount.ending_date > timezone.now().date()):
+            discount.ending_date > timezone.now().date()):
             if discount.discount_type == FIXED:
                 discount_price = money_quantize(Decimal(discount.discount_value))
             else:
@@ -196,7 +196,7 @@ class DiscountOrderUpdate(UpdateView):
 class OrderDisplay(DetailView):
     context_object_name = "order_detail"
     model = Order
-    fields = ["status", "creation_date", "user", "discount", "billing_address", "item"]
+    fields = ["status", "creation_date", "last_status_change", "user", "discount", "billing_address", "item"]
     object = None
 
     def get(self, request, *args, **kwargs):

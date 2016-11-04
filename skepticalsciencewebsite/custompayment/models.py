@@ -111,6 +111,7 @@ class Order(models.Model):
     discount = models.ForeignKey(Discount, verbose_name=_('discount code'), null=True, blank=True)
     billing_address = models.ForeignKey(Address, verbose_name=_('billing address'), null=True, blank=True)
     item = models.OneToOneField(Item, verbose_name=_('item'))
+    # to delete, put the order in price
     price = models.ForeignKey(Price, verbose_name=_('price'), null=True, blank=True)
     history = HistoricalRecords()
 
