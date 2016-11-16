@@ -310,6 +310,19 @@ class PublicationOwnedTableView(PublicationSpecialTableView):
         return super(PublicationOwnedTableView, self).get_queryset()
 
 
+class PublicationYouReviewTableView(PublicationSpecialTableView):
+    """
+    Show the publications the user review
+    """
+    name = "you review"
+    science_filter = False
+
+    def get_queryset(self, **kwargs):
+        self.filter_dict = {'reviewer': Reviewer.objects.get(scientist=self.request.session['_auth_user_id'],
+                                                             actif=True).pk}
+        return super(PublicationYouReviewTableView, self).get_queryset()
+
+
 def can_be_leave_reviewer(phd, nb_reviewer_actif, nb_common_science, not_in_authors, publication_status, action):
     if action == "become":
         return (phd and nb_reviewer_actif < NB_REVIEWER_PER_ARTICLE and not_in_authors and

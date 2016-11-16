@@ -3,7 +3,7 @@ from publications.views import (PublicationCreate, PublicationUpdate, Publicatio
                                 PublicationAbortUpdate, download, PublicationTableView, PublicationToReviewTableView,
                                 PublicationInReviewTableView, PublicationToEvaluateTableView, PublicationDetailView,
                                 PublicationOwnedTableView, become_reviewer_view, leave_reviewer_view,
-                                CommentDetailView)
+                                CommentDetailView, PublicationYouReviewTableView)
 
 urlpatterns = [url(r'^new_publication/$', PublicationCreate.as_view(), name="create_publication"),
                url(r'^edit_publication/(?P<pk>\d+)/$', PublicationUpdate.as_view(), name="update_publication"),
@@ -16,6 +16,7 @@ urlpatterns = [url(r'^new_publication/$', PublicationCreate.as_view(), name="cre
                url(r'^publication_list/$', PublicationTableView.as_view(), name="publication_list"),
                url(r'^publication_to_review/$', PublicationToReviewTableView.as_view(),name="publication_to_review"),
                url(r'^publication_in_review/$', PublicationInReviewTableView.as_view(), name="publication_in_review"),
+               url(r'^publication_you_review/$', PublicationYouReviewTableView.as_view(), name="publication_you_review"),
                url(r'^publication_to_evaluate/$', PublicationToEvaluateTableView.as_view(),
                    name="publication_to_evaluate"),
                url(r'^publication_owned/$', PublicationOwnedTableView.as_view(), name="publication_owned"),
