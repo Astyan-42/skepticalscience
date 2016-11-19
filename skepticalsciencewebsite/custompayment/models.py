@@ -82,10 +82,12 @@ class Price(models.Model):
     product_default_price = models.DecimalField(_("default price"), max_digits=10, decimal_places=2)
     country_reduction = models.DecimalField(_("country reduction"), max_digits=10, decimal_places=2,
                                             null=True, blank=True, default=None)
+    scientist_score = models.FloatField(_("scientist score"), null=True, blank=True) # added
     scientist_score_reduction = models.DecimalField(_("scientist reduction"), max_digits=10, decimal_places=2,
                                                     null=True, blank=True, default=None)
     discount = models.DecimalField(_("scientist reduction"), max_digits=10, decimal_places=2,
                                    null=True, blank=True, default=None)
+    tax_percent = models.FloatField(_("taxes percents"), null=True, blank=True)
     tax = models.DecimalField(_("taxes"), max_digits=10, decimal_places=2)
 
     @property
@@ -97,8 +99,34 @@ class Price(models.Model):
     def get_taxes(self):
         return money_quantize(self.tax)
 
+    def to_list(self):
+        price_list = []
+        order = Order.objects.get(price=self.pk)
+        price_list.append({"t_type": "order "+order.item.name,
+                           "t_object": order.item,
+                           "t_price": str(self.product_default_price)+' '+str(self.currency)})
+        if self.country_reduction is not None:
+            price_list.append({"t_type": "country compensation",
+                               "t_object": order.billing_address.country.name,
+                               "t_price": str(self.country_reduction)+' '+str(self.currency)})
+        if self.scientist_score_reduction is not None:
+            price_list.append({"t_type": "scientist score compensation",
+                               "t_object": "score :"+str(round(self.scientist_score, 2)),
+                               "t_price": str(self.scientist_score_reduction)+' '+str(self.currency)})
+        if self.discount is not None:
+            price_list.append({"t_type": "discount code",
+                              "t_object": order.discount.code,
+                              "t_price": str(self.discount)+' '+str(self.currency)})
+        price_list.append({"t_type": "taxes",
+                          "t_object": str(self.tax_percent)+"%",
+                          "t_price": str(self.tax)+' '+str(self.currency)})
+        price_list.append({"t_type": "final price",
+                           "t_object": "",
+                           "t_price": str(self.gross)+' '+str(self.currency)})
+        return price_list
+
     def __str__(self):
-        return str(self.product_default_price)+' '+self.currency
+        return str(self.gross)+' '+self.currency
 
 
 class Order(models.Model):

@@ -58,11 +58,29 @@ class BillingAddressUpdate(UpdateView):
         return reverse_lazy("detail_order", kwargs={'token': self.kwargs["token"]})
 
 
-def add_price_context(context):
-    # this function is the ugliest thing on earth, it need to be exterminated
-    def fill_scientific_score(user, order_type, current_price):
+def add_price_to_context(context):
+
+    def fill_country_reduction(address):
+        db_countriespayment = CountryPayment.objects.all()
+        max_pib = db_countriespayment.aggregate(Max('pib_per_inhabitant'))['pib_per_inhabitant__max']
+        min_pib = db_countriespayment.aggregate(Min('pib_per_inhabitant'))['pib_per_inhabitant__min']
+        try:
+            country= address.country
+            own_country_payment = CountryPayment.objects.get(country=country)
+        except (AttributeError, ObjectDoesNotExist):
+            price.country_reduction = None
+            return current_price
+        factor = COUNTRY_PPP_TO_PERCENT(min_pib, max_pib, own_country_payment.pib_per_inhabitant)
+        new_price = money_quantize(current_price*Decimal(factor))
+        diff_price = money_quantize(new_price-current_price)
+        price.country_reduction = diff_price
+        return new_price
+
+    def fill_scientific_score(user, order_type):
         if order_type == SCIENTIST_ACCOUNT:
-            return None, current_price
+            price.scientist_score = None
+            price.scientist_score_reduction = None
+            return current_price
         skeptic_score = SKEPTIC_SCORE_NORMALIZE(user.skeptic_score)
         mean_publication_score = MEAN_PUBLICATION_SCORE_NORMALIZE(user.mean_publication_score)
         mean_impact_factor = MEAN_IMPACT_FACTOR_NORMALIZE(user.mean_impact_factor)
@@ -72,105 +90,48 @@ def add_price_context(context):
         payment_percent = -0.08+(1+0.08)/(1+(mean_score/0.1214766)**1.137504)
         new_price = money_quantize(current_price*Decimal(payment_percent))
         diff_price = money_quantize(new_price-current_price)
-        res = {"t_type": "scientist score compensation",
-               "t_object": "score :"+str(round(mean_score, 2)),
-               "t_price": str(diff_price)+' €'}
-        return res, new_price
+        price.scientist_score = round(mean_score, 2)
+        price.scientist_score_reduction = diff_price
+        return new_price
 
-    def fill_country_reduction(address, current_price):
-        db_countriespayment = CountryPayment.objects.all()
-        max_pib = db_countriespayment.aggregate(Max('pib_per_inhabitant'))['pib_per_inhabitant__max']
-        min_pib = db_countriespayment.aggregate(Min('pib_per_inhabitant'))['pib_per_inhabitant__min']
-        try:
-            country= address.country
-            own_country_payment = CountryPayment.objects.get(country=country)
-        except (AttributeError, ObjectDoesNotExist):
-            return None, current_price
-        factor = COUNTRY_PPP_TO_PERCENT(min_pib, max_pib, own_country_payment.pib_per_inhabitant)
-        new_price = money_quantize(current_price*Decimal(factor))
-        diff_price = money_quantize(new_price-current_price)
-        res = {"t_type": "country compensation",
-               "t_object": country.name,
-               "t_price": str(diff_price)+' €'}
-        return res, new_price
-
-    def fill_discount(discount, current_price):
+    def fill_discount(discount):
         if (discount is not None and discount.starting_date < timezone.now().date() and
-            discount.ending_date > timezone.now().date()):
+                    discount.ending_date > timezone.now().date()):
             if discount.discount_type == FIXED:
                 discount_price = money_quantize(Decimal(discount.discount_value))
             else:
-                discount_price = money_quantize(-current_price*Decimal(discount.discount_value/100.))
+                discount_price = money_quantize(-current_price * Decimal(discount.discount_value / 100.))
             new_price = money_quantize(current_price + discount_price)
-            res = {"t_type": "discount code",
-                   "t_object": discount.code,
-                   "t_price": str(discount_price)+' €'}
+            price.discount = discount_price
         else:
-            res = None
+            price.discount = None
             new_price = current_price
-        return res, new_price
+        return new_price
 
-    def fill_taxes(percent, current_price):
+    def fill_taxes(percent):
         taxes_amount = money_quantize(current_price*Decimal(percent/100))
         new_price = money_quantize(current_price+taxes_amount)
-        res = {"t_type": "taxes",
-               "t_object": str(percent)+"%",
-               "t_price": str(taxes_amount)+' €'}
-        return res, new_price
+        price.tax_percent = percent
+        price.tax = taxes_amount
+        return new_price
 
-    def change_price(price_instance, current_prices):
-        if price_instance is None:
-            price_instance = Price()
-        price_instance.product_default_price = current_prices[0]
-        price_instance.country_reduction = current_prices[1] - current_prices[0]
-        price_instance.scientist_score_reduction = current_prices[2] - current_prices[1]
-        price_instance.discount = current_prices[3] - current_prices[2]
-        price_instance.tax = current_prices[4] - current_prices[3]
-        price_instance.save()
-        return price_instance
+    if context["order_detail"].price is None:
+        price = Price.objects.create()
+        context["order_detail"].price = price
+    else:
+        price = context["order_detail"].price
 
-    prices = []
-    current_prices = []
-    current_price = Decimal(PRODUCTS_PRICES[context["order_detail"].item.name])
-    current_prices.append(current_price)
-    initial_price = {"t_type": "order "+context["order_detail"].item.name,
-                     "t_object": context["order_detail"].item,
-                     "t_price": str(current_price)+' €'}
-    country_reduction, current_price = fill_country_reduction(context["order_detail"].billing_address,
-                                                              current_price)
-    current_prices.append(current_price)
-    scientific_score, current_price = fill_scientific_score(context["order_detail"].user,
-                                                            context["order_detail"].item.name,
-                                                            current_price)
-    current_prices.append(current_price)
-    discount, current_price = fill_discount(context["order_detail"].discount,
-                                            current_price)
-    current_prices.append(current_price)
-    tax, current_price = fill_taxes(TAX, current_price)
-    current_prices.append(current_price)
-    final_price = {"t_type": "final price",
-                   "t_object": "",
-                   "t_price": str(current_price)+' €'}
-    # change price in the model
-    priceobj = change_price(context["order_detail"].price, current_prices)
-    context["order_detail"].price = priceobj
-    context["order_detail"].save()
+    if context["order_detail"].status == NEW:
+        current_price = Decimal(PRODUCTS_PRICES[context["order_detail"].item.name])
+        price.product_default_price = current_price
+        current_price = fill_country_reduction(context["order_detail"].billing_address)
+        current_price = fill_scientific_score(context["order_detail"].user, context["order_detail"].item.name)
+        current_price = fill_discount(context["order_detail"].discount)
+        current_price = fill_taxes(TAX)
+        price.save()
 
-    prices.append(initial_price)
-    if country_reduction is not None:
-        prices.append(country_reduction)
-    if scientific_score is not None:
-        prices.append(scientific_score)
-    if discount is not None:
-        prices.append(discount)
-    prices.append(tax)
-    prices.append(final_price)
-    context["prices"] = prices
+    context["prices"] = price.to_list()
     return context
-
-
-def add_price_to_context2(context):
-    pass
 
 
 @method_decorator(login_required, name='dispatch')
@@ -192,7 +153,7 @@ class DiscountOrderUpdate(UpdateView):
         # constants needed !!!
         context["constants"] = PAYMENT_CONSTANTS_TEMPLATE
         context["order_detail"].discount = self.get_object().discount
-        return add_price_context(context)
+        return add_price_to_context(context)
 
     def get_success_url(self):
         return reverse_lazy("detail_order", kwargs={'token': self.kwargs["token"]})
@@ -215,7 +176,7 @@ class OrderDisplay(DetailView):
         context = super(OrderDisplay, self).get_context_data(**kwargs)
         context["form"] = DiscountOrderForm()
         context["constants"] = PAYMENT_CONSTANTS_TEMPLATE
-        return add_price_context(context)
+        return add_price_to_context2(context)
 
 
 @method_decorator(login_required, name='dispatch')
