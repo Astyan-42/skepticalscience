@@ -98,7 +98,7 @@ class Price(models.Model):
         return money_quantize(self.tax)
 
     def __str__(self):
-        return self.currency
+        return str(self.product_default_price)+' '+self.currency
 
 
 class Order(models.Model):
