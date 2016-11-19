@@ -129,6 +129,7 @@ def add_price_context(context):
         price_instance.save()
         return price_instance
 
+    print(context["order_detail"].status)
     prices = []
     current_prices = []
     current_price = Decimal(PRODUCTS_PRICES[context["order_detail"].item.name])

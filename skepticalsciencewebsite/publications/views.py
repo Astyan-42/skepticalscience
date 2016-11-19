@@ -230,6 +230,7 @@ class PublicationTableView(PublicationFilteredTableView):
     formhelper_class = PublicationFilterFormHelper
 
 
+@method_decorator(login_required, name='dispatch')
 class PublicationSpecialTableView(SingleTableView):
     """
     A class used to combine the filter and the table (only the ordering is possible the filtering is already done
@@ -275,6 +276,8 @@ class PublicationSpecialTableView(SingleTableView):
         return context
 
 
+@method_decorator(permission_required('publications.reviewer.can_add_reviewer', raise_exception=True),
+                  name='dispatch')
 class PublicationToReviewTableView(PublicationSpecialTableView):
     """
     Show the publications about the sciences of the user and in need of peer for a review.
@@ -292,6 +295,8 @@ class PublicationInReviewTableView(PublicationSpecialTableView):
     filter_dict = {'status': PEER_REVIEW}
 
 
+@method_decorator(permission_required('publications.estimated_impact_factor.can_add_estimated_impact_factor',
+                                      raise_exception=True), name='dispatch')
 class PublicationToEvaluateTableView(PublicationSpecialTableView):
     """
     show the publications about the sciences of the user and in evaluation. In need of an estimated impact factor.
@@ -301,6 +306,8 @@ class PublicationToEvaluateTableView(PublicationSpecialTableView):
     filter_dict = {'status': EVALUATION}
 
 
+@method_decorator(permission_required('publications.publication.can_add_publication', raise_exception=True),
+                  name='dispatch')
 class PublicationOwnedTableView(PublicationSpecialTableView):
     name = "owned"
     science_filter = False
@@ -310,11 +317,13 @@ class PublicationOwnedTableView(PublicationSpecialTableView):
         return super(PublicationOwnedTableView, self).get_queryset()
 
 
+@method_decorator(permission_required('publications.reviewer.can_add_reviewer', raise_exception=True),
+                  name='dispatch')
 class PublicationYouReviewTableView(PublicationSpecialTableView):
     """
     Show the publications the user review
     """
-    name = "you review"
+    name = "your review"
     science_filter = False
 
     def get_queryset(self, **kwargs):
