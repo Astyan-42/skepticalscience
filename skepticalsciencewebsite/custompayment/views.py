@@ -129,7 +129,6 @@ def add_price_context(context):
         price_instance.save()
         return price_instance
 
-    print(context["order_detail"].status)
     prices = []
     current_prices = []
     current_price = Decimal(PRODUCTS_PRICES[context["order_detail"].item.name])
@@ -170,6 +169,10 @@ def add_price_context(context):
     return context
 
 
+def add_price_to_context2(context):
+    pass
+
+
 @method_decorator(login_required, name='dispatch')
 class DiscountOrderUpdate(UpdateView):
     form_class = DiscountOrderForm
@@ -186,6 +189,8 @@ class DiscountOrderUpdate(UpdateView):
         """ done in case of form invalid"""
         context = super(DiscountOrderUpdate, self).get_context_data(**kwargs)
         # seems to be only called when bug
+        # constants needed !!!
+        context["constants"] = PAYMENT_CONSTANTS_TEMPLATE
         context["order_detail"].discount = self.get_object().discount
         return add_price_context(context)
 
