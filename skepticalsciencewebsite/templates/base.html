@@ -8,6 +8,7 @@
 
 {% load staticfiles %}
 {% load template_filters %}
+{% load staticfiles cookielaw_tags %}
 
 
 <!--<!DOCTYPE html>-->
@@ -17,6 +18,7 @@
     {% analytical_head_top %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/personal.css' %}" />
+    <link href="{% static 'cookielaw/css/cookielaw.css'%}" rel="stylesheet" />
     <!--to change in  the futur-->
     {% block head %} {% endblock %}
     {% block headtitle %}
@@ -25,11 +27,13 @@
     {{ form.media.css }}
     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
     <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script  type="text/javascript" src="{% static 'cookielaw/js/cookielaw.js'%}"></script>
     {% analytical_head_bottom %}
 </head>
 
 <body>
     {% analytical_body_top %}
+    {% cookielaw_banner %}
     <div id="header">
         <div class="navbar navbar-default navbar-static-top">
           <div class="container">

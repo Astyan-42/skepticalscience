@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'django_countries',
     'analytical',
     'payments',
+    'cookielaw',
     'sciences',
     'customuser',
     'publications',
@@ -150,6 +151,8 @@ FIXTURE_DIRS = (
 
 
 STATIC_URL = '/static/'
+#STATIC_ROOT = ''
+
 
 # sendfile settings
 SENDFILE_BACKEND = 'sendfile.backends.development'
