@@ -27,5 +27,6 @@ urlpatterns = [
     url(r'^checkout/', include('custompayment.urls')),
     url('^checkout/', include('payments.urls')),
     url(r'^publications/', include('publications.urls')),
+    url(r'invoce/', include('pdfinvoce.urls')),
     url(r'^$', TemplateView.as_view(template_name='index.html'), name="index"),
 ]
