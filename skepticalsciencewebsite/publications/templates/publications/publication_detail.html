@@ -24,7 +24,7 @@
                 </blockquote>
                 <!-- and good publication in evaluation and user in phd-->
                 {% if user.phd and not user in publication_detail.get_all_authors %}
-                    {% if perms.publications.can_add_reviewer and perms.publications.can_change_reviewer and reviewer_registration %}
+                    {% if perms.publications.add_reviewer and perms.publications.change_reviewer and reviewer_registration %}
                         {% if is_reviewer %}
                             <p><a href="{% url 'leave_reviewer' object.pk %}"> {% trans "Leave the reviewers" %}</a></p>
                         {% else %}

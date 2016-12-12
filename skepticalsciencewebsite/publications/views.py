@@ -45,7 +45,7 @@ def download(request, field_name, publication_id):
 
 
 @method_decorator(login_required, name='dispatch')
-@method_decorator(permission_required('publications.publication.can_add_publication', raise_exception=True),
+@method_decorator(permission_required('publications.add_publication', raise_exception=True),
                   name='dispatch')
 class PublicationCreate(CreateView):
     """
@@ -84,7 +84,7 @@ class PublicationCreate(CreateView):
 
 
 @method_decorator(login_required, name='dispatch')
-@method_decorator(permission_required('publications.publication.can_change_publication', raise_exception=True),
+@method_decorator(permission_required('publications.change_publication', raise_exception=True),
                   name='dispatch')
 class PublicationUpdate(UpdateView):
     model = Publication
@@ -122,7 +122,7 @@ class PublicationUpdate(UpdateView):
 
 
 @method_decorator(login_required, name='dispatch')
-@method_decorator(permission_required('publications.publication.can_change_publication', raise_exception=True),
+@method_decorator(permission_required('publications.change_publication', raise_exception=True),
                   name='dispatch')
 class PublicationCorrectionUpdate(UpdateView):
     model = Publication
@@ -156,7 +156,7 @@ class PublicationCorrectionUpdate(UpdateView):
 
 
 @method_decorator(login_required, name='dispatch')
-@method_decorator(permission_required('publications.publication.can_change_publication', raise_exception=True),
+@method_decorator(permission_required('publications.change_publication', raise_exception=True),
                   name='dispatch')
 class PublicationAbortUpdate(UpdateView):
     model = Publication
@@ -276,7 +276,7 @@ class PublicationSpecialTableView(SingleTableView):
         return context
 
 
-@method_decorator(permission_required('publications.reviewer.can_add_reviewer', raise_exception=True),
+@method_decorator(permission_required('publications.add_reviewer', raise_exception=True),
                   name='dispatch')
 class PublicationToReviewTableView(PublicationSpecialTableView):
     """
@@ -295,7 +295,7 @@ class PublicationInReviewTableView(PublicationSpecialTableView):
     filter_dict = {'status': PEER_REVIEW}
 
 
-@method_decorator(permission_required('publications.estimated_impact_factor.can_add_estimated_impact_factor',
+@method_decorator(permission_required('publications.add_estimated_impact_factor',
                                       raise_exception=True), name='dispatch')
 class PublicationToEvaluateTableView(PublicationSpecialTableView):
     """
@@ -306,7 +306,7 @@ class PublicationToEvaluateTableView(PublicationSpecialTableView):
     filter_dict = {'status': EVALUATION}
 
 
-@method_decorator(permission_required('publications.publication.can_add_publication', raise_exception=True),
+@method_decorator(permission_required('publications.add_publication', raise_exception=True),
                   name='dispatch')
 class PublicationOwnedTableView(PublicationSpecialTableView):
     name = "owned"
@@ -317,7 +317,7 @@ class PublicationOwnedTableView(PublicationSpecialTableView):
         return super(PublicationOwnedTableView, self).get_queryset()
 
 
-@method_decorator(permission_required('publications.reviewer.can_add_reviewer', raise_exception=True),
+@method_decorator(permission_required('publications.add_reviewer', raise_exception=True),
                   name='dispatch')
 class PublicationYouReviewTableView(PublicationSpecialTableView):
     """
@@ -462,7 +462,7 @@ class PublicationInterest(CreateView):
 
 
 @method_decorator(login_required, name='dispatch')
-@method_decorator(permission_required('publications.publication.can_add_estimatedimpactfactor', raise_exception=True),
+@method_decorator(permission_required('publications.add_estimatedimpactfactor', raise_exception=True),
                   name='dispatch')
 class EstimatedImpactFactorInterest(CreateView):
     # template_name = 'publications/publication_detail.html'
@@ -501,8 +501,8 @@ class PublicationDetailView(View):
 
 
 @login_required
-@permission_required('publications.publication.can_add_reviewer', raise_exception=True)
-@permission_required('publications.publication.can_change_reviewer', raise_exception=True)
+@permission_required('publications.add_reviewer', raise_exception=True)
+@permission_required('publications.change_reviewer', raise_exception=True)
 def become_reviewer_view(request, publication_id):
     # add to reviewer if: phd & not enough rewiewers, group scientist, has sciences in common with the article
     if reviewer_action(request.user, publication_id, "become"):
@@ -519,7 +519,7 @@ def become_reviewer_view(request, publication_id):
 
 
 @login_required
-@permission_required('publications.publication.can_change_reviewer', raise_exception=True)
+@permission_required('publications.change_reviewer', raise_exception=True)
 def leave_reviewer_view(request, publication_id):
     if reviewer_action(request.user, publication_id, "leave"):
         try:
@@ -566,7 +566,7 @@ class CommentDisplay(DetailView):
 
 
 @method_decorator(login_required, name='dispatch')
-@method_decorator(permission_required('publications.publication.can_add_commentreview', raise_exception=True),
+@method_decorator(permission_required('publications.add_commentreview', raise_exception=True),
                   name='dispatch')
 class CommentReviewValidationInterest(CreateView):
     form_class = CommentReviewValidationForm
@@ -595,7 +595,7 @@ class CommentReviewValidationInterest(CreateView):
 
 
 @method_decorator(login_required, name='dispatch')
-@method_decorator(permission_required('publications.publication.can_change_commentreview', raise_exception=True),
+@method_decorator(permission_required('publications.change_commentreview', raise_exception=True),
                   name='dispatch')
 class CommentReviewCorrectionInterest(UpdateView):
     form_class = CommentReviewCorrectionForm
