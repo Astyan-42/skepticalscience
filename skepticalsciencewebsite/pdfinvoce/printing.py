@@ -24,6 +24,7 @@ from django.contrib.auth import get_user_model
 
 alternate_english_invoice = PYINVOICE_CONSTANTS
 alternate_english_invoice[MERCHANT] = "Merchant"
+alternate_english_invoice[PROVIDER_ID] = 'SIRET'
 
 french_invoice = {
     INVOICE_ID: "Numéro",
@@ -54,7 +55,20 @@ french_invoice = {
     TRANSACTION_DATE: "Date de la transaction",
     TRANSACTION: "Transaction",
     PAID: "Payé",
+    PROVIDER_ID: "SIRET",
+    CAPITAL: "Capital social"
 }
+
+eagal_provider = ServiceProviderInfo(
+    name='temp',
+    provider_id='temp',
+    capital='temp',
+    street='temp',
+    city='temp',
+    country='temp',
+    post_code='temp',
+    vat_tax_number='temp'
+)
 
 
 def generate_invoice(order_id, language):
@@ -65,17 +79,10 @@ def generate_invoice(order_id, language):
     elif language == 'french':
         doc = SimpleInvoice(invoice_name, constants=french_invoice)
     #things to change (depend of the order)
+
     doc.is_paid = True
     doc.invoice_info = InvoiceInfo(1023, datetime.now(), datetime.now())
-    doc.service_provider_info = ServiceProviderInfo(
-        name='PyInvoice',
-        street='My Street',
-        city='My City',
-        state='My State',
-        country='My Country',
-        post_code='222222',
-        vat_tax_number='Vat/Tax number'
-    )
+    doc.service_provider_info = eagal_provider
 
     doc.client_info = ClientInfo(email='client@example.com')
     doc.add_item(Item('Item', 'Item desc', 1, '1.1'))
