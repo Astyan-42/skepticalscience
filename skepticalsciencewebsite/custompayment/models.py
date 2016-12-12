@@ -16,7 +16,6 @@ from custompayment.constants import *
 from custompayment.utils import money_quantize
 
 
-
 class Address(models.Model):
     # creation date
     scientist = models.ForeignKey(User, verbose_name=_("Scientist"), null=True, blank=True)
@@ -33,6 +32,7 @@ class Address(models.Model):
     country_area = models.CharField(_('state or province'), max_length=127, blank=True)
     phone = models.CharField(_('phone number'), max_length=30, blank=True)
 
+    @property
     def billing_name(self):
         return self.first_name + " " + self.last_name
 
@@ -164,6 +164,13 @@ class Order(models.Model):
                 return True
             else:
                 return False
+
+    def get_payment(self):
+        if self.payments.filter(status='confirmed').exists():
+            payment = self.payments.get(status='confirmed')
+            return payment
+        else:
+            return None
 
     def clean(self):
         if self.discount is not None:

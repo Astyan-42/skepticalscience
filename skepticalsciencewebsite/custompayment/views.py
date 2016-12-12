@@ -176,7 +176,7 @@ class OrderDisplay(DetailView):
         context = super(OrderDisplay, self).get_context_data(**kwargs)
         context["form"] = DiscountOrderForm()
         context["constants"] = PAYMENT_CONSTANTS_TEMPLATE
-        return add_price_to_context2(context)
+        return add_price_to_context(context)
 
 
 @method_decorator(login_required, name='dispatch')
