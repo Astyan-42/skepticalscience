@@ -51,9 +51,13 @@
                         <a href="{% url 'payment' order_detail.token %}">{% trans "selling contract" %}</a>
                         {% trans "and you certify the validity of the informations you enter." %}
                     </p>
-                    <a href="{% url 'payment' order_detail.token %}">
-                        <div class="btn btn-primary">{% trans "Accept and pay" %}</div>
-                    </a>
+                    {% if order_detail.billing_address is None %}
+                        <div class="btn btn-primary disabled">{% trans "Accept and pay" %}</div>
+                    {% else %}
+                        <a href="{% url 'payment' order_detail.token %}">
+                            <div class="btn btn-primary">{% trans "Accept and pay" %}</div>
+                        </a>
+                    {% endif %}
                 {% endif %}
             </div>
         </div>
