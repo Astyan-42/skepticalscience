@@ -114,12 +114,12 @@ def add_price_to_context(context):
         price.tax_percent = percent
         price.tax = taxes_amount
         return new_price
-
-    if context["order_detail"].price is None:
-        price = Price.objects.create()
-        context["order_detail"].price = price
-    else:
-        price = context["order_detail"].price
+    #
+    # if context["order_detail"].price is None:
+    #     price = Price.objects.create()
+    #     context["order_detail"].price = price
+    # else:
+    price = context["order_detail"].price
 
     if context["order_detail"].status == NEW:
         current_price = Decimal(PRODUCTS_PRICES[context["order_detail"].item.name])
@@ -252,7 +252,9 @@ def create_order(request, name, sku):
         return Http404()
     item = Item(name=name, sku=int(sku))
     item.save()
-    order = Order(item=item, user=request.user)
+    price = Price()
+    price.save()
+    order = Order(item=item, user=request.user, price=price)
     order.save()
     return redirect('detail_order', token=order.token)
 

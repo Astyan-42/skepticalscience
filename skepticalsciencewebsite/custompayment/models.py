@@ -37,7 +37,7 @@ class Address(models.Model):
         return self.first_name + " " + self.last_name
 
     def __str__(self):
-        return self.billing_name()
+        return self.billing_name
 
 
 class CountryPayment(models.Model):
@@ -79,7 +79,8 @@ class Discount(models.Model):
 class Price(models.Model):
 
     currency = models.CharField(_("currency"), max_length=3, default="EUR")
-    product_default_price = models.DecimalField(_("default price"), max_digits=10, decimal_places=2)
+    product_default_price = models.DecimalField(_("default price"), max_digits=10, decimal_places=2,
+                                                null=True, blank=True, default=None)
     country_reduction = models.DecimalField(_("country reduction"), max_digits=10, decimal_places=2,
                                             null=True, blank=True, default=None)
     scientist_score = models.FloatField(_("scientist score"), null=True, blank=True) # added
@@ -88,7 +89,8 @@ class Price(models.Model):
     discount = models.DecimalField(_("scientist reduction"), max_digits=10, decimal_places=2,
                                    null=True, blank=True, default=None)
     tax_percent = models.FloatField(_("taxes percents"), null=True, blank=True)
-    tax = models.DecimalField(_("taxes"), max_digits=10, decimal_places=2)
+    tax = models.DecimalField(_("taxes"), max_digits=10, decimal_places=2,
+                              null=True, blank=True, default=None)
 
     @property
     def net(self):
@@ -106,7 +108,7 @@ class Price(models.Model):
 
     def to_list(self):
         price_list = []
-        order = Order.objects.get(price=self.pk)
+        order = self.order.get(price=self.pk)
         price_list.append({"t_type": "order "+order.item.name,
                            "t_object": order.item,
                            "t_price": str(self.product_default_price)+' '+str(self.currency)})
@@ -145,7 +147,7 @@ class Order(models.Model):
     billing_address = models.ForeignKey(Address, verbose_name=_('billing address'), null=True, blank=True)
     item = models.OneToOneField(Item, verbose_name=_('item'))
     # to delete, put the order in price
-    price = models.ForeignKey(Price, verbose_name=_('price'), null=True, blank=True)
+    price = models.ForeignKey(Price, verbose_name=_('price'), related_name='order', null=True, blank=True)
     history = HistoricalRecords()
 
     def save(self, *args, **kwargs):
