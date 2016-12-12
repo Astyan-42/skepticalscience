@@ -91,6 +91,11 @@ class Price(models.Model):
     tax = models.DecimalField(_("taxes"), max_digits=10, decimal_places=2)
 
     @property
+    def net(self):
+        return money_quantize(self.product_default_price + (self.country_reduction or Decimal(0.)) +
+                              (self.scientist_score_reduction or Decimal(0.)) + (self.discount or Decimal(0.)))
+
+    @property
     def gross(self):
         return money_quantize(self.product_default_price + (self.country_reduction or Decimal(0.)) +
                               (self.scientist_score_reduction or Decimal(0.)) + (self.discount or Decimal(0.)) +
