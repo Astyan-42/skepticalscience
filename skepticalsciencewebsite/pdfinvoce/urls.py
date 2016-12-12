@@ -1,4 +1,4 @@
 from django.conf.urls import url
-from pdfinvoce.views import print_users
+from pdfinvoce.views import invoice_generation
 
-urlpatterns = [url(r'^$', print_users, name='invoce')]
+urlpatterns = [url(r'^$', invoice_generation, name='invoice')]

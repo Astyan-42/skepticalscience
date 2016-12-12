@@ -1,6 +1,16 @@
 from datetime import datetime, date
-from pyinvoice.models import InvoiceInfo, ServiceProviderInfo, ClientInfo, Item, Transaction
+from pyinvoice.components import SimpleTable, TableWithHeader, PaidStamp
+from pyinvoice.models import PDFInfo, Item, Transaction, InvoiceInfo, ServiceProviderInfo, ClientInfo
 from pyinvoice.templates import SimpleInvoice
+from pyinvoice.constants import *
+
+from reportlab.lib import colors
+from reportlab.lib.enums import TA_CENTER, TA_RIGHT
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.units import inch
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, Spacer
+
 from django.contrib.auth import get_user_model
 
 
@@ -12,9 +22,49 @@ from django.contrib.auth import get_user_model
 # http://eric.sau.pe/reportlab-and-django-part-2-headers-and-footers-with-page-numbers/
 # name and save in a separate folder
 
+alternate_english_invoice = PYINVOICE_CONSTANTS
+alternate_english_invoice[MERCHANT] = "Merchant"
 
-def generate_invoice(order_id):
-    doc = SimpleInvoice('invoice.pdf')
+french_invoice = {
+    INVOICE_ID: "Numéro",
+    INVOICE_DATETIME: "Date",
+    INVOICE: "Facture",
+    DUE_DATE: "Date d'échéance",
+    NAME: "Nom",
+    STREET: "Rue",
+    CITY: "Ville",
+    STATE: "État",
+    COUNTRY: "Pays",
+    POST_CODE: "Code postal",
+    VAT_TAX_NUMBER: "Numero de TVA",
+    MERCHANT: "Marchant",
+    EMAIL: "Email",
+    CLIENT_ID: "Numéro client",
+    CLIENT: "Client",
+    DETAIL: "Détail",
+    DESCRIPTION: "Description",
+    UNITS: "Unités",
+    UNIT_PRICE: "Prix à l'unité",
+    AMOUNT: "Montant",
+    SUBTOTAL: "Sous total",
+    TAX: "Tax",
+    TOTAL: "Total",
+    TRANSACTION_ID: "Numero de transaction",
+    GATEWAY: "Moyen de payment",
+    TRANSACTION_DATE: "Date de la transaction",
+    TRANSACTION: "Transaction",
+    PAID: "Payé",
+}
+
+
+def generate_invoice(order_id, language):
+    # need to add a folder
+    invoice_name = 'invoice'+str(order_id)+'.pdf'
+    if language == 'english':
+        doc = SimpleInvoice(invoice_name, constants=alternate_english_invoice)
+    elif language == 'french':
+        doc = SimpleInvoice(invoice_name, constants=french_invoice)
+    #things to change (depend of the order)
     doc.is_paid = True
     doc.invoice_info = InvoiceInfo(1023, datetime.now(), datetime.now())
     doc.service_provider_info = ServiceProviderInfo(
@@ -39,4 +89,4 @@ def generate_invoice(order_id):
     doc.set_bottom_tip("Email: example@example.com<br />Don't hesitate to contact us for any questions.")
 
     doc.finish()
-    return doc
+    return doc, invoice_name

@@ -5,8 +5,8 @@ from io import BytesIO
 from sendfile import sendfile
 
 
-def print_users(request):
+def invoice_generation(request):
     # Create the HttpResponse object with the appropriate PDF headers.
-    pdf = generate_invoice(1)
+    pdf, name = generate_invoice(1, 'french')
 
-    return sendfile(request,'invoice.pdf')
+    return sendfile(request, name)
