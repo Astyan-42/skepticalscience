@@ -43,7 +43,7 @@ class Address(models.Model):
 class CountryPayment(models.Model):
 
     country = CountryField(_('country'), unique=True)
-    pib_per_inhabitant = models.FloatField(_('PIB per inhabitant'))
+    pib_per_inhabitant = models.FloatField(_('GDP per inhabitant'))
     accepted = models.BooleanField(_('Can pay'))
 
     def __str__(self):
@@ -88,7 +88,7 @@ class Price(models.Model):
                                                     null=True, blank=True, default=None)
     discount = models.DecimalField(_("scientist reduction"), max_digits=10, decimal_places=2,
                                    null=True, blank=True, default=None)
-    tax_percent = models.FloatField(_("taxes percents"), null=True, blank=True)
+    tax_percent = models.FloatField(_("percentage of tax"), null=True, blank=True)
     tax = models.DecimalField(_("taxes"), max_digits=10, decimal_places=2,
                               null=True, blank=True, default=None)
 

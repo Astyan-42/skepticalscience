@@ -17,10 +17,10 @@
             <div class="bs-component">
                 <h2>Detail</h2>
                 {% if order_detail.status == constants.FULLY_PAID %}
-                    <p>{% trans "The order have been paid the " %}{{ order_detail.last_status_change }}</p>
+                    <p>{% trans "This order has been paid on " %}{{ order_detail.last_status_change }}</p>
                     <p><a href="{% url 'address' order_detail.token %}">{% trans "View the bill" %}</a></p>
                 {% elif order_detail.status == constants.CANCELLED %}
-                    <p>{% trans "The order have been cancelled the " %}{{ order_detail.last_status_change }}</p>
+                    <p>{% trans "This order has been cancelled on " %}{{ order_detail.last_status_change }}</p>
                 {% endif %}
                 <div class="table-container">
                     <table class="table table-responsive paleblue">
@@ -49,7 +49,7 @@
                 {% if order_detail.status == constants.NEW %}
                     <p class="text-info">{% trans 'By clicking on "Accept and Pay" you accept the' %}
                         <a href="{% url 'payment' order_detail.token %}">{% trans "selling contract" %}</a>
-                        {% trans "and you certify the validity of the informations you enter." %}
+                        {% trans "and review your order information." %}
                     </p>
                     {% if order_detail.billing_address is None %}
                         <div class="btn btn-primary disabled">{% trans "Accept and pay" %}</div>
@@ -64,7 +64,7 @@
         <div class="col-md-3">
             <h2>{% trans "Billing address" %}</h2>
             {% if order_detail.billing_address is None %}
-                <p class="text-danger">{% trans "You must have a billing address to do proceed to an order" %}</p>
+                <p class="text-danger">{% trans "You must have a billing address to complete your order" %}</p>
                 <a href="{% url 'address' order_detail.token %}"><div class="btn btn-primary">Create the address</div></a>
             {% else %}
                 <p>{{ order_detail.billing_address.billing_name }}</p>

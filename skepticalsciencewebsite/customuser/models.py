@@ -32,7 +32,7 @@ class User(AbstractUser):
     # all user name except if it start with skeptic, author or researcher
     username = models.CharField(max_length=255, unique=True, verbose_name=_("Username"),
                                 validators=[RegexValidator(regex="^(skeptic|author|researcher|reviewer).*$",
-                                                           message=_("Use a valid username \
+                                                           message=_("please enter a valid username \
                                                            (not skepic, author, researcher)"),
                                                            inverse_match=True,
                                                            flags=re.IGNORECASE)])
@@ -43,7 +43,7 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=255, blank=True, verbose_name=_("First Name"))
     middle_name = models.CharField(max_length=255, blank=True, verbose_name=_("Middle Name"))
     last_name = models.CharField(max_length=255, blank=True, verbose_name=_("Last Name"))
-    phd = models.BooleanField(default=False, verbose_name=_("Own a PHD"))
+    phd = models.BooleanField(default=False, verbose_name=_("PHD"))
     country = models.CharField(max_length=255, blank=True, verbose_name=_("Country"))
     workplace = models.CharField(max_length=255, blank=True, verbose_name=_("Workplace"))
     description = models.CharField(max_length=1024, blank=True, verbose_name=_("Personal description"))
