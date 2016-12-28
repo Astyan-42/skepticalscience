@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-28 09:56+0000\n"
+"POT-Creation-Date: 2016-12-28 12:11+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -108,9 +108,10 @@ msgstr ""
 
 #: custompayment/models.py:67
 #: custompayment/templates/custompayment/order_detail.html:29
-#: customuser/templates/customuser/detail_user.html:10 sciences/models.py:19
+#: customuser/templates/customuser/detail_user.html:10
+#: pdfinvoce/printing.py:59 sciences/models.py:19
 msgid "Name"
-msgstr ""
+msgstr "Nom"
 
 #: custompayment/models.py:68 custompayment/models.py:146
 msgid "discount code"
@@ -213,9 +214,9 @@ msgid "The order have been cancelled the "
 msgstr ""
 
 #: custompayment/templates/custompayment/order_detail.html:30
-#: sciences/models.py:20
+#: pdfinvoce/printing.py:71 sciences/models.py:20
 msgid "Description"
-msgstr ""
+msgstr "Description"
 
 #: custompayment/templates/custompayment/order_detail.html:31
 msgid "Price"
@@ -326,8 +327,9 @@ msgid "Own a PHD"
 msgstr ""
 
 #: customuser/models.py:47 customuser/templates/customuser/detail_user.html:15
+#: pdfinvoce/printing.py:63
 msgid "Country"
-msgstr ""
+msgstr "Pays"
 
 #: customuser/models.py:48 customuser/templates/customuser/detail_user.html:17
 msgid "Workplace"
@@ -451,10 +453,118 @@ msgstr ""
 msgid "F.A.Q."
 msgstr ""
 
-#: pdfinvoce/printing.py:97
+#: pdfinvoce/printing.py:55
+msgid "Invoice id"
+msgstr "Numéro"
+
+#: pdfinvoce/printing.py:56
+msgid "Invoice date"
+msgstr "Date"
+
+#: pdfinvoce/printing.py:57
+msgid "Invoice"
+msgstr "Facture"
+
+#: pdfinvoce/printing.py:58
+msgid "Invoice due date"
+msgstr "Date d'échéance"
+
+#: pdfinvoce/printing.py:60
+msgid "Street"
+msgstr "Rue"
+
+#: pdfinvoce/printing.py:61
+msgid "City"
+msgstr "Ville"
+
+#: pdfinvoce/printing.py:62
+msgid "State"
+msgstr "État"
+
+#: pdfinvoce/printing.py:64
+msgid "Post code"
+msgstr "Code postal"
+
+#: pdfinvoce/printing.py:65
+msgid "Vat/Tax number"
+msgstr "Numéro de TVA"
+
+#: pdfinvoce/printing.py:66
+msgid "Merchant"
+msgstr "Marchant"
+
+#: pdfinvoce/printing.py:67
+msgid "Email"
+msgstr "Courriel"
+
+#: pdfinvoce/printing.py:68
+msgid "Client id"
+msgstr "Numéro client"
+
+#: pdfinvoce/printing.py:69
+msgid "Client"
+msgstr "Client"
+
+#: pdfinvoce/printing.py:70
+msgid "Detail"
+msgstr "Detail"
+
+#: pdfinvoce/printing.py:72
+msgid "Units"
+msgstr "Unités"
+
+#: pdfinvoce/printing.py:73
+msgid "Unit Price"
+msgstr "Prix à l'unité"
+
+#: pdfinvoce/printing.py:74
+msgid "Amount"
+msgstr "Montant"
+
+#: pdfinvoce/printing.py:75
+msgid "Subtotal"
+msgstr "Sous total"
+
+#: pdfinvoce/printing.py:76
+msgid "Vat/Tax"
+msgstr "Tax"
+
+#: pdfinvoce/printing.py:77
+msgid "Total"
+msgstr "Total"
+
+#: pdfinvoce/printing.py:78
+msgid "Transaction id"
+msgstr "Numéro de transaction"
+
+#: pdfinvoce/printing.py:79
+msgid "Gateway"
+msgstr "Moyen de payment"
+
+#: pdfinvoce/printing.py:80
+msgid "Transaction date"
+msgstr "Date de la transaction"
+
+#: pdfinvoce/printing.py:81
+msgid "Transaction"
+msgstr "Transaction"
+
+#: pdfinvoce/printing.py:82
+msgid "PAID"
+msgstr "Payé"
+
+#: pdfinvoce/printing.py:83
+msgid "SIRET"
+msgstr "SIRET"
+
+#: pdfinvoce/printing.py:84
+msgid "Capital"
+msgstr "Capital social"
+
+#: pdfinvoce/printing.py:131
 #, python-format
 msgid "Email: %(email)s <br/>Don't hesitate to contact us for any questions."
-msgstr "Émail: %(email)s <br/>Contactez nous si vous avez des questions"
+msgstr "Courriel: %(email)s <br/>Contactez nous si vous avez des questions"
 
 #: publications/forms.py:73
 msgid "Abort publication"
@@ -891,7 +1001,7 @@ msgstr ""
 msgid "Log in"
 msgstr ""
 
-#: templates/index.html:8
+#: templates/index.html:7
 msgid "Index page"
 msgstr "Page d'index"
 

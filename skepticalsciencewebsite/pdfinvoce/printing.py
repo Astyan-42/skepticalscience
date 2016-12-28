@@ -1,4 +1,4 @@
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as _
 from django.utils.translation import activate
 from pyinvoice.models import Item, InvoiceInfo, ServiceProviderInfo, ClientInfo
 from pyinvoice.templates import SimpleInvoice
@@ -12,79 +12,6 @@ from custompayment.models import Order
 # http://eric.sau.pe/reportlab-and-django-part-1-the-set-up-and-a-basic-example/
 # http://eric.sau.pe/reportlab-and-django-part-2-headers-and-footers-with-page-numbers/
 # name and save in a separate folder
-
-alternate_english_invoice = PYINVOICE_CONSTANTS
-alternate_english_invoice[MERCHANT] = "Merchant"
-alternate_english_invoice[PROVIDER_ID] = 'SIRET'
-
-french_invoice = {
-    INVOICE_ID: "Numéro",
-    INVOICE_DATETIME: "Date",
-    INVOICE: "Facture",
-    DUE_DATE: "Date d'échéance",
-    NAME: "Nom",
-    STREET: "Rue",
-    CITY: "Ville",
-    STATE: "État",
-    COUNTRY: "Pays",
-    POST_CODE: "Code postal",
-    VAT_TAX_NUMBER: "Numéro de TVA",
-    MERCHANT: "Marchant",
-    EMAIL: "Email",
-    CLIENT_ID: "Numéro client",
-    CLIENT: "Client",
-    DETAIL: "Détail",
-    DESCRIPTION: "Description",
-    UNITS: "Unités",
-    UNIT_PRICE: "Prix à l'unité",
-    AMOUNT: "Montant",
-    SUBTOTAL: "Sous total",
-    TAX: "Tax",
-    TOTAL: "Total",
-    TRANSACTION_ID: "Numéro de transaction",
-    GATEWAY: "Moyen de payment",
-    TRANSACTION_DATE: "Date de la transaction",
-    TRANSACTION: "Transaction",
-    PAID: "Payé",
-    PROVIDER_ID: "SIRET",
-    CAPITAL: "Capital social"
-}
-
-INTERNATIONAL_PYINVOICE_CONSTANTS = {
-    INVOICE_ID: _(DEFAULT_INVOICE_ID),
-    INVOICE_DATETIME: _(DEFAULT_INVOICE_DATETIME),
-    INVOICE: _(DEFAULT_INVOICE),
-    DUE_DATE: _(DEFAULT_DUE_DATE),
-    NAME: _(DEFAULT_NAME),
-    STREET: _(DEFAULT_STREET),
-    CITY: _(DEFAULT_CITY),
-    STATE: _(DEFAULT_STATE),
-    COUNTRY: _(DEFAULT_COUNTRY),
-    POST_CODE: _(DEFAULT_POST_CODE),
-    VAT_TAX_NUMBER: _(DEFAULT_VAT_TAX_NUMBER),
-    MERCHANT: _(DEFAULT_MERCHANT),
-    EMAIL: _(DEFAULT_EMAIL),
-    CLIENT_ID: _(DEFAULT_CLIENT_ID),
-    CLIENT: _(DEFAULT_CLIENT),
-    DETAIL: _(DEFAULT_DETAIL),
-    DESCRIPTION: _(DEFAULT_DESCRIPTION),
-    UNITS: _(DEFAULT_UNITS),
-    UNIT_PRICE: _(DEFAULT_UNIT_PRICE),
-    AMOUNT: _(DEFAULT_AMOUNT),
-    SUBTOTAL: _(DEFAULT_SUBTOTAL),
-    TAX: _(DEFAULT_TAX),
-    TOTAL: _(DEFAULT_TOTAL),
-    TRANSACTION_ID: _(DEFAULT_TRANSACTION_ID),
-    GATEWAY: _(DEFAULT_GATEWAY),
-    TRANSACTION_DATE: _(DEFAULT_TRANSACTION_DATE),
-    TRANSACTION: _(DEFAULT_TRANSACTION),
-    PAID: _(DEFAULT_PAID),
-    PROVIDER_ID: _(DEFAULT_PROVIDER_ID),
-    CAPITAL: _(DEFAULT_CAPITAL),
-}
-
-
-
 
 eagal_provider = ServiceProviderInfo(
     name='temp',
@@ -102,11 +29,42 @@ def generate_invoice(token, language):
     # need to add a folder / name and stuff
     invoice_name = 'invoice'+str(token)+'.pdf'
     if language == 'english':
-        activate('en-us')
-        doc = SimpleInvoice(invoice_name, constants=alternate_english_invoice)
+        activate('en')
     else: # language == 'french':
         activate('fr')
-        doc = SimpleInvoice(invoice_name, constants=french_invoice)
+    international_pyinvoice = {
+        INVOICE_ID: _('Invoice id'),
+        INVOICE_DATETIME: _('Invoice date'),
+        INVOICE: _('Invoice'),
+        DUE_DATE: _('Invoice due date'),
+        NAME: _('Name'),
+        STREET: _('Street'),
+        CITY: _('City'),
+        STATE: _('State'),
+        COUNTRY: _('Country'),
+        POST_CODE: _('Post code'),
+        VAT_TAX_NUMBER: _('Vat/Tax number'),
+        MERCHANT: _('Merchant'),
+        EMAIL: _('Email'),
+        CLIENT_ID: _('Client id'),
+        CLIENT: _('Client'),
+        DETAIL: _('Detail'),
+        DESCRIPTION: _('Description'),
+        UNITS: _('Units'),
+        UNIT_PRICE: _('Unit Price'),
+        AMOUNT: _('Amount'),
+        SUBTOTAL: _('Subtotal'),
+        TAX: _('Vat/Tax'),
+        TOTAL: _('Total'),
+        TRANSACTION_ID: _('Transaction id'),
+        GATEWAY: _('Gateway'),
+        TRANSACTION_DATE: _('Transaction date'),
+        TRANSACTION: _('Transaction'),
+        PAID: _('PAID'),
+        PROVIDER_ID: _('SIRET'),
+        CAPITAL: _('Capital'),
+    }
+    doc = SimpleInvoice(invoice_name, constants=international_pyinvoice)
     # get the order and payment
     order = Order.objects.get(token=token)
     payment = order.get_payment()
