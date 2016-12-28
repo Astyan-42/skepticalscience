@@ -36,5 +36,7 @@ urlpatterns += i18n_patterns(
     url(r'^publications/', include('publications.urls')),
     url(r'^invoice/', include('pdfinvoce.urls')),
     url(r'^$', TemplateView.as_view(template_name='index.html'), name="index"),
+    url(r'^legal_notices$', TemplateView.as_view(template_name='legal_notices.html'), name="legal_notices"),
+    url(r'^tos$', TemplateView.as_view(template_name='tos.html'), name="tos"),
     prefix_default_language=False,
 )

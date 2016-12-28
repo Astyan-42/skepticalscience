@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% load bootstrap3 %}
+
+{% block content %}
+    <h1>{% trans "Legal notices" %}</h1>
+    <h2>{% trans "Legal information" %}</h2>
+    {% with company_type="EURL" capital="500. €" %}
+        <p>{% trans "Company type" %} : {{ company_type }}<br>
+            {% trans "Capital" %} : {{ capital }}<br>
+            {% trans "Licence number" %} : <br>
+            {% trans "SIRET" %} : <br>
+            {% trans "Head office" %} : <br>
+            {% trans "Vat/Tax number" %} : <br>
+            {% trans "Website manager" %} : <br>
+            {% trans "Publication manager" %} : <br>
+            {% trans "Website host" %} : <br>
+            {% trans "Email" %} : <br>
+            {% trans "Phone number" %} : <br>
+            {% trans "From monday to friday, 9h-12h and 14h-17h (UTC+1)" %}
+
+        </p>
+    {% endwith %}
+
+    <h2>{% trans "intellectual Property" %}</h2>
+    <p>
+        {% blocktrans %}
+            Nous vous informons que toute reproduction ou représentation totale ou partielle,
+             par quelque procédé que ce soit, de ce site, des logos, des images pouvant y figurer
+            est soumise aux règle de la licence spécifique au contenue tout non respect de la licence
+            constituerait une contrefaçon sanctionnée par les articles
+            L 335-2 et suivants du Code de la propriété intellectuelle.
+        {% endblocktrans %}
+    </p>
+
+    <h2>{% trans "Protection of personal data" %}</h2>
+    {% with company_name="TEMP_COMPANY" website="TEMP_WEBSITE" %}
+        <p>
+            {{ website }}
+            {% blocktrans %}
+                recueille des informations vous concernant lors de la création de votre Compte.
+                Les informations accompagnées d’un astérisque sont obligatoires.
+                Ces informations nous permettent d’effectuer les opérations relatives à la gestion des clients,
+                des opérations relatives à la prospection, à l’élaboration de statistiques commerciales,
+                à la gestion des demandes de droit d’accès, de rectification et d’opposition, 
+                la gestion des impayés et du contentieux.
+            {% endblocktrans %}
+        </p>
+        <p>
+            {% blocktrans %}
+                Nous nous sommes engagés à assurer la sécurité des données à caractère personnel
+                via des procédures strictes au sein de notre entreprise. Pour les données collectées "en ligne",
+                les communications sur la partie cliente sont cryptées entre le poste
+                de l'internaute et nos serveurs (zone sécurisée HTTPS).
+            {% endblocktrans %}
+            {{ company_name }}
+            {% blocktrans %}
+                s’oblige à mettre tous ses efforts en œuvre afin de protéger vos données nominatives.
+            {% endblocktrans %}
+        </p>
+        <p>
+            {% blocktrans %}
+                Conformément aux dispositions de la Loi Informatique et Libertés du 6 janvier 1978
+                (modifiée par la loi du 6 août 2004 relative à la protection des personnes physiques
+                à l'égard des traitements de données à caractère personnel),
+                vous bénéficiez d'un droit d'accès, de rectification ou d'opposition
+                sur vos données nominatives collectées. Ces droits peuvent être exercés
+                en vous rendant sur la page Account/Edit profile.
+            {% endblocktrans %}
+        </p>
+    {% endwith %}
+
+{% endblock content %}

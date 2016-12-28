@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% load bootstrap3 %}
+
+{% block content %}
+
+{% with company_name="tmp" website="tmp" %}
+    <h1> {% trans "Terms of Service" %}</h1>
+    <h2> {% trans "Terms" %} </h2>
+    <p>
+        {% trans "By accessing the website at " %}{{ website }}
+        {% blocktrans %}
+            , you are agreeing to be bound by these terms of service,
+            all applicable laws and regulations, and agree that you are responsible
+            for compliance with any applicable local laws. If you do not agree with any of these terms,
+            you are prohibited from using or accessing this site. The materials contained in this website
+            are protected by applicable copyright and trademark law.
+        {% endblocktrans %}
+    </p>
+
+    <h2>{% trans "intellectual Property" %}</h2>
+    <p>
+        {% blocktrans %}
+            Nous vous informons que toute reproduction ou représentation totale ou partielle,
+             par quelque procédé que ce soit, de ce site, des logos, des images pouvant y figurer
+            est soumise aux règle de la licence spécifique au contenue tout non respect de la licence
+            constituerait une contrefaçon sanctionnée par les articles
+            L 335-2 et suivants du Code de la propriété intellectuelle.
+        {% endblocktrans %}
+    </p>
+
+    <h2>{% trans "Disclamer" %}</h2>
+    <p>
+        {% trans "The materials on" %} {{company_name}}
+        {% trans "'s website are provided on an 'as is' basis." %} {{company_name}}
+        {% blocktrans %}
+            makes no warranties, expressed or implied, and hereby disclaims and negates all other
+            warranties including, without limitation, implied warranties or conditions
+            of merchantability, fitness for a particular purpose, or non-infringement of
+            intellectual property or other violation of rights.
+        {% endblocktrans %}
+    </p>
+    <p>
+        {% trans "Further" %}, {{company_name}}
+        {% blocktrans %}
+            does not warrant or make any representations concerning the accuracy, likely results,
+            or reliability of the use of the materials on its website or otherwise relating to such
+            materials or on any sites linked to this site.
+        {% endblocktrans %}
+    </p>
+
+    <h2>{% trans "Limitations" %}</h2>
+    <p>
+        {% trans "In no event shall" %} {{company_name}}
+        {% blocktrans %}
+            or its suppliers be liable for any damages (including, without limitation,
+            damages for loss of data or profit, or due to business interruption)
+            arising out of the use or inability to use the materials on
+        {% endblocktrans %}
+        {{company_name}}{% trans "'s website, even if" %} {{company_name}} {% trans "or a" %} {{company_name}}
+        {% blocktrans %}
+            authorized representative has been notified orally or in writing of the possibility
+            of such damage. Because some jurisdictions do not allow limitations on implied warranties,
+            or limitations of liability for consequential or incidental damages,
+            these limitations may not apply to you.
+        {% endblocktrans %}
+    </p>
+
+    <h2>{% trans "Accuracy of materials" %}</h2>
+    <p>
+        {% trans "The materials appearing on" %} {{company_name}}
+        {% trans "'s website could include technical, typographical, or photographic errors." %}
+         {{company_name} {% trans "does not warrant that any of the materials on its website are accurate, complete or current." %}
+         {{company_name}} {% trans "may make changes to the materials contained on its website at any time without notice. However" %}
+         {{company_name}} {% trans "does not make any commitment to update the materials." %}
+    </p>
+
+    <h2>{% trans "Links" %}</h2>
+    <p>
+        {{company_name}} {% blocktrans %}
+            has not reviewed all of the sites linked to its website and is not responsible
+            for the contents of any such linked site. The inclusion of any link does not imply endorsement by
+        {% endblocktrans %}
+         {{company_name}} {% trans "of the site. Use of any such linked website is at the user's own risk." %}
+    </p>
+
+    <h2>{% trans "Modifications" %}</h2>
+    <p>
+        {{company_name}} {% blocktrans %}
+        may revise these terms of service for its website at any time without notice.
+        By using this website you are agreeing to be bound by the then current version
+        of these terms of service.
+        {% endblocktrans %}
+    </p>
+
+    <h2>{% trans "Governing Law" %}</h2>
+    <p>
+        {% blocktrans %}
+            These terms and conditions are governed by and construed in accordance with the laws of France
+            and you irrevocably submit to the exclusive jurisdiction of the courts in that country.
+        {% endblocktrans %}
+    </p>
+
+    <h2>{% trans "Protection of personal data" %}</h2>
+    <p>
+        {{ website }}
+        {% blocktrans %}
+            recueille des informations vous concernant lors de la création de votre Compte.
+            Les informations accompagnées d’un astérisque sont obligatoires.
+            Ces informations nous permettent d’effectuer les opérations relatives à la gestion des clients,
+            des opérations relatives à la prospection, à l’élaboration de statistiques commerciales,
+            à la gestion des demandes de droit d’accès, de rectification et d’opposition, 
+            la gestion des impayés et du contentieux.
+        {% endblocktrans %}
+    </p>
+    <p>
+        {% blocktrans %}
+            Nous nous sommes engagés à assurer la sécurité des données à caractère personnel
+            via des procédures strictes au sein de notre entreprise. Pour les données collectées "en ligne",
+            les communications sur la partie cliente sont cryptées entre le poste
+            de l'internaute et nos serveurs (zone sécurisée HTTPS).
+        {% endblocktrans %}
+        {{ company_name }}
+        {% blocktrans %}
+             s’oblige à mettre tous ses efforts en œuvre afin de protéger vos données nominatives.
+        {% endblocktrans %}
+    </p>
+    <p>
+        {% blocktrans %}
+            Conformément aux dispositions de la Loi Informatique et Libertés du 6 janvier 1978
+            (modifiée par la loi du 6 août 2004 relative à la protection des personnes physiques
+            à l'égard des traitements de données à caractère personnel),
+            vous bénéficiez d'un droit d'accès, de rectification ou d'opposition
+            sur vos données nominatives collectées. Ces droits peuvent être exercés
+            en vous rendant sur la page Account/Edit profile.
+        {% endblocktrans %}
+    </p>
+{% endwith %}
+
+{% endblock content %}
