@@ -1,4 +1,5 @@
 from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import activate
 from pyinvoice.models import Item, InvoiceInfo, ServiceProviderInfo, ClientInfo
 from pyinvoice.templates import SimpleInvoice
 from pyinvoice.constants import *
@@ -40,7 +41,7 @@ french_invoice = {
     SUBTOTAL: "Sous total",
     TAX: "Tax",
     TOTAL: "Total",
-    TRANSACTION_ID: "Numero de transaction",
+    TRANSACTION_ID: "Numéro de transaction",
     GATEWAY: "Moyen de payment",
     TRANSACTION_DATE: "Date de la transaction",
     TRANSACTION: "Transaction",
@@ -48,6 +49,42 @@ french_invoice = {
     PROVIDER_ID: "SIRET",
     CAPITAL: "Capital social"
 }
+
+INTERNATIONAL_PYINVOICE_CONSTANTS = {
+    INVOICE_ID: _(DEFAULT_INVOICE_ID),
+    INVOICE_DATETIME: _(DEFAULT_INVOICE_DATETIME),
+    INVOICE: _(DEFAULT_INVOICE),
+    DUE_DATE: _(DEFAULT_DUE_DATE),
+    NAME: _(DEFAULT_NAME),
+    STREET: _(DEFAULT_STREET),
+    CITY: _(DEFAULT_CITY),
+    STATE: _(DEFAULT_STATE),
+    COUNTRY: _(DEFAULT_COUNTRY),
+    POST_CODE: _(DEFAULT_POST_CODE),
+    VAT_TAX_NUMBER: _(DEFAULT_VAT_TAX_NUMBER),
+    MERCHANT: _(DEFAULT_MERCHANT),
+    EMAIL: _(DEFAULT_EMAIL),
+    CLIENT_ID: _(DEFAULT_CLIENT_ID),
+    CLIENT: _(DEFAULT_CLIENT),
+    DETAIL: _(DEFAULT_DETAIL),
+    DESCRIPTION: _(DEFAULT_DESCRIPTION),
+    UNITS: _(DEFAULT_UNITS),
+    UNIT_PRICE: _(DEFAULT_UNIT_PRICE),
+    AMOUNT: _(DEFAULT_AMOUNT),
+    SUBTOTAL: _(DEFAULT_SUBTOTAL),
+    TAX: _(DEFAULT_TAX),
+    TOTAL: _(DEFAULT_TOTAL),
+    TRANSACTION_ID: _(DEFAULT_TRANSACTION_ID),
+    GATEWAY: _(DEFAULT_GATEWAY),
+    TRANSACTION_DATE: _(DEFAULT_TRANSACTION_DATE),
+    TRANSACTION: _(DEFAULT_TRANSACTION),
+    PAID: _(DEFAULT_PAID),
+    PROVIDER_ID: _(DEFAULT_PROVIDER_ID),
+    CAPITAL: _(DEFAULT_CAPITAL),
+}
+
+
+
 
 eagal_provider = ServiceProviderInfo(
     name='temp',
@@ -65,8 +102,10 @@ def generate_invoice(token, language):
     # need to add a folder / name and stuff
     invoice_name = 'invoice'+str(token)+'.pdf'
     if language == 'english':
+        activate('en-us')
         doc = SimpleInvoice(invoice_name, constants=alternate_english_invoice)
     else: # language == 'french':
+        activate('fr')
         doc = SimpleInvoice(invoice_name, constants=french_invoice)
     # get the order and payment
     order = Order.objects.get(token=token)
@@ -91,7 +130,8 @@ def generate_invoice(token, language):
     doc.set_item_tax_rate(price.tax_percent)
 
     # translation to do
-    doc.set_bottom_tip(_("Email: example@example.com<br />Don't hesitate to contact us for any questions."))
+    endsentence=_("Email: %(email)s <br/>Don't hesitate to contact us for any questions.")%{'email': 'test@test.com'}
+    doc.set_bottom_tip(endsentence)
 
     doc.finish()
     return doc, invoice_name

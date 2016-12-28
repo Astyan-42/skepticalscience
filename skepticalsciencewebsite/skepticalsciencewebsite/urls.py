@@ -14,10 +14,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url, include
+from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
 from django.views.generic import TemplateView
 
+
+# internationalization http://www.marinamele.com/taskbuster-django-tutorial/internationalization-localization-languages-time-zones
+
 urlpatterns = [
+]
+
+urlpatterns += i18n_patterns(
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('customuser.urls')),
     # https://github.com/incuna/django-registration/blob/master/registration/urls.py under accounts
@@ -27,6 +34,7 @@ urlpatterns = [
     url(r'^checkout/', include('custompayment.urls')),
     url('^checkout/', include('payments.urls')),
     url(r'^publications/', include('publications.urls')),
-    url(r'invoice/', include('pdfinvoce.urls')),
+    url(r'^invoice/', include('pdfinvoce.urls')),
     url(r'^$', TemplateView.as_view(template_name='index.html'), name="index"),
-]
+    prefix_default_language=False,
+)

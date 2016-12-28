@@ -1,0 +1,984 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-12-28 09:56+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: custompayment/forms.py:17
+msgid "Save"
+msgstr ""
+
+#: custompayment/forms.py:33
+msgid "Apply"
+msgstr ""
+
+#: custompayment/forms.py:47
+msgid "Empty value not authorised"
+msgstr ""
+
+#: custompayment/forms.py:51
+msgid "This discount code didn't started yet"
+msgstr ""
+
+#: custompayment/forms.py:54
+msgid "This discount code is over"
+msgstr ""
+
+#: custompayment/forms.py:73
+msgid "Proceed to payment"
+msgstr ""
+
+#: custompayment/models.py:21 customuser/views.py:27
+msgid "Scientist"
+msgstr ""
+
+#: custompayment/models.py:22 custompayment/models.py:143
+msgid "created"
+msgstr ""
+
+#: custompayment/models.py:23
+msgid "first name"
+msgstr ""
+
+#: custompayment/models.py:24
+msgid "last name"
+msgstr ""
+
+#: custompayment/models.py:25
+msgid "company or organization"
+msgstr ""
+
+#: custompayment/models.py:26 custompayment/models.py:27
+msgid "address"
+msgstr ""
+
+#: custompayment/models.py:28
+msgid "city"
+msgstr ""
+
+#: custompayment/models.py:29
+msgid "district"
+msgstr ""
+
+#: custompayment/models.py:30
+msgid "postal code"
+msgstr ""
+
+#: custompayment/models.py:31 custompayment/models.py:45
+msgid "country"
+msgstr ""
+
+#: custompayment/models.py:32
+msgid "state or province"
+msgstr ""
+
+#: custompayment/models.py:33
+msgid "phone number"
+msgstr ""
+
+#: custompayment/models.py:46
+msgid "PIB per inhabitant"
+msgstr ""
+
+#: custompayment/models.py:47
+msgid "Can pay"
+msgstr ""
+
+#: custompayment/models.py:55
+msgid "item name"
+msgstr ""
+
+#: custompayment/models.py:56
+msgid "SKU"
+msgstr ""
+
+#: custompayment/models.py:67
+#: custompayment/templates/custompayment/order_detail.html:29
+#: customuser/templates/customuser/detail_user.html:10 sciences/models.py:19
+msgid "Name"
+msgstr ""
+
+#: custompayment/models.py:68 custompayment/models.py:146
+msgid "discount code"
+msgstr ""
+
+#: custompayment/models.py:69 custompayment/models.py:148
+msgid "item"
+msgstr ""
+
+#: custompayment/models.py:70
+msgid "type"
+msgstr ""
+
+#: custompayment/models.py:71
+msgid "value"
+msgstr ""
+
+#: custompayment/models.py:72
+msgid "starting"
+msgstr ""
+
+#: custompayment/models.py:73
+msgid "ending"
+msgstr ""
+
+#: custompayment/models.py:81
+msgid "currency"
+msgstr ""
+
+#: custompayment/models.py:82
+msgid "default price"
+msgstr ""
+
+#: custompayment/models.py:84
+msgid "country reduction"
+msgstr ""
+
+#: custompayment/models.py:86
+msgid "scientist score"
+msgstr ""
+
+#: custompayment/models.py:87 custompayment/models.py:89
+msgid "scientist reduction"
+msgstr ""
+
+#: custompayment/models.py:91
+msgid "taxes percents"
+msgstr ""
+
+#: custompayment/models.py:92
+msgid "taxes"
+msgstr ""
+
+#: custompayment/models.py:141
+msgid "token"
+msgstr ""
+
+#: custompayment/models.py:142
+msgid "order status"
+msgstr ""
+
+#: custompayment/models.py:144
+msgid "last status change"
+msgstr ""
+
+#: custompayment/models.py:145
+msgid "buyer"
+msgstr ""
+
+#: custompayment/models.py:147
+msgid "billing address"
+msgstr ""
+
+#: custompayment/models.py:150
+msgid "price"
+msgstr ""
+
+#: custompayment/templates/custompayment/address_form.html:8
+msgid "Billing Address"
+msgstr ""
+
+#: custompayment/templates/custompayment/method/default.html:17
+msgid "Save changes"
+msgstr ""
+
+#: custompayment/templates/custompayment/order_detail.html:13
+msgid "Order"
+msgstr ""
+
+#: custompayment/templates/custompayment/order_detail.html:20
+msgid "The order have been paid the "
+msgstr ""
+
+#: custompayment/templates/custompayment/order_detail.html:21
+msgid "View the bill"
+msgstr ""
+
+#: custompayment/templates/custompayment/order_detail.html:23
+msgid "The order have been cancelled the "
+msgstr ""
+
+#: custompayment/templates/custompayment/order_detail.html:30
+#: sciences/models.py:20
+msgid "Description"
+msgstr ""
+
+#: custompayment/templates/custompayment/order_detail.html:31
+msgid "Price"
+msgstr ""
+
+#: custompayment/templates/custompayment/order_detail.html:50
+msgid "By clicking on \"Accept and Pay\" you accept the"
+msgstr ""
+
+#: custompayment/templates/custompayment/order_detail.html:51
+msgid "selling contract"
+msgstr ""
+
+#: custompayment/templates/custompayment/order_detail.html:52
+msgid "and you certify the validity of the informations you enter."
+msgstr ""
+
+#: custompayment/templates/custompayment/order_detail.html:55
+#: custompayment/templates/custompayment/order_detail.html:58
+msgid "Accept and pay"
+msgstr ""
+
+#: custompayment/templates/custompayment/order_detail.html:65
+msgid "Billing address"
+msgstr ""
+
+#: custompayment/templates/custompayment/order_detail.html:67
+msgid "You must have a billing address to do proceed to an order"
+msgstr ""
+
+#: custompayment/templates/custompayment/order_detail.html:109
+msgid "Status :"
+msgstr ""
+
+#: custompayment/templates/custompayment/order_detail.html:110
+msgid "Selling contract(FR)"
+msgstr ""
+
+#: custompayment/templates/custompayment/order_detail.html:111
+msgid "Selling contract(EN)"
+msgstr ""
+
+#: custompayment/templates/custompayment/order_detail.html:113
+msgid "Billing(FR)"
+msgstr ""
+
+#: custompayment/templates/custompayment/order_detail.html:114
+msgid "Billing(EN)"
+msgstr ""
+
+#: custompayment/templates/custompayment/order_list.html:13
+#: templates/base.html:71
+msgid "My orders"
+msgstr ""
+
+#: custompayment/templates/custompayment/payment.html:8
+msgid "Payment method"
+msgstr ""
+
+#: custompayment/views.py:303
+#, python-format
+msgid "Order %(order_number)s"
+msgstr ""
+
+#: custompayment/views.py:319
+msgid ""
+"Oops, it looks like we were unable to contact the selected payment service"
+msgstr ""
+
+#: customuser/forms.py:29 publications/forms.py:42 publications/forms.py:58
+#: publications/forms.py:95
+#: templates/registration/password_change_form.html:13
+#: templates/registration/password_reset_confirm.html:12
+#: templates/registration/password_reset_form.html:15
+#: templates/registration/registration_form.html:12
+msgid "Submit"
+msgstr ""
+
+#: customuser/models.py:33
+msgid "Username"
+msgstr ""
+
+#: customuser/models.py:35
+msgid ""
+"Use a valid "
+"username                                                            (not "
+"skepic, author, researcher)"
+msgstr ""
+
+#: customuser/models.py:39
+msgid "Email Address"
+msgstr ""
+
+#: customuser/models.py:43
+msgid "First Name"
+msgstr ""
+
+#: customuser/models.py:44
+msgid "Middle Name"
+msgstr ""
+
+#: customuser/models.py:45
+msgid "Last Name"
+msgstr ""
+
+#: customuser/models.py:46
+msgid "Own a PHD"
+msgstr ""
+
+#: customuser/models.py:47 customuser/templates/customuser/detail_user.html:15
+msgid "Country"
+msgstr ""
+
+#: customuser/models.py:48 customuser/templates/customuser/detail_user.html:17
+msgid "Workplace"
+msgstr ""
+
+#: customuser/models.py:49 customuser/templates/customuser/detail_user.html:12
+msgid "Personal description"
+msgstr ""
+
+#: customuser/models.py:50 customuser/templates/customuser/detail_user.html:19
+msgid "Job title"
+msgstr ""
+
+#: customuser/models.py:51 customuser/templates/customuser/detail_user.html:27
+#: publications/models.py:36
+#: publications/templates/publications/publication_detail.html:69
+msgid "Sciences"
+msgstr ""
+
+#: customuser/models.py:53
+msgid "Valid bias found"
+msgstr ""
+
+#: customuser/models.py:54
+msgid "Invalid bias found"
+msgstr ""
+
+#: customuser/models.py:56 customuser/templates/customuser/detail_user.html:37
+msgid "Skeptic score"
+msgstr ""
+
+#: customuser/models.py:58
+msgid "Number of publication"
+msgstr ""
+
+#: customuser/models.py:60 customuser/templates/customuser/detail_user.html:39
+msgid "Mean publication score"
+msgstr ""
+
+#: customuser/models.py:63 customuser/templates/customuser/detail_user.html:41
+msgid "Mean impact factor"
+msgstr ""
+
+#: customuser/models.py:66
+msgid "Estimator Score"
+msgstr ""
+
+#: customuser/models.py:68
+msgid "Comments evaluated"
+msgstr ""
+
+#: customuser/models.py:69
+msgid "Comments not evaluated"
+msgstr ""
+
+#: customuser/models.py:71
+msgid "Reviewer score"
+msgstr ""
+
+#: customuser/templates/customuser/detail_user.html:7
+msgid "'s profile"
+msgstr ""
+
+#: customuser/templates/customuser/detail_user.html:23
+msgid "Account type"
+msgstr ""
+
+#: customuser/templates/customuser/detail_user.html:25
+msgid "Phd"
+msgstr ""
+
+#: customuser/templates/customuser/detail_user.html:35
+msgid "None"
+msgstr ""
+
+#: customuser/templates/customuser/detail_user.html:43
+msgid "Estimator score"
+msgstr ""
+
+#: customuser/templates/customuser/detail_user.html:50
+msgid "Wrong informations "
+msgstr ""
+
+#: customuser/templates/customuser/detail_user.html:50
+msgid "Edit your profile "
+msgstr ""
+
+#: customuser/templates/customuser/detail_user.html:52
+msgid "Unable to publish "
+msgstr ""
+
+#: customuser/templates/customuser/detail_user.html:52
+msgid "Upgrade your account "
+msgstr ""
+
+#: customuser/templates/customuser/update_user.html:8 templates/base.html:93
+msgid "Edit profile"
+msgstr ""
+
+#: customuser/views.py:29
+msgid "Skeptic"
+msgstr ""
+
+#: faq/models.py:8
+msgid "Topic"
+msgstr ""
+
+#: faq/models.py:9 faq/models.py:20
+msgid "Slug"
+msgstr ""
+
+#: faq/models.py:18
+msgid "Question"
+msgstr ""
+
+#: faq/models.py:19
+msgid "Answer"
+msgstr ""
+
+#: faq/templates/faq/faq.html:8
+msgid "F.A.Q."
+msgstr ""
+
+#: pdfinvoce/printing.py:97
+#, python-format
+msgid "Email: %(email)s <br/>Don't hesitate to contact us for any questions."
+msgstr "Émail: %(email)s <br/>Contactez nous si vous avez des questions"
+
+#: publications/forms.py:73
+msgid "Abort publication"
+msgstr ""
+
+#: publications/forms.py:113
+#: publications/templates/publications/publication_detail.html:36
+#: publications/views.py:496
+msgid "Evaluate"
+msgstr ""
+
+#: publications/forms.py:127 publications/views.py:640
+msgid "Validate"
+msgstr ""
+
+#: publications/forms.py:142 publications/models.py:122
+#: publications/models.py:141
+#: publications/templates/publications/comment_detail.html:31
+msgid "Corrected"
+msgstr ""
+
+#: publications/models.py:18
+msgid "Short name"
+msgstr ""
+
+#: publications/models.py:19
+msgid "Full name"
+msgstr ""
+
+#: publications/models.py:20
+msgid "URL"
+msgstr ""
+
+#: publications/models.py:31
+msgid "Editor"
+msgstr ""
+
+#: publications/models.py:33 publications/models.py:115
+#: publications/models.py:136
+#: publications/templates/publications/comment_detail.html:20
+#: publications/templates/publications/publication_detail.html:67
+msgid "Creation date"
+msgstr ""
+
+#: publications/models.py:34
+msgid "Payment date"
+msgstr ""
+
+#: publications/models.py:35
+msgid "Validation date"
+msgstr ""
+
+#: publications/models.py:37 publications/models.py:120
+msgid "Title"
+msgstr ""
+
+#: publications/models.py:39
+#: publications/templates/publications/publication_detail.html:102
+msgid "Publication score"
+msgstr ""
+
+#: publications/models.py:41 publications/models.py:82
+#: publications/templates/publications/publication_detail.html:106
+msgid "Estimated impact factor"
+msgstr ""
+
+#: publications/models.py:43
+msgid "First author"
+msgstr ""
+
+#: publications/models.py:44 publications/tables.py:30
+#: publications/templates/publications/publication_detail.html:77
+msgid "Authors"
+msgstr ""
+
+#: publications/models.py:46
+msgid "Last author"
+msgstr ""
+
+#: publications/models.py:49
+msgid "Publication draft (PDF)"
+msgstr ""
+
+#: publications/models.py:51
+msgid "Publication draft (sources)"
+msgstr ""
+
+#: publications/models.py:53
+msgid "Publication final (pdf)"
+msgstr ""
+
+#: publications/models.py:55
+msgid "Publication final (sources)"
+msgstr ""
+
+#: publications/models.py:56
+msgid "Resume"
+msgstr ""
+
+#: publications/models.py:57
+#: publications/templates/publications/comment_detail.html:26
+#: publications/templates/publications/publication_detail.html:86
+msgid "Status"
+msgstr ""
+
+#: publications/models.py:58
+msgid "Update status date"
+msgstr ""
+
+#: publications/models.py:61 publications/models.py:124
+#: publications/templates/publications/comment_detail.html:24
+#: publications/templates/publications/publication_detail.html:109
+msgid "Licence"
+msgstr ""
+
+#: publications/models.py:62
+msgid "DOI"
+msgstr ""
+
+#: publications/models.py:80
+msgid "Estimator"
+msgstr ""
+
+#: publications/models.py:81 publications/models.py:96
+#: publications/models.py:111
+#: publications/templates/publications/publication_detail.html:9
+msgid "Publication"
+msgstr ""
+
+#: publications/models.py:95 publications/models.py:135
+msgid "Reviewer"
+msgstr ""
+
+#: publications/models.py:97
+msgid "Actif"
+msgstr ""
+
+#: publications/models.py:112
+msgid "Author"
+msgstr ""
+
+#: publications/models.py:114
+msgid "Fake Pseudo"
+msgstr ""
+
+#: publications/models.py:116
+msgid "Comment type"
+msgstr ""
+
+#: publications/models.py:118 publications/models.py:137
+#: publications/templates/publications/comment_detail.html:29
+#: publications/templates/publications/comment_detail.html:60
+msgid "Seriousness"
+msgstr ""
+
+#: publications/models.py:119
+msgid "Publication comment"
+msgstr ""
+
+#: publications/models.py:121
+msgid "Validation"
+msgstr ""
+
+#: publications/models.py:123 publications/models.py:140
+msgid "Corrected date"
+msgstr ""
+
+#: publications/models.py:134
+#: publications/templates/publications/comment_detail.html:8
+msgid "Comment"
+msgstr ""
+
+#: publications/models.py:138
+msgid "Valid"
+msgstr ""
+
+#: publications/models.py:139
+msgid "Reason of (in)validation"
+msgstr ""
+
+#: publications/models.py:142
+msgid "Reason of (in)correction"
+msgstr ""
+
+#: publications/templates/publications/comment_detail.html:22
+msgid "Comment on"
+msgstr ""
+
+#: publications/templates/publications/comment_detail.html:38
+msgid "Evaluations"
+msgstr ""
+
+#: publications/templates/publications/comment_detail.html:51
+#: publications/templates/publications/comment_detail.html:66
+msgid "Reason for "
+msgstr ""
+
+#: publications/templates/publications/comment_detail.html:78
+msgid "No evaluations yet"
+msgstr ""
+
+#: publications/templates/publications/comment_detail.html:84
+msgid "Is this comment valid"
+msgstr ""
+
+#: publications/templates/publications/comment_detail.html:89
+msgid "Is this comment corrected"
+msgstr ""
+
+#: publications/templates/publications/publication_detail.html:29
+msgid "Leave the reviewers"
+msgstr ""
+
+#: publications/templates/publications/publication_detail.html:31
+msgid "Join the reviewers"
+msgstr ""
+
+#: publications/templates/publications/publication_detail.html:39
+msgid "You already evaluated this publication"
+msgstr ""
+
+#: publications/templates/publications/publication_detail.html:45
+msgid "Correct "
+msgstr ""
+
+#: publications/templates/publications/publication_detail.html:46
+#: publications/templates/publications/publication_detail.html:51
+msgid "or "
+msgstr ""
+
+#: publications/templates/publications/publication_detail.html:47
+msgid "abort "
+msgstr ""
+
+#: publications/templates/publications/publication_detail.html:48
+msgid "this publication"
+msgstr ""
+
+#: publications/templates/publications/publication_detail.html:50
+msgid "Edit "
+msgstr ""
+
+#: publications/templates/publications/publication_detail.html:52
+msgid "pay to submit "
+msgstr ""
+
+#: publications/templates/publications/publication_detail.html:53
+msgid "the publication"
+msgstr ""
+
+#: publications/templates/publications/publication_detail.html:56
+msgid ""
+"\n"
+"                            When the publication is payed it's submit for "
+"the peer review and\n"
+"                            cannot be edited until the correction process.\n"
+"                        "
+msgstr ""
+
+#: publications/templates/publications/publication_detail.html:88
+msgid "Downloads"
+msgstr ""
+
+#: publications/templates/publications/publication_detail.html:90
+msgid "PDF at creation"
+msgstr ""
+
+#: publications/templates/publications/publication_detail.html:93
+msgid "Source at creation"
+msgstr ""
+
+#: publications/templates/publications/publication_detail.html:97
+msgid "PDF after correction"
+msgstr ""
+
+#: publications/templates/publications/publication_detail.html:100
+msgid "Source after correction"
+msgstr ""
+
+#: publications/templates/publications/publication_detail.html:117
+msgid "Comments"
+msgstr ""
+
+#: publications/templates/publications/publication_detail.html:136
+msgid " by "
+msgstr ""
+
+#: publications/templates/publications/publication_detail.html:137
+msgid " on the "
+msgstr ""
+
+#: publications/templates/publications/publication_detail.html:151
+msgid "Evaluation of the comment"
+msgstr ""
+
+#: publications/templates/publications/publication_detail.html:156
+msgid "No comments yet"
+msgstr ""
+
+#: publications/templates/publications/publication_detail.html:160
+msgid "Send a comment"
+msgstr ""
+
+#: publications/templates/publications/publication_detail.html:162
+msgid ""
+" A comment must describe only one error.\n"
+"                                              If you spotted more than one, "
+"please do more than one comment.\n"
+"                             "
+msgstr ""
+
+#: publications/templates/publications/publication_detail.html:168
+msgid "Only payed publications can receive comments."
+msgstr ""
+
+#: publications/templates/publications/publication_list.html:13
+#: templates/base.html:51
+msgid "Publications"
+msgstr ""
+
+#: publications/templates/publications/publication_special_list.html:13
+msgid "Publications "
+msgstr ""
+
+#: publications/views.py:376
+msgid "Publication canceled"
+msgstr ""
+
+#: publications/views.py:377
+msgid ""
+"This publication haven't been validated. Be careful. We appreciate your help!"
+msgstr ""
+
+#: publications/views.py:380
+msgid "Publication not finished"
+msgstr ""
+
+#: publications/views.py:381
+msgid ""
+"This publication haven't been validated yet. It could have some "
+"bias.                                       We appreciate your help!"
+msgstr ""
+
+#: publications/views.py:387
+msgid "Publication with bias"
+msgstr ""
+
+#: publications/views.py:388
+msgid ""
+"This publication contain some bias. Be careful. We appreciate your help!"
+msgstr ""
+
+#: publications/views.py:391
+msgid "Publication validated"
+msgstr ""
+
+#: publications/views.py:392
+msgid ""
+"This publication have been validated.                                      "
+"You can help us by trying to find more bias !"
+msgstr ""
+
+#: skepticalsciencewebsite/settings.py:146
+msgid "English"
+msgstr ""
+
+#: skepticalsciencewebsite/settings.py:147
+msgid "French"
+msgstr ""
+
+#: templates/base.html:54
+msgid "List"
+msgstr ""
+
+#: templates/base.html:56
+msgid "Publications in review"
+msgstr ""
+
+#: templates/base.html:59
+msgid "New Publication"
+msgstr ""
+
+#: templates/base.html:60
+msgid "My Publications"
+msgstr ""
+
+#: templates/base.html:61
+msgid "Publications I review"
+msgstr ""
+
+#: templates/base.html:63
+msgid "Reviewers needed"
+msgstr ""
+
+#: templates/base.html:64
+msgid "Evaluations needed"
+msgstr ""
+
+#: templates/base.html:75
+msgid "F.A.Q"
+msgstr ""
+
+#: templates/base.html:78
+msgid "TOS"
+msgstr ""
+
+#: templates/base.html:81
+msgid "Commercial agreement"
+msgstr ""
+
+#: templates/base.html:88
+msgid "Account"
+msgstr ""
+
+#: templates/base.html:90
+msgid "View profile"
+msgstr ""
+
+#: templates/base.html:92 templates/registration/password_change_form.html:8
+msgid "Change password"
+msgstr ""
+
+#: templates/base.html:97
+msgid "Log out"
+msgstr ""
+
+#: templates/base.html:101 templates/registration/login.html:18
+#: templates/registration/registration_form.html:7
+msgid "Register"
+msgstr ""
+
+#: templates/base.html:104 templates/registration/login.html:12
+#: templates/registration/password_reset_complete.html:8
+msgid "Log in"
+msgstr ""
+
+#: templates/index.html:8
+msgid "Index page"
+msgstr "Page d'index"
+
+#: templates/modifytable.html:63
+msgid "Previous"
+msgstr ""
+
+#: templates/modifytable.html:71
+#, python-format
+msgid "Page %(current)s of %(total)s"
+msgstr ""
+
+#: templates/modifytable.html:78
+#, python-format
+msgid "%(count)s of %(total)s"
+msgstr ""
+
+#: templates/modifytable.html:85
+msgid "Next"
+msgstr ""
+
+#: templates/registration/activate.html:6
+msgid "Account activation failed"
+msgstr ""
+
+#: templates/registration/activation_complete.html:5
+msgid "Your account is now activated."
+msgstr ""
+
+#: templates/registration/activation_email.txt:2
+msgid "Activate account at"
+msgstr ""
+
+#: templates/registration/activation_email.txt:6
+#, python-format
+msgid "Link is valid for %(expiration_days)s days."
+msgstr ""
+
+#: templates/registration/activation_email_subject.txt:1
+msgid "Account activation on"
+msgstr ""
+
+#: templates/registration/login.html:7
+msgid "Login"
+msgstr ""
+
+#: templates/registration/login.html:17
+msgid "Forgot password"
+msgstr ""
+
+#: templates/registration/login.html:17
+msgid "Reset it"
+msgstr ""
+
+#: templates/registration/login.html:18
+msgid "Not member"
+msgstr ""
+
+#: templates/registration/logout.html:5
+msgid "Logged out"
+msgstr ""
+
+#: templates/registration/password_change_done.html:5
+msgid "Password changed"
+msgstr ""
+
+#: templates/registration/password_reset_complete.html:6
+msgid "Password reset successfully"
+msgstr ""
+
+#: templates/registration/password_reset_confirm.html:17
+msgid "Password reset failed"
+msgstr ""
+
+#: templates/registration/password_reset_done.html:5
+msgid "Email with password reset instructions has been sent."
+msgstr ""
+
+#: templates/registration/password_reset_email.html:2
+#, python-format
+msgid "Reset password at %(site_name)s"
+msgstr ""
+
+#: templates/registration/registration_closed.html:5
+msgid "Registration is currently closed."
+msgstr ""
+
+#: templates/registration/registration_complete.html:5
+msgid "You are now registered. Activation email sent."
+msgstr ""
