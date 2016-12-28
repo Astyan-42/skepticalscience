@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-28 19:31+0000\n"
+"POT-Creation-Date: 2016-12-28 22:12+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,7 +31,7 @@ msgid "Empty value not authorised"
 msgstr ""
 
 #: custompayment/forms.py:51
-msgid "This discount code didn't started yet"
+msgid "This discount code hasn't started yet"
 msgstr ""
 
 #: custompayment/forms.py:54
@@ -91,7 +91,7 @@ msgid "phone number"
 msgstr ""
 
 #: custompayment/models.py:46
-msgid "PIB per inhabitant"
+msgid "GDP per inhabitant"
 msgstr ""
 
 #: custompayment/models.py:47
@@ -158,7 +158,7 @@ msgid "scientist reduction"
 msgstr ""
 
 #: custompayment/models.py:91
-msgid "taxes percents"
+msgid "percentage of tax"
 msgstr ""
 
 #: custompayment/models.py:92
@@ -202,7 +202,7 @@ msgid "Order"
 msgstr ""
 
 #: custompayment/templates/custompayment/order_detail.html:20
-msgid "The order have been paid the "
+msgid "This order has been paid on "
 msgstr ""
 
 #: custompayment/templates/custompayment/order_detail.html:21
@@ -210,7 +210,7 @@ msgid "View the bill"
 msgstr ""
 
 #: custompayment/templates/custompayment/order_detail.html:23
-msgid "The order have been cancelled the "
+msgid "This order has been cancelled on "
 msgstr ""
 
 #: custompayment/templates/custompayment/order_detail.html:30
@@ -231,7 +231,7 @@ msgid "selling contract"
 msgstr ""
 
 #: custompayment/templates/custompayment/order_detail.html:52
-msgid "and you certify the validity of the informations you enter."
+msgid "and review your order information."
 msgstr ""
 
 #: custompayment/templates/custompayment/order_detail.html:55
@@ -244,7 +244,7 @@ msgid "Billing address"
 msgstr ""
 
 #: custompayment/templates/custompayment/order_detail.html:67
-msgid "You must have a billing address to do proceed to an order"
+msgid "You must have a billing address to complete your order"
 msgstr ""
 
 #: custompayment/templates/custompayment/order_detail.html:109
@@ -268,7 +268,6 @@ msgid "Billing(EN)"
 msgstr ""
 
 #: custompayment/templates/custompayment/order_list.html:13
-#: templates/base.html:71
 msgid "My orders"
 msgstr ""
 
@@ -301,7 +300,7 @@ msgstr ""
 
 #: customuser/models.py:35
 msgid ""
-"Use a valid "
+"please enter a valid "
 "username                                                            (not "
 "skepic, author, researcher)"
 msgstr ""
@@ -323,7 +322,7 @@ msgid "Last Name"
 msgstr ""
 
 #: customuser/models.py:46
-msgid "Own a PHD"
+msgid "PHD"
 msgstr ""
 
 #: customuser/models.py:47 customuser/templates/customuser/detail_user.html:15
@@ -410,7 +409,7 @@ msgid "Estimator score"
 msgstr ""
 
 #: customuser/templates/customuser/detail_user.html:50
-msgid "Wrong informations "
+msgid "Wrong information "
 msgstr ""
 
 #: customuser/templates/customuser/detail_user.html:50
@@ -482,7 +481,9 @@ msgid "State"
 msgstr "État"
 
 #: pdfinvoce/printing.py:48
-msgid "Post code"
+#, fuzzy
+#| msgid "Post code"
+msgid "Postal code"
 msgstr "Code postal"
 
 #: pdfinvoce/printing.py:49 templates/legal_notices.html:15
@@ -507,7 +508,7 @@ msgstr "Client"
 
 #: pdfinvoce/printing.py:54
 msgid "Detail"
-msgstr "Détail"
+msgstr "Detail"
 
 #: pdfinvoce/printing.py:56
 msgid "Units"
@@ -559,11 +560,13 @@ msgstr "SIRET"
 
 #: pdfinvoce/printing.py:68 templates/legal_notices.html:11
 msgid "Capital"
-msgstr "Capital social"
+msgstr ""
 
 #: pdfinvoce/printing.py:94
-#, python-format
-msgid "Email: %(email)s <br/>Don't hesitate to contact us for any questions."
+#, fuzzy, python-format
+#| msgid ""
+#| "Email: %(email)s <br/>Don't hesitate to contact us for any questions."
+msgid "Email: %(email)s <br/>Please contact us if you have any questions."
 msgstr "Courriel: %(email)s <br/>Contactez nous si vous avez des questions"
 
 #: publications/forms.py:73
@@ -604,9 +607,7 @@ msgstr ""
 
 #: publications/models.py:33 publications/models.py:115
 #: publications/models.py:136
-#: publications/templates/publications/comment_detail.html:20
-#: publications/templates/publications/publication_detail.html:67
-msgid "Creation date"
+msgid "Date created"
 msgstr ""
 
 #: publications/models.py:34
@@ -728,8 +729,8 @@ msgstr ""
 msgid "Validation"
 msgstr ""
 
-#: publications/models.py:123 publications/models.py:140
-msgid "Corrected date"
+#: publications/models.py:123
+msgid "Date corrected"
 msgstr ""
 
 #: publications/models.py:134
@@ -745,8 +746,17 @@ msgstr ""
 msgid "Reason of (in)validation"
 msgstr ""
 
+#: publications/models.py:140
+msgid "Date Corrected"
+msgstr ""
+
 #: publications/models.py:142
 msgid "Reason of (in)correction"
+msgstr ""
+
+#: publications/templates/publications/comment_detail.html:20
+#: publications/templates/publications/publication_detail.html:67
+msgid "Date Created"
 msgstr ""
 
 #: publications/templates/publications/comment_detail.html:22
@@ -783,7 +793,7 @@ msgid "Join the reviewers"
 msgstr ""
 
 #: publications/templates/publications/publication_detail.html:39
-msgid "You already evaluated this publication"
+msgid "You already have evaluated this publication"
 msgstr ""
 
 #: publications/templates/publications/publication_detail.html:45
@@ -818,9 +828,10 @@ msgstr ""
 #: publications/templates/publications/publication_detail.html:56
 msgid ""
 "\n"
-"                            When the publication is payed it's submit for "
-"the peer review and\n"
-"                            cannot be edited until the correction process.\n"
+"                            Once payment has been made the publication is "
+"submitted for peer review and\n"
+"                             cannot be edited until the correction process "
+"is over.\n"
 "                        "
 msgstr ""
 
@@ -829,19 +840,19 @@ msgid "Downloads"
 msgstr ""
 
 #: publications/templates/publications/publication_detail.html:90
-msgid "PDF at creation"
+msgid "PDF first draft"
 msgstr ""
 
 #: publications/templates/publications/publication_detail.html:93
-msgid "Source at creation"
+msgid "Source first draft"
 msgstr ""
 
 #: publications/templates/publications/publication_detail.html:97
-msgid "PDF after correction"
+msgid "PDF final version"
 msgstr ""
 
 #: publications/templates/publications/publication_detail.html:100
-msgid "Source after correction"
+msgid "Source final version"
 msgstr ""
 
 #: publications/templates/publications/publication_detail.html:117
@@ -857,7 +868,7 @@ msgid " on the "
 msgstr ""
 
 #: publications/templates/publications/publication_detail.html:151
-msgid "Evaluation of the comment"
+msgid "Comment evaluation"
 msgstr ""
 
 #: publications/templates/publications/publication_detail.html:156
@@ -865,14 +876,14 @@ msgid "No comments yet"
 msgstr ""
 
 #: publications/templates/publications/publication_detail.html:160
-msgid "Send a comment"
+msgid "Submit comment"
 msgstr ""
 
 #: publications/templates/publications/publication_detail.html:162
 msgid ""
 " A comment must describe only one error.\n"
 "                                              If you spotted more than one, "
-"please do more than one comment.\n"
+"please write more than one comment.\n"
 "                             "
 msgstr ""
 
@@ -890,16 +901,16 @@ msgid "Publications "
 msgstr ""
 
 #: publications/views.py:376
-msgid "Publication canceled"
+msgid "Publication cancelled"
 msgstr ""
 
 #: publications/views.py:377
 msgid ""
-"This publication haven't been validated. Be careful. We appreciate your help!"
+"This publication hasn't been validated. Be careful. We appreciate your help!"
 msgstr ""
 
 #: publications/views.py:380
-msgid "Publication not finished"
+msgid "Publication is not finished"
 msgstr ""
 
 #: publications/views.py:381
@@ -914,7 +925,7 @@ msgstr ""
 
 #: publications/views.py:388
 msgid ""
-"This publication contain some bias. Be careful. We appreciate your help!"
+"This publication contains some bias. Be careful. We appreciate your help!"
 msgstr ""
 
 #: publications/views.py:391
@@ -923,7 +934,7 @@ msgstr ""
 
 #: publications/views.py:392
 msgid ""
-"This publication have been validated.                                      "
+"This publication has been validated.                                      "
 "You can help us by trying to find more bias !"
 msgstr ""
 
@@ -952,7 +963,7 @@ msgid "My Publications"
 msgstr ""
 
 #: templates/base.html:61
-msgid "Publications I review"
+msgid "Publications I reviewed"
 msgstr ""
 
 #: templates/base.html:63
@@ -961,6 +972,10 @@ msgstr ""
 
 #: templates/base.html:64
 msgid "Evaluations needed"
+msgstr ""
+
+#: templates/base.html:71
+msgid "Order History"
 msgstr ""
 
 #: templates/base.html:75

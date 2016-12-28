@@ -45,7 +45,7 @@ def generate_invoice(token, language):
         CITY: _('City'),
         STATE: _('State'),
         COUNTRY: _('Country'),
-        POST_CODE: _('Post code'),
+        POST_CODE: _('Postal code'),
         VAT_TAX_NUMBER: _('Vat/Tax number'),
         MERCHANT: _('Merchant'),
         EMAIL: _('Email'),
@@ -91,7 +91,7 @@ def generate_invoice(token, language):
     doc.set_item_tax_rate(price.tax_percent)
 
     # translation to do
-    endsentence=_("Email: %(email)s <br/>Don't hesitate to contact us for any questions.")%{'email': 'test@test.com'}
+    endsentence=_("Email: %(email)s <br/>Please contact us if you have any questions.")%{'email': 'test@test.com'}
     doc.set_bottom_tip(endsentence)
 
     doc.finish()

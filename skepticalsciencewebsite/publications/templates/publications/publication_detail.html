@@ -36,7 +36,7 @@
                             <h5><strong> {% trans "Evaluate" %} </strong></h5>
                             {% crispy form_eif %}
                         {% else %}
-                            {% trans "You already evaluated this publication" %}.
+                            {% trans "You already have evaluated this publication" %}.
                         {% endif %}
                     {% endif %}
                 {% endif %}
@@ -54,8 +54,8 @@
                     </p>
                     <p class="text-danger">
                         {% blocktrans %}
-                            When the publication is payed it's submit for the peer review and
-                            cannot be edited until the correction process.
+                            Once payment has been made the publication is submitted for peer review and
+                             cannot be edited until the correction process is over.
                         {% endblocktrans %}
                     </p>
                 {% endif %}
@@ -64,7 +64,7 @@
             </div>
         </div>
         <div class="col-md-4">
-            <h5><strong>{% trans "Creation date" %}</strong></h5>
+            <h5><strong>{% trans "Date Created" %}</strong></h5>
             <p class="text-indent">{{ publication_detail.creation_date }}</p>
             <h5><strong>{% trans "Sciences" %}</strong></h5>
             <p class="text-indent">{% for science in publication_detail.sciences.all %}
@@ -87,17 +87,17 @@
             <p class="text-indent">{{ publication_detail.get_status_display }}</p>
             <h5><strong>{% trans "Downloads" %}</strong></h5>
             <p class="text-indent">
-                <a href="{% url 'download_publication' 'pdf_creation' object.pk %}">{% trans "PDF at creation" %}</a>
+                <a href="{% url 'download_publication' 'pdf_creation' object.pk %}">{% trans "PDF first draft" %}</a>
             </p>
             <p class="text-indent">
-                <a href="{% url 'download_publication' 'source_creation' object.pk %}">{% trans "Source at creation" %}</a>
+                <a href="{% url 'download_publication' 'source_creation' object.pk %}">{% trans "Source first draft" %}</a>
             </p>
             {% if publication_detail.status >= constants.VALIDATION %}
                 <p class="text-indent">
-                    <a href="{% url 'download_publication' 'pdf_final' object.pk %}">{% trans "PDF after correction" %}</a>
+                    <a href="{% url 'download_publication' 'pdf_final' object.pk %}">{% trans "PDF final version" %}</a>
                 </p>
                 <p class="text-indent">
-                    <a href="{% url 'download_publication' 'source_final' object.pk %}">{% trans "Source after correction" %}</a>
+                    <a href="{% url 'download_publication' 'source_final' object.pk %}">{% trans "Source final version" %}</a>
                 </p>
                 <h5><strong>{% trans "Publication score" %}</strong></h5>
                 <p class="text-indent">{{ publication_detail.publication_score }}</p>
@@ -148,7 +148,7 @@ corrected green, if not red, if comment after the validation and valid then oran
                     {{ comment.licence }} ({{ comment.creation_date }})
                 </div>
                 <div class="panel-title pull-right">
-                    <a href="{% url 'comment_view' comment.pk %}">{% trans "Evaluation of the comment" %}</a>
+                    <a href="{% url 'comment_view' comment.pk %}">{% trans "Comment evaluation" %}</a>
                 </div>
             </div>
         </div>
@@ -157,10 +157,10 @@ corrected green, if not red, if comment after the validation and valid then oran
     {% endfor %}
 
     <hr>
-    <h2>{% trans "Send a comment"%}: </h2>
+    <h2>{% trans "Submit comment"%}: </h2>
     {% if user.is_authenticated and publication_detail.status >= constants.ADDING_PEER %}
         <p class="text-info">{% blocktrans %} A comment must describe only one error.
-                                              If you spotted more than one, please do more than one comment.
+                                              If you spotted more than one, please write more than one comment.
                              {% endblocktrans %} </p>
         {% crispy form_comment %}
         {{ form.media.js }}

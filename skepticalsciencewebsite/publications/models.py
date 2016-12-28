@@ -30,7 +30,7 @@ class Publication(models.Model):
     # other author problem ? What to do if no account, if account ?
     editor = models.ForeignKey(User, verbose_name=_('Editor'))
     # create the publication before paying for
-    creation_date = models.DateTimeField(auto_now_add=True, verbose_name=_('Creation date'))
+    creation_date = models.DateTimeField(auto_now_add=True, verbose_name=_('Date created'))
     payment_date = models.DateTimeField(null=True, blank=True, default=None, verbose_name=_('Payment date'))
     validation_date = models.DateTimeField(null=True, blank=True, default=None, verbose_name=_('Validation date'))
     sciences = models.ManyToManyField(Science, blank=True, symmetrical=False, verbose_name=_("Sciences"))
@@ -112,7 +112,7 @@ class Comment(models.Model):
     author = models.ForeignKey(User, verbose_name=_("Author"))
     # fake pseudo when reviewer must be reviewer (fake pseudo given automatically between: Reviewer, Scientist, Skeptic)
     author_fake_pseudo = models.CharField(max_length=100, default=None, blank=True, verbose_name=_('Fake Pseudo'))
-    creation_date = models.DateTimeField(auto_now_add=True, verbose_name=_('Creation date'))
+    creation_date = models.DateTimeField(auto_now_add=True, verbose_name=_('Date created'))
     comment_type = models.IntegerField(choices=COMMENT_ON, db_index=True, verbose_name=_("Comment type"))
     seriousness = models.IntegerField(choices=SERIOUSNESS_STATUS, db_index=True, blank=True, null=True,
                                       verbose_name=_("Seriousness"))
@@ -120,7 +120,7 @@ class Comment(models.Model):
     title = models.CharField(max_length=255, blank=False, verbose_name=_("Title"))
     validated = models.IntegerField(choices=VALIDATION_STATUS, default=2, verbose_name=_("Validation"))
     corrected = models.BooleanField(default=False, verbose_name=_("Corrected"))
-    corrected_date = models.DateTimeField(null=True, blank=True, default=None, verbose_name=_('Corrected date'))
+    corrected_date = models.DateTimeField(null=True, blank=True, default=None, verbose_name=_('Date corrected'))
     licence = models.ForeignKey(Licence, verbose_name=_("Licence"))
 
     def __str__(self):
@@ -133,11 +133,11 @@ class CommentReview(models.Model):
     """
     comment = models.ForeignKey(Comment, verbose_name=_("Comment"))
     reviewer = models.ForeignKey(Reviewer, verbose_name=_("Reviewer"))
-    creation_date = models.DateTimeField(auto_now_add=True, verbose_name=_('Creation date'))
+    creation_date = models.DateTimeField(auto_now_add=True, verbose_name=_('Date created'))
     seriousness = models.IntegerField(choices=SERIOUSNESS_STATUS, db_index=True, verbose_name=_("Seriousness"))
     valid = models.BooleanField(default=False, verbose_name=_("Valid"))
     reason_validation = models.CharField(max_length=8192, blank=False, verbose_name=_("Reason of (in)validation"))
-    corrected_date = models.DateTimeField(null=True, blank=True, default=None, verbose_name=_('Corrected date'))
+    corrected_date = models.DateTimeField(null=True, blank=True, default=None, verbose_name=_('Date Corrected'))
     corrected = models.BooleanField(default=False, verbose_name=_("Corrected"))
     reason_correction = models.CharField(max_length=8192, blank=False, verbose_name=_("Reason of (in)correction"))
 

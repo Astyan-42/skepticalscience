@@ -373,11 +373,11 @@ class PublicationDisplay(DetailView):
         if status < EVALUATION:
             if status == ABORTED:
                 alert["class"] = "alert-danger"
-                alert["title"] = _("Publication canceled")
-                alert["message"] = _("This publication haven't been validated. Be careful. We appreciate your help!")
+                alert["title"] = _("Publication cancelled")
+                alert["message"] = _("This publication hasn't been validated. Be careful. We appreciate your help!")
             else:
                 alert["class"] = "alert-warning"
-                alert["title"] = _("Publication not finished")
+                alert["title"] = _("Publication is not finished")
                 alert["message"] = _("This publication haven't been validated yet. It could have some bias. \
                                       We appreciate your help!")
         else:
@@ -385,11 +385,11 @@ class PublicationDisplay(DetailView):
                                       validated=True, corrected=False).exists():
                 alert["class"] = "alert-danger"
                 alert["title"] = _("Publication with bias")
-                alert["message"] = _("This publication contain some bias. Be careful. We appreciate your help!")
+                alert["message"] = _("This publication contains some bias. Be careful. We appreciate your help!")
             else:
                 alert["class"] = "alert-success"
                 alert["title"] = _("Publication validated")
-                alert["message"] = _("This publication have been validated. \
+                alert["message"] = _("This publication has been validated. \
                                      You can help us by trying to find more bias !")
         return alert
 
