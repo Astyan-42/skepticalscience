@@ -1,5 +1,7 @@
+import os
 from django.utils.translation import ugettext as _
 from django.utils.translation import activate
+from skepticalsciencewebsite.settings import SENDFILE_ROOT
 from pyinvoice.models import Item, InvoiceInfo, ServiceProviderInfo, ClientInfo
 from pyinvoice.templates import SimpleInvoice
 from pyinvoice.constants import *
@@ -27,7 +29,8 @@ eagal_provider = ServiceProviderInfo(
 
 def generate_invoice(token, language):
     # need to add a folder / name and stuff
-    invoice_name = 'invoice'+str(token)+'.pdf'
+    invoice_name = 'invoice'+language+str(token)+'.pdf'
+    invoice_path = os.path.join(SENDFILE_ROOT, 'invoices', invoice_name)
     if language == 'english':
         activate('en')
     else: # language == 'french':
@@ -64,13 +67,13 @@ def generate_invoice(token, language):
         PROVIDER_ID: _('SIRET'),
         CAPITAL: _('Capital'),
     }
-    doc = SimpleInvoice(invoice_name, constants=international_pyinvoice)
+    doc = SimpleInvoice(invoice_path, constants=international_pyinvoice)
     # get the order and payment
     order = Order.objects.get(token=token)
     payment = order.get_payment()
     # set the invoice related data
     doc.is_paid = True
-    doc.invoice_info = InvoiceInfo(payment.created.strftime("%Y-%m-%d")+payment.transaction_id,
+    doc.invoice_info = InvoiceInfo(payment.created.strftime("%Y-%m ")+payment.transaction_id,
                                    payment.created.strftime("%Y-%m-%d"))
     # set provider data
     doc.service_provider_info = eagal_provider
@@ -92,4 +95,4 @@ def generate_invoice(token, language):
     doc.set_bottom_tip(endsentence)
 
     doc.finish()
-    return doc, invoice_name
+    return doc, invoice_path

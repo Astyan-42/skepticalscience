@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-28 12:11+0000\n"
+"POT-Creation-Date: 2016-12-28 19:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -109,7 +109,7 @@ msgstr ""
 #: custompayment/models.py:67
 #: custompayment/templates/custompayment/order_detail.html:29
 #: customuser/templates/customuser/detail_user.html:10
-#: pdfinvoce/printing.py:59 sciences/models.py:19
+#: pdfinvoce/printing.py:43 sciences/models.py:19
 msgid "Name"
 msgstr "Nom"
 
@@ -214,7 +214,7 @@ msgid "The order have been cancelled the "
 msgstr ""
 
 #: custompayment/templates/custompayment/order_detail.html:30
-#: pdfinvoce/printing.py:71 sciences/models.py:20
+#: pdfinvoce/printing.py:55 sciences/models.py:20
 msgid "Description"
 msgstr "Description"
 
@@ -327,7 +327,7 @@ msgid "Own a PHD"
 msgstr ""
 
 #: customuser/models.py:47 customuser/templates/customuser/detail_user.html:15
-#: pdfinvoce/printing.py:63
+#: pdfinvoce/printing.py:47
 msgid "Country"
 msgstr "Pays"
 
@@ -453,115 +453,115 @@ msgstr ""
 msgid "F.A.Q."
 msgstr ""
 
-#: pdfinvoce/printing.py:55
+#: pdfinvoce/printing.py:39
 msgid "Invoice id"
 msgstr "Numéro"
 
-#: pdfinvoce/printing.py:56
+#: pdfinvoce/printing.py:40
 msgid "Invoice date"
 msgstr "Date"
 
-#: pdfinvoce/printing.py:57
+#: pdfinvoce/printing.py:41
 msgid "Invoice"
 msgstr "Facture"
 
-#: pdfinvoce/printing.py:58
+#: pdfinvoce/printing.py:42
 msgid "Invoice due date"
 msgstr "Date d'échéance"
 
-#: pdfinvoce/printing.py:60
+#: pdfinvoce/printing.py:44
 msgid "Street"
 msgstr "Rue"
 
-#: pdfinvoce/printing.py:61
+#: pdfinvoce/printing.py:45
 msgid "City"
 msgstr "Ville"
 
-#: pdfinvoce/printing.py:62
+#: pdfinvoce/printing.py:46
 msgid "State"
 msgstr "État"
 
-#: pdfinvoce/printing.py:64
+#: pdfinvoce/printing.py:48
 msgid "Post code"
 msgstr "Code postal"
 
-#: pdfinvoce/printing.py:65
+#: pdfinvoce/printing.py:49 templates/legal_notices.html:15
 msgid "Vat/Tax number"
 msgstr "Numéro de TVA"
 
-#: pdfinvoce/printing.py:66
+#: pdfinvoce/printing.py:50
 msgid "Merchant"
 msgstr "Marchant"
 
-#: pdfinvoce/printing.py:67
+#: pdfinvoce/printing.py:51 templates/legal_notices.html:19
 msgid "Email"
 msgstr "Courriel"
 
-#: pdfinvoce/printing.py:68
+#: pdfinvoce/printing.py:52
 msgid "Client id"
 msgstr "Numéro client"
 
-#: pdfinvoce/printing.py:69
+#: pdfinvoce/printing.py:53
 msgid "Client"
 msgstr "Client"
 
-#: pdfinvoce/printing.py:70
+#: pdfinvoce/printing.py:54
 msgid "Detail"
-msgstr "Detail"
+msgstr "Détail"
 
-#: pdfinvoce/printing.py:72
+#: pdfinvoce/printing.py:56
 msgid "Units"
 msgstr "Unités"
 
-#: pdfinvoce/printing.py:73
+#: pdfinvoce/printing.py:57
 msgid "Unit Price"
 msgstr "Prix à l'unité"
 
-#: pdfinvoce/printing.py:74
+#: pdfinvoce/printing.py:58
 msgid "Amount"
 msgstr "Montant"
 
-#: pdfinvoce/printing.py:75
+#: pdfinvoce/printing.py:59
 msgid "Subtotal"
 msgstr "Sous total"
 
-#: pdfinvoce/printing.py:76
+#: pdfinvoce/printing.py:60
 msgid "Vat/Tax"
 msgstr "Tax"
 
-#: pdfinvoce/printing.py:77
+#: pdfinvoce/printing.py:61
 msgid "Total"
 msgstr "Total"
 
-#: pdfinvoce/printing.py:78
+#: pdfinvoce/printing.py:62
 msgid "Transaction id"
 msgstr "Numéro de transaction"
 
-#: pdfinvoce/printing.py:79
+#: pdfinvoce/printing.py:63
 msgid "Gateway"
 msgstr "Moyen de payment"
 
-#: pdfinvoce/printing.py:80
+#: pdfinvoce/printing.py:64
 msgid "Transaction date"
 msgstr "Date de la transaction"
 
-#: pdfinvoce/printing.py:81
+#: pdfinvoce/printing.py:65
 msgid "Transaction"
 msgstr "Transaction"
 
-#: pdfinvoce/printing.py:82
+#: pdfinvoce/printing.py:66
 msgid "PAID"
 msgstr "Payé"
 
-#: pdfinvoce/printing.py:83
+#: pdfinvoce/printing.py:67 templates/legal_notices.html:13
 msgid "SIRET"
 msgstr "SIRET"
 
-#: pdfinvoce/printing.py:84
+#: pdfinvoce/printing.py:68 templates/legal_notices.html:11
 msgid "Capital"
 msgstr "Capital social"
 
-#: pdfinvoce/printing.py:131
+#: pdfinvoce/printing.py:94
 #, python-format
 msgid "Email: %(email)s <br/>Don't hesitate to contact us for any questions."
 msgstr "Courriel: %(email)s <br/>Contactez nous si vous avez des questions"
@@ -1005,6 +1005,139 @@ msgstr ""
 msgid "Index page"
 msgstr "Page d'index"
 
+#: templates/legal_notices.html:7
+msgid "Legal notices"
+msgstr ""
+
+#: templates/legal_notices.html:8
+msgid "Legal information"
+msgstr ""
+
+#: templates/legal_notices.html:10
+msgid "Company type"
+msgstr ""
+
+#: templates/legal_notices.html:12
+msgid "Licence number"
+msgstr ""
+
+#: templates/legal_notices.html:14
+msgid "Head office"
+msgstr ""
+
+#: templates/legal_notices.html:16
+msgid "Website manager"
+msgstr ""
+
+#: templates/legal_notices.html:17
+msgid "Publication manager"
+msgstr ""
+
+#: templates/legal_notices.html:18
+msgid "Website host"
+msgstr ""
+
+#: templates/legal_notices.html:20
+msgid "Phone number"
+msgstr ""
+
+#: templates/legal_notices.html:21
+msgid "From monday to friday, 9h-12h and 14h-17h (UTC+1)"
+msgstr ""
+
+#: templates/legal_notices.html:26 templates/tos.html:22
+msgid "intellectual Property"
+msgstr ""
+
+#: templates/legal_notices.html:28 templates/tos.html:24
+msgid ""
+"\n"
+"            We inform you that any reproduction or total or partial "
+"representation, by any process whatsoever,\n"
+"            of this site, of the logos, the images that may appear therein "
+"is subjected to the rules of the license\n"
+"            specific to the content any non-respect of the license would "
+"constitute an infringement Sanctioned\n"
+"            by the articles L 335-2 and following of the Code de la "
+"propriété intellectuelle.\n"
+"        "
+msgstr ""
+
+#: templates/legal_notices.html:36 templates/tos.html:104
+msgid "Protection of personal data"
+msgstr ""
+
+#: templates/legal_notices.html:40
+msgid ""
+"\n"
+"                collects information about you when you create your Account. "
+"Information with an asterisk is mandatory.\n"
+"                 This information enables us to carry out operations "
+"relating to customer management,\n"
+"                 operations relating to prospecting, preparation of business "
+"statistics,\n"
+"                 management of requests for access rights, rectification and "
+"opposition,\n"
+"                 management of arrears and litigation.\n"
+"            "
+msgstr ""
+
+#: templates/legal_notices.html:49
+msgid ""
+"\n"
+"                We are committed to ensuring the security of personal data "
+"through strict procedures within our company.\n"
+"                 For the data collected \"online\", the communications on "
+"the client part are encrypted between\n"
+"                 the position of the user and our servers (secure zone "
+"HTTPS).\n"
+"            "
+msgstr ""
+
+#: templates/legal_notices.html:55
+msgid ""
+"\n"
+"                 do a lot of efforts to protect your personal data.\n"
+"            "
+msgstr ""
+
+#: templates/legal_notices.html:60
+msgid ""
+"\n"
+"                In accordance with the provisions of the Loi Informatique et "
+"Libertés of 6 January 1978\n"
+"                (as amended by the law of 6 August 2004 on the protection of "
+"individuals with regard to the processing of personal data)\n"
+"                you have rights to access, rectification or opposition to "
+"your personal data collected.\n"
+"                These rights can be exercised by visiting the Account / Edit "
+"profile page.\n"
+"            "
+msgstr ""
+
+#: templates/legal_notices.html:68
+#, fuzzy
+#| msgid "Description"
+msgid "Mediation"
+msgstr "Description"
+
+#: templates/legal_notices.html:70
+msgid ""
+"\n"
+"            In accordance with Article L156-1 of the Consumer Code, the "
+"consumer is informed of the possibility\n"
+"             of using a conventional mediation procedure or any other "
+"alternative means of settling disputes\n"
+"             in case of dispute. The consumer is also informed of the "
+"existence of the platform put on line by\n"
+"             the European Commission which aims to collect any complaints "
+"resulting from an online purchase\n"
+"             of European consumers and then forward the cases received to "
+"the competent national\n"
+"            mediators:\n"
+"        "
+msgstr ""
+
 #: templates/modifytable.html:63
 msgid "Previous"
 msgstr ""
@@ -1091,4 +1224,234 @@ msgstr ""
 
 #: templates/registration/registration_complete.html:5
 msgid "You are now registered. Activation email sent."
+msgstr ""
+
+#: templates/tos.html:9
+msgid "Terms of Service"
+msgstr ""
+
+#: templates/tos.html:10
+msgid "Terms"
+msgstr ""
+
+#: templates/tos.html:12
+msgid "By accessing the website at "
+msgstr ""
+
+#: templates/tos.html:13
+msgid ""
+"\n"
+"            , you are agreeing to be bound by these terms of service,\n"
+"            all applicable laws and regulations, and agree that you are "
+"responsible\n"
+"            for compliance with any applicable local laws. If you do not "
+"agree with any of these terms,\n"
+"            you are prohibited from using or accessing this site. The "
+"materials contained in this website\n"
+"            are protected by applicable copyright and trademark law.\n"
+"        "
+msgstr ""
+
+#: templates/tos.html:32
+msgid "Disclamer"
+msgstr ""
+
+#: templates/tos.html:34
+msgid "The materials on"
+msgstr ""
+
+#: templates/tos.html:35
+msgid "'s website are provided on an 'as is' basis."
+msgstr ""
+
+#: templates/tos.html:36
+msgid ""
+"\n"
+"            makes no warranties, expressed or implied, and hereby disclaims "
+"and negates all other\n"
+"            warranties including, without limitation, implied warranties or "
+"conditions\n"
+"            of merchantability, fitness for a particular purpose, or non-"
+"infringement of\n"
+"            intellectual property or other violation of rights.\n"
+"        "
+msgstr ""
+
+#: templates/tos.html:44
+msgid "Further"
+msgstr ""
+
+#: templates/tos.html:45
+msgid ""
+"\n"
+"            does not warrant or make any representations concerning the "
+"accuracy, likely results,\n"
+"            or reliability of the use of the materials on its website or "
+"otherwise relating to such\n"
+"            materials or on any sites linked to this site.\n"
+"        "
+msgstr ""
+
+#: templates/tos.html:52
+msgid "Limitations"
+msgstr ""
+
+#: templates/tos.html:54
+msgid "In no event shall"
+msgstr ""
+
+#: templates/tos.html:55
+msgid ""
+"\n"
+"            or its suppliers be liable for any damages (including, without "
+"limitation,\n"
+"            damages for loss of data or profit, or due to business "
+"interruption)\n"
+"            arising out of the use or inability to use the materials on\n"
+"        "
+msgstr ""
+
+#: templates/tos.html:60
+msgid "'s website, even if"
+msgstr ""
+
+#: templates/tos.html:60
+msgid "or a"
+msgstr ""
+
+#: templates/tos.html:61
+msgid ""
+"\n"
+"            authorized representative has been notified orally or in writing "
+"of the possibility\n"
+"            of such damage. Because some jurisdictions do not allow "
+"limitations on implied warranties,\n"
+"            or limitations of liability for consequential or incidental "
+"damages,\n"
+"            these limitations may not apply to you.\n"
+"        "
+msgstr ""
+
+#: templates/tos.html:69
+msgid "Accuracy of materials"
+msgstr ""
+
+#: templates/tos.html:71
+msgid "The materials appearing on"
+msgstr ""
+
+#: templates/tos.html:72
+msgid ""
+"'s website could include technical, typographical, or photographic errors."
+msgstr ""
+
+#: templates/tos.html:73
+msgid ""
+"does not warrant that any of the materials on its website are accurate, "
+"complete or current."
+msgstr ""
+
+#: templates/tos.html:74
+msgid ""
+"may make changes to the materials contained on its website at any time "
+"without notice. However"
+msgstr ""
+
+#: templates/tos.html:75
+msgid "does not make any commitment to update the materials."
+msgstr ""
+
+#: templates/tos.html:78
+msgid "Links"
+msgstr ""
+
+#: templates/tos.html:80
+msgid ""
+"\n"
+"            has not reviewed all of the sites linked to its website and is "
+"not responsible\n"
+"            for the contents of any such linked site. The inclusion of any "
+"link does not imply endorsement by\n"
+"        "
+msgstr ""
+
+#: templates/tos.html:84
+msgid "of the site. Use of any such linked website is at the user's own risk."
+msgstr ""
+
+#: templates/tos.html:87
+msgid "Modifications"
+msgstr ""
+
+#: templates/tos.html:89
+msgid ""
+"\n"
+"        may revise these terms of service for its website at any time "
+"without notice.\n"
+"        By using this website you are agreeing to be bound by the then "
+"current version\n"
+"        of these terms of service.\n"
+"        "
+msgstr ""
+
+#: templates/tos.html:96
+msgid "Governing Law"
+msgstr ""
+
+#: templates/tos.html:98
+msgid ""
+"\n"
+"            These terms and conditions are governed by and construed in "
+"accordance with the laws of France\n"
+"            and you irrevocably submit to the exclusive jurisdiction of the "
+"courts in that country.\n"
+"        "
+msgstr ""
+
+#: templates/tos.html:107
+msgid ""
+"\n"
+"            collects information about you when you create your Account. "
+"Information with an asterisk is mandatory.\n"
+"             This information enables us to carry out operations relating to "
+"customer management,\n"
+"             operations relating to prospecting, preparation of business "
+"statistics,\n"
+"             management of requests for access rights, rectification and "
+"opposition,\n"
+"             management of arrears and litigation.\n"
+"        "
+msgstr ""
+
+#: templates/tos.html:116
+msgid ""
+"\n"
+"                We are committed to ensuring the security of personal data "
+"through strict procedures within our company.\n"
+"                 For the data collected \"online\", the communications on "
+"the client part are encrypted between\n"
+"                 the position of the user and our servers (secure zone "
+"HTTPS).\n"
+"        "
+msgstr ""
+
+#: templates/tos.html:122
+msgid ""
+"\n"
+"             do a lot of efforts to protect your personal data.\n"
+"        "
+msgstr ""
+
+#: templates/tos.html:127
+msgid ""
+"\n"
+"            In accordance with the provisions of the Loi Informatique et "
+"Libertés of 6 January 1978\n"
+"             (as amended by the law of 6 August 2004 on the protection of "
+"individuals with regard to the processing of personal data)\n"
+"             you have rights to access, rectification or opposition to your "
+"personal data collected.\n"
+"             These rights can be exercised by visiting the Account / Edit "
+"profile page.\n"
+"        "
 msgstr ""
