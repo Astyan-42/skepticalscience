@@ -327,8 +327,11 @@ class PublicationYouReviewTableView(PublicationSpecialTableView):
     science_filter = False
 
     def get_queryset(self, **kwargs):
-        self.filter_dict = {'reviewer': Reviewer.objects.get(scientist=self.request.session['_auth_user_id'],
-                                                             actif=True).pk}
+        lreviewer = list(Reviewer.objects.filter(scientist=self.request.session['_auth_user_id'], actif=True))
+        lreviewer = [reviewer.pk for reviewer in lreviewer]
+        if not lreviewer:
+            lreviewer = [-1]  # -1 because no reviewer will have the -1 id
+        self.filter_dict = {'reviewer': lreviewer}
         return super(PublicationYouReviewTableView, self).get_queryset()
 
 

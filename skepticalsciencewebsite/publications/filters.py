@@ -37,7 +37,7 @@ class PublicationFilter(django_filters.FilterSet):
     status = django_filters.ChoiceFilter(
         choices= PUBLICATION_STATUS_AND_EMPTY
     )
-    reviewer = django_filters.ModelChoiceFilter(
+    reviewer = django_filters.ModelMultipleChoiceFilter(
         queryset=Reviewer.objects.all()
     )
     estimated_impact_factor = django_filters.NumberFilter(lookup_expr='gte')
