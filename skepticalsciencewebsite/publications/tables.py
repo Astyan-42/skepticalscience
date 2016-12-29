@@ -33,5 +33,6 @@ class PublicationTable(tables.Table):
 
     class Meta:
         model = Publication
+        order_by = 'status'
         fields = ["get_all_authors", "sciences", "title", "status", "estimated_impact_factor", "publication_score"]
         attrs = {"class": "table table-responsive paleblue"}

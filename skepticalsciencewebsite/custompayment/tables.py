@@ -14,4 +14,5 @@ class OrderTable(tables.Table):
     class Meta:
         model = Order
         fields = ["status", "creation_date", "item"]
+        order_by = '-creation_date'
         attrs = {"class": "table table-responsive paleblue"}
