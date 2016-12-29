@@ -73,8 +73,8 @@ def generate_invoice(token, language):
     payment = order.get_payment()
     # set the invoice related data
     doc.is_paid = True
-    doc.invoice_info = InvoiceInfo(payment.created.strftime("%Y-%m ")+payment.transaction_id,
-                                   payment.created.strftime("%Y-%m-%d"))
+    doc.invoice_info = InvoiceInfo(payment.invoice_date.strftime("%Y/%m-")+str(payment.invoice_nb),
+                                   payment.invoice_date.strftime("%Y/%m/%d"))
     # set provider data
     doc.service_provider_info = eagal_provider
     # set the client related data
