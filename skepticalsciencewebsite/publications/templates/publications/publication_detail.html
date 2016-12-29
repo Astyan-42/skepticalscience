@@ -31,7 +31,7 @@
                             <p><a href="{% url 'become_reviewer' object.pk %}"> {% trans "Join the reviewers" %}</a></p>
                         {% endif %}
                     {% endif %}
-                    {% if perms.publications.can_add_estimated_impact_factor and publication_detail.status == constants.EVALUATION %}
+                    {% if perms.publications.add_estimated_impact_factor and publication_detail.status == constants.EVALUATION %}
                         {% if not evaluated %}
                             <h5><strong> {% trans "Evaluate" %} </strong></h5>
                             {% crispy form_eif %}
@@ -40,13 +40,13 @@
                         {% endif %}
                     {% endif %}
                 {% endif %}
-                {% if perms.publications.can_change_publication and publication_detail.status == constants.CORRECTION and is_editor %}
+                {% if perms.publications.change_publication and publication_detail.status == constants.CORRECTION and is_editor %}
                     <!-- to do as a link-->
                     <p><a href="{% url 'correct_publication' object.pk %}">{% trans "Correct " %}</a>
                     {% trans "or " %}
                     <a href="{% url 'abort_publication' object.pk %}">{% trans "abort " %}</a>
                     {% trans "this publication" %}.</p>
-                {% elif perms.publications.can_change_publication and publication_detail.status == constants.WAITING_PAYMENT and is_editor %}
+                {% elif perms.publications.change_publication and publication_detail.status == constants.WAITING_PAYMENT and is_editor %}
                     <p><a href="{% url 'update_publication' object.pk %}">{% trans "Edit " %}</a>
                     {% trans "or " %}
                     <a href="{% url 'create_order' name=order sku=object.pk %}">{% trans "pay to submit " %}</a>
