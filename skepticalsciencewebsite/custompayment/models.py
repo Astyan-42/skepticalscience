@@ -1,6 +1,6 @@
 import datetime
 from uuid import uuid4
-from django.db import models
+from django.db import models, transaction
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ValidationError
 from django.db.models import Q
@@ -57,7 +57,7 @@ class Item(models.Model):
 
     def __str__(self):
         if self.name == SCIENTIST_ACCOUNT:
-            return [verbose for simple, verbose in ITEM_CHOICES if simple==SCIENTIST_ACCOUNT][0]
+            return [verbose for simple, verbose in ITEM_CHOICES if simple == SCIENTIST_ACCOUNT][0]
         else:
             return Publication.objects.get(pk=self.sku).__str__()
 
@@ -83,7 +83,7 @@ class Price(models.Model):
                                                 null=True, blank=True, default=None)
     country_reduction = models.DecimalField(_("country reduction"), max_digits=10, decimal_places=2,
                                             null=True, blank=True, default=None)
-    scientist_score = models.FloatField(_("scientist score"), null=True, blank=True) # added
+    scientist_score = models.FloatField(_("scientist score"), null=True, blank=True)  # added
     scientist_score_reduction = models.DecimalField(_("scientist reduction"), max_digits=10, decimal_places=2,
                                                     null=True, blank=True, default=None)
     discount = models.DecimalField(_("scientist reduction"), max_digits=10, decimal_places=2,
@@ -101,7 +101,7 @@ class Price(models.Model):
     def gross(self):
         return money_quantize(self.product_default_price + (self.country_reduction or Decimal(0.)) +
                               (self.scientist_score_reduction or Decimal(0.)) + (self.discount or Decimal(0.)) +
-                              self.tax)
+                              Decimal(self.tax))
 
     def get_taxes(self):
         return money_quantize(self.tax)
@@ -122,18 +122,18 @@ class Price(models.Model):
                                "t_price": str(self.scientist_score_reduction)+' '+str(self.currency)})
         if self.discount is not None:
             price_list.append({"t_type": "discount code",
-                              "t_object": order.discount.code,
-                              "t_price": str(self.discount)+' '+str(self.currency)})
+                               "t_object": order.discount.code,
+                               "t_price": str(self.discount)+' '+str(self.currency)})
         price_list.append({"t_type": "taxes",
-                          "t_object": str(self.tax_percent)+"%",
-                          "t_price": str(self.tax)+' '+str(self.currency)})
+                           "t_object": str(self.tax_percent)+"%",
+                           "t_price": str(self.tax)+' '+str(self.currency)})
         price_list.append({"t_type": "final price",
                            "t_object": "",
                            "t_price": str(self.gross)+' '+str(self.currency)})
         return price_list
 
     def __str__(self):
-        return str(self.gross)+' '+self.currency
+        return str(self.gross)+' '+str(self.currency)
 
 
 class Order(models.Model):
@@ -190,6 +190,8 @@ class Order(models.Model):
 
 class Payment(BasePayment):
     order = models.ForeignKey(Order, related_name='payments')
+    invoice_nb = models.IntegerField(_("Invoice number"), unique_for_month=True, null=True, blank=True, default=None)
+    invoice_date = models.DateTimeField(_("Invoice date"), null=True, blank=True, default=None)
 
     def get_failure_url(self):
         return 'http://example.com/failure/'
@@ -205,5 +207,32 @@ class Payment(BasePayment):
         yield PurchasedItem(name=item.name, sku=str(item.sku),
                             quantity=1, price=Decimal(default_price), currency='EUR')
 
+    # def change_status(self, status, message=''):
+    #     if status == 'confirmed':
+    #         self.invoice_date = datetime.datetime.now()
+    #         latest_nb = Payment.objects.filter(invoice_date_year=self.invoice_date.year,
+    #                                            invoice_date_month=self.invoice_date.month).order_by('-invoice_nb')[0]
+    #         self.invoice_nb = (latest_nb or 0) + 1
+    #     super(Payment, self).change_status(status, message)
+
+    @transaction.atomic
+    def save(self, **kwargs):
+        # create a invoice_nb if needed
+        if self.status == 'confirmed':
+            tmp_invoice_date = timezone.now()
+            latest_nb = list(Payment.objects.filter(Q(invoice_date__year=tmp_invoice_date.year),
+                                                    Q(invoice_date__month=tmp_invoice_date.month),
+                                                    ~Q(invoice_nb=None)).order_by('-invoice_nb'))
+            if not latest_nb:
+                self.invoice_nb = 1
+                self.invoice_date = tmp_invoice_date
+            else:
+                if latest_nb[0].token != self.token:  # so weird it pass in save two times when confirm
+                    print(latest_nb[0], latest_nb[0].invoice_nb)
+                    self.invoice_nb = latest_nb[0].invoice_nb + 1
+                    self.invoice_date = tmp_invoice_date
+        return super(Payment, self).save(**kwargs)
+
     def __str__(self):
         return self.order.__str__()
+
