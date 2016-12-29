@@ -4,7 +4,7 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from simple_history.models import HistoricalRecords
 from sciences.models import Science
-from customuser.models import User, MinMaxFloat
+from customuser.models import MinMaxFloat
 from publications.constants import *
 
 sendfile_storage = FileSystemStorage(location=settings.SENDFILE_ROOT)
@@ -28,7 +28,7 @@ class Publication(models.Model):
     Publication Model. Need the author
     """
     # other author problem ? What to do if no account, if account ?
-    editor = models.ForeignKey(User, verbose_name=_('Editor'))
+    editor = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('Editor'))
     # create the publication before paying for
     creation_date = models.DateTimeField(auto_now_add=True, verbose_name=_('Date created'))
     payment_date = models.DateTimeField(null=True, blank=True, default=None, verbose_name=_('Payment date'))
@@ -40,9 +40,9 @@ class Publication(models.Model):
     estimated_impact_factor = MinMaxFloat(min_value=0.0, max_value=1000.0, default=None, null=True, blank=True,
                                           verbose_name=_("Estimated impact factor"))
     # authors ????
-    first_author = models.ForeignKey(User, related_name='first_author', verbose_name=_("First author"))
-    authors = models.ManyToManyField(User, blank=True, related_name='authors', verbose_name=_("Authors"))
-    last_author = models.ForeignKey(User, blank=True, null=True, related_name='last_author',
+    first_author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='first_author', verbose_name=_("First author"))
+    authors = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='authors', verbose_name=_("Authors"))
+    last_author = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, related_name='last_author',
                                     verbose_name=_("Last author"))
     # the pdf file at the creation
     pdf_creation = models.FileField(upload_to="pdf_creation/%Y/%m/%d", storage=sendfile_storage,
@@ -77,7 +77,7 @@ class EstimatedImpactFactor(models.Model):
     EstimatedImpactFactor Model
     """
     # must be in researcher group and have a related sciences
-    estimator = models.ForeignKey(User, verbose_name=_('Estimator'))
+    estimator = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('Estimator'))
     publication = models.ForeignKey(Publication, verbose_name=_('Publication'))
     estimated_impact_factor = MinMaxFloat(min_value=0.0, max_value=1000.0, verbose_name=_("Estimated impact factor"))
 
@@ -92,7 +92,7 @@ class Reviewer(models.Model):
     """
     Reviewer Model
     """
-    scientist = models.ForeignKey(User, verbose_name=_("Reviewer"))
+    scientist = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_("Reviewer"))
     publication = models.ForeignKey(Publication, verbose_name=_("Publication"))
     actif = models.BooleanField(default=True, verbose_name=_("Actif"))
     history = HistoricalRecords()
@@ -109,7 +109,7 @@ class Comment(models.Model):
     Comment model
     """
     publication = models.ForeignKey(Publication, verbose_name=_("Publication"))
-    author = models.ForeignKey(User, verbose_name=_("Author"))
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_("Author"))
     # fake pseudo when reviewer must be reviewer (fake pseudo given automatically between: Reviewer, Scientist, Skeptic)
     author_fake_pseudo = models.CharField(max_length=100, default=None, blank=True, verbose_name=_('Fake Pseudo'))
     creation_date = models.DateTimeField(auto_now_add=True, verbose_name=_('Date created'))

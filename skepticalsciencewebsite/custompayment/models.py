@@ -11,7 +11,7 @@ from payments import PurchasedItem
 from payments.models import BasePayment
 from simple_history.models import HistoricalRecords
 from django_countries.fields import CountryField
-from customuser.models import User
+from django.conf import settings
 from publications.models import Publication
 from custompayment.constants import *
 from custompayment.utils import money_quantize
@@ -19,7 +19,7 @@ from custompayment.utils import money_quantize
 
 class Address(models.Model):
     # creation date
-    scientist = models.ForeignKey(User, verbose_name=_("Scientist"), null=True, blank=True)
+    scientist = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_("Scientist"), null=True, blank=True)
     creation_date = models.DateTimeField(_('created'), auto_now_add=True)
     first_name = models.CharField(_('first name'), max_length=255)
     last_name = models.CharField(_('last name'), max_length=255)
@@ -143,7 +143,7 @@ class Order(models.Model):
     status = models.CharField(_('order status'), max_length=32, choices=ORDER_CHOICES, default=NEW)
     creation_date = models.DateTimeField(_('created'), auto_now_add=True)
     last_status_change = models.DateTimeField(_('last status change'), auto_now=True)
-    user = models.ForeignKey(User, verbose_name=_('buyer'))
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('buyer'))
     discount = models.ForeignKey(Discount, verbose_name=_('discount code'), null=True, blank=True)
     billing_address = models.ForeignKey(Address, verbose_name=_('billing address'), null=True, blank=True)
     item = models.OneToOneField(Item, verbose_name=_('item'))
