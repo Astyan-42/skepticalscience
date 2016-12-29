@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404, redirect
+from django.contrib.auth import get_user_model
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic import View
@@ -11,7 +12,6 @@ from django.utils import timezone
 from sendfile import sendfile
 from django_tables2 import SingleTableView, RequestConfig
 from skepticalsciencewebsite.utils import same_user, check_status
-from customuser.models import User
 from custompayment.constants import PUBLICATION
 from publications.models import Publication, Comment, Reviewer, EstimatedImpactFactor, CommentReview
 from publications.forms import (PublicationCreateForm, CommentForm, EstimatedImpactFactorForm,
@@ -251,6 +251,7 @@ class PublicationSpecialTableView(SingleTableView):
     filter = None
 
     def fill_user_science(self):
+        User = get_user_model()
         user = User.objects.get(pk=self.request.session['_auth_user_id'])
         sciences = [sid.pk for sid in user.sciences.all()]
         self.filter_dict["sciences"] = sciences

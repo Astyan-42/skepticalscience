@@ -1,6 +1,6 @@
 from django.dispatch import receiver
 from payments.signals import status_changed
-from customuser.models import User
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from publications.models import Publication
 from publications.constants import ADDING_PEER, ABORTED
@@ -9,6 +9,7 @@ from custompayment.constants import FULLY_PAID, CANCELLED, PUBLICATION, SCIENTIS
 
 @receiver(status_changed)
 def payment_status_change(sender, instance, **kwargs):
+    User = get_user_model()
     order = instance.order
     scientist_group = Group.objects.get_by_natural_key("Scientist")
     if instance.status == 'confirmed':

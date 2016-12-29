@@ -12,13 +12,13 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.utils import timezone
+from django.contrib.auth import get_user_model
 from django.views.generic import UpdateView, DetailView, View
 from django.urls import reverse_lazy
 from django_tables2 import SingleTableView, RequestConfig
 from payments import RedirectNeeded
 from skepticalsciencewebsite.utils import same_user, check_status
 from customuser.constants import *
-from customuser.models import User
 from publications.models import Publication
 from custompayment.models import Order, Payment, Address, Item, CountryPayment, Price
 from custompayment.forms import PaymentMethodsForm, AddressForm, DiscountOrderForm
@@ -236,6 +236,7 @@ def create_order(request, name, sku):
         return False
 
     def can_create_scientist_account_order(request, sku):
+        User = get_user_model()
         if User.objects.filter(pk=sku).exists():
             if int(request.user.pk) == int(sku):
                 # when the item is created and only one (due to the rest of the process of create_order)

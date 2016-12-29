@@ -5,6 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ValidationError
 from django.db.models import Q
 from django.utils import timezone
+# from django.contrib.auth import get_user_model cannot work in model (executing on import
 from decimal import Decimal
 from payments import PurchasedItem
 from payments.models import BasePayment
