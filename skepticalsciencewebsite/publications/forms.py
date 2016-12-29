@@ -3,13 +3,15 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 from django_select2.forms import Select2MultipleWidget
 from django.db.models import Q
+from django.contrib.auth import get_user_model
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit
 from crispy_forms.bootstrap import Field
 from publications.models import Publication, Comment, EstimatedImpactFactor, CommentReview
 from publications.constants import BOOLEAN_CHOICES, ABORTED, CORRECTION
 from sciences.forms import ScienceModelForm
-from customuser.models import User
+
+User = get_user_model()
 
 
 class UserModelChoiceField(forms.ModelChoiceField):

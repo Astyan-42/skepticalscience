@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from customuser.models import User
 from customuser.forms import CustomUserUpdateForm
@@ -15,7 +16,7 @@ class UserDetailView(DetailView):
     DetailView for an user
     """
     context_object_name = "user_detail"
-    model = User
+    model = get_user_model()
     template_name = 'customuser/detail_user.html'
     fields = ["first_name", "middle_name", "last_name", "phd", "country", "workplace", "description",
               "job_title", "sciences", "skeptic_score", "mean_publication_score", "mean_impact_factor",
@@ -36,7 +37,7 @@ class UserUpdateView(UpdateView):
     """
     UpdateView made available only for logged user (the decorator). The user will change is own profile (get_object)
     """
-    model = User
+    model = get_user_model()
     form_class = CustomUserUpdateForm
     # fields = ["email", "first_name", "middle_name", "last_name", "phd", "country", "workplace", "description",
     #           "job_title", "sciences"]

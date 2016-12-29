@@ -1,7 +1,7 @@
 import statistics
 from collections import Counter
 from django.utils import timezone
-from customuser.models import User
+from django.contrib.auth import get_user_model
 from publications.models import Publication, Comment, Reviewer, EstimatedImpactFactor, CommentReview
 from publications.constants import *
 
@@ -72,6 +72,7 @@ def update_user_skeptic_score(comment_id):
     :return:
     """
     comment = Comment.objects.get(pk=comment_id)
+    User = get_user_model()
     user = User.objects.get(pk=comment.author.id)
     if comment.validated == VALIDATE :
         user.valid_bias_found = user.valid_bias_found + 1
@@ -160,6 +161,7 @@ def update_reviewers_score_peer_review_to_correction(publication_id):
     for reviewer in reviewers:
         evaluated_comments = 0
         non_evaluated_comments = 0
+        User = get_user_model()
         user = User.objects.get_by_natural_key(reviewer.scientist)
         for comment in comments:
             if CommentReview.objects.filter(comment=comment, reviewer=reviewer).exists():
@@ -179,6 +181,7 @@ def update_reviewers_score_validation_to_evaluation(publication_id):
     for reviewer in reviewers:
         evaluated_comments = 0
         non_evaluated_comments = 0
+        User = get_user_model()
         user = User.objects.get_by_natural_key(reviewer.scientist)
         for comment in comments:
             if CommentReview.objects.filter(comment=comment, reviewer=reviewer).exclude(corrected_date=None).exists():

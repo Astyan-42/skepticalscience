@@ -1,4 +1,5 @@
 import django_filters
+from django.contrib.auth import get_user_model
 from django.db.models import Q
 from crispy_forms.helper import FormHelper
 from crispy_forms.bootstrap import FormActions, Field
@@ -6,11 +7,11 @@ from crispy_forms.layout import Layout, Submit
 from django_select2.forms import Select2MultipleWidget
 from sciences.models import Science
 from sciences.forms import _science_choices
-from customuser.models import User
 from publications.models import Publication, Reviewer
 from publications.constants import PUBLICATION_STATUS
 
 PUBLICATION_STATUS_AND_EMPTY = [('','All status')] + PUBLICATION_STATUS
+User = get_user_model()
 
 
 def _filter_authors(queryset, value):
