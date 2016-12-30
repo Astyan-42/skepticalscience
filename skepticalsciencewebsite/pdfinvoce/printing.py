@@ -1,6 +1,6 @@
 import os
 from django.utils.translation import ugettext as _
-from django.utils.translation import activate
+from django.utils.translation import get_language
 from skepticalsciencewebsite.settings import SENDFILE_ROOT
 from pyinvoice.models import Item, InvoiceInfo, ServiceProviderInfo, ClientInfo
 from pyinvoice.templates import SimpleInvoice
@@ -27,13 +27,10 @@ eagal_provider = ServiceProviderInfo(
 )
 
 
-def generate_invoice(token, language):
-    invoice_name = 'invoice'+language+str(token)+'.pdf'
+def generate_invoice(token):
+    language = get_language()
+    invoice_name = 'invoice-'+language+'-'+str(token)+'.pdf'
     invoice_path = os.path.join(SENDFILE_ROOT, 'invoices', invoice_name)
-    if language == 'english':
-        activate('en')
-    else: # language == 'french':
-        activate('fr')
     international_pyinvoice = {
         INVOICE_ID: _('Invoice id'),
         INVOICE_DATETIME: _('Invoice date'),

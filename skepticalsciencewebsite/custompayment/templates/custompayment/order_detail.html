@@ -118,8 +118,10 @@
 
             <p><b>{% trans "Status :" %}</b>{{ order_detail.get_status_display }}</p>
             {% if order_detail.status == constants.PAYMENT_PENDING or order_detail.status == constants.FULLY_PAID or order_detail.status == constants.CANCELLED %}
-                <p><a href="{% url 'invoice' order_detail.token 'french' %}">{% trans "Billing(FR)" %}</a></p>
-                <p><a href="{% url 'invoice' order_detail.token 'english' %}">{% trans "Billing(EN)" %}</a></p>
+                {% language "fr" %}
+                    <p><a href="{% url 'invoice' order_detail.token %}">{% trans "Billing(FR)" %}</a></p>
+                {% endlanguage %}
+                <p><a href="{% url 'invoice' order_detail.token %}">{% trans "Billing(EN)" %}</a></p>
             {% endif %}
             <p><a href="{% url 'address' order_detail.token %}">{% trans "Selling contract(FR)" %}</a></p>
             <p><a href="{% url 'address' order_detail.token %}">{% trans "Selling contract(EN)" %}</a></p>
