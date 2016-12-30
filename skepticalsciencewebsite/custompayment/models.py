@@ -216,12 +216,19 @@ class Order(models.Model):
             else:
                 return False
 
+    def can_be_delete(self):
+        if self.payment is None or self.payment.status != 'confirmed' and self.payment.status != 'refunded':
+            return True
+        else:
+            return False
+
     def clean(self):
         if self.discount is not None:
             if self.discount.discount_for != self.item.name:
                 raise ValidationError({'discount': ('The discount code is not for this type of item')})
 
     def delete(self, using=None, keep_parents=False):
+        print('lol')
         if self.billing_address:
             self.billing_address.delete()
         if self.item:

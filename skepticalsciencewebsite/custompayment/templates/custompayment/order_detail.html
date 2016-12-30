@@ -61,11 +61,14 @@
                 {% endif %}
                 {% if order_detail.payment.status == 'confirmed' %}
                     <!-- verify date too-->
-                    <a href="{% url 'cancel_order' order_detail.token %}">{% trans 'Cancel order and get refund' %}</a>
-                {% elif order_detail.payment.status != 'confirmed' and order_detail.payment.status != 'refunded' %}
-                    <p>{% trans 'delete the order' %}</p>
+                    <a href="{% url 'cancel_order' order_detail.token %}">
+                        <div class="btn btn-default">{% trans 'Cancel order and get refund' %}</div>
+                    </a>
+                {% elif order_detail.payment is None or order_detail.payment.status != 'confirmed' and order_detail.payment.status != 'refunded' %}
+                    <a href="{% url 'delete_order' order_detail.token %}">
+                        <div class="btn btn-default">{% trans 'delete the order' %}</div>
+                    </a>
                 {% endif %}
-                {{ order_detail.payment.status }}
             </div>
         </div>
         <div class="col-md-3">

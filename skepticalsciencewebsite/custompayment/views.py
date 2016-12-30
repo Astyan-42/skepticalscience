@@ -343,7 +343,12 @@ def cancer_order(request, token):
         return HttpResponseForbidden()
 
 
-# def delete_order(request, token):
-#     order = get_object_or_404(Order, token=token)
-#     if order.user != request.user:
-#         return HttpResponseForbidden()
+def delete_order(request, token):
+    order = get_object_or_404(Order, token=token)
+    if order.user != request.user:
+        return HttpResponseForbidden()
+    if order.can_be_delete():
+        order.delete()
+        return redirect('list_order')
+    else:
+        HttpResponseForbidden()
