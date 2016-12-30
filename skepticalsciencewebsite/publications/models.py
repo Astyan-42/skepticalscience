@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
-from simple_history.models import HistoricalRecords
+# from simple_history.models import HistoricalRecords
 from sciences.models import Science
 from customuser.models import MinMaxFloat
 from publications.constants import *
@@ -60,7 +60,7 @@ class Publication(models.Model):
     # tags = models.ManyToManyField(KeyWord, blank= False, symmetrical=False, verbose_name=_("Keywords"))
     licence = models.ForeignKey(Licence, verbose_name=_("Licence"))
     doi = models.CharField(max_length=255, blank=True, null=True, verbose_name=_("DOI"))
-    history = HistoricalRecords()
+    # history = HistoricalRecords()
 
     @property
     def get_all_authors(self):
@@ -95,7 +95,7 @@ class Reviewer(models.Model):
     scientist = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_("Reviewer"))
     publication = models.ForeignKey(Publication, verbose_name=_("Publication"))
     actif = models.BooleanField(default=True, verbose_name=_("Actif"))
-    history = HistoricalRecords()
+    # history = HistoricalRecords()
 
     class Meta:
         unique_together = ('scientist', 'publication')

@@ -22,6 +22,7 @@ from django.views.generic import TemplateView
 # internationalization http://www.marinamele.com/taskbuster-django-tutorial/internationalization-localization-languages-time-zones
 
 urlpatterns = [
+    url(r'^select2/', include('django_select2.urls')),
 ]
 
 urlpatterns += i18n_patterns(
@@ -29,7 +30,6 @@ urlpatterns += i18n_patterns(
     url(r'^accounts/', include('customuser.urls')),
     # https://github.com/incuna/django-registration/blob/master/registration/urls.py under accounts
     url(r'^accounts/', include('registration.backends.hmac.urls')),
-    url(r'^select2/', include('django_select2.urls')),
     url(r'^faq/', include('faq.urls')),
     url(r'^checkout/', include('custompayment.urls')),
     url('^checkout/', include('payments.urls')),

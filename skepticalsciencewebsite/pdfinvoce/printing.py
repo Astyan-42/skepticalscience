@@ -28,7 +28,6 @@ eagal_provider = ServiceProviderInfo(
 
 
 def generate_invoice(token, language):
-    # need to add a folder / name and stuff
     invoice_name = 'invoice'+language+str(token)+'.pdf'
     invoice_path = os.path.join(SENDFILE_ROOT, 'invoices', invoice_name)
     if language == 'english':

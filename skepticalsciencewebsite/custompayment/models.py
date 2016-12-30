@@ -9,7 +9,7 @@ from django.utils import timezone
 from decimal import Decimal
 from payments import PurchasedItem
 from payments.models import BasePayment
-from simple_history.models import HistoricalRecords
+# from simple_history.models import HistoricalRecords
 from django_countries.fields import CountryField
 from django.conf import settings
 from publications.models import Publication
@@ -193,7 +193,7 @@ class Order(models.Model):
                               blank=True, on_delete=models.CASCADE)
     payment = models.OneToOneField(Payment, verbose_name=_('Payment'), related_name='order',
                                    null=True, blank=True, default=None, on_delete=models.CASCADE)
-    history = HistoricalRecords()
+    # history = HistoricalRecords()
 
     def save(self, *args, **kwargs):
         if not self.token:
