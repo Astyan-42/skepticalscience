@@ -66,7 +66,7 @@ def generate_invoice(token, language):
         PAID: _('PAID'),
         PROVIDER_ID: _('SIRET'),
         CAPITAL: _('Capital'),
-        INVOICE_STATUS: _('Status')
+        INVOICE_STATUS: _('Payment status')
     }
     doc = SimpleInvoice(invoice_path, constants=international_pyinvoice)
     # get the order and payment

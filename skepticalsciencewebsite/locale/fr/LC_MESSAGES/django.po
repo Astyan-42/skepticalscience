@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-30 09:41+0000\n"
+"POT-Creation-Date: 2016-12-30 10:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -249,32 +249,40 @@ msgstr ""
 msgid "Accept and pay"
 msgstr ""
 
-#: custompayment/templates/custompayment/order_detail.html:65
+#: custompayment/templates/custompayment/order_detail.html:64
+msgid "Cancel order and get refund"
+msgstr ""
+
+#: custompayment/templates/custompayment/order_detail.html:66
+msgid "delete the order"
+msgstr ""
+
+#: custompayment/templates/custompayment/order_detail.html:72
 msgid "Billing address"
 msgstr ""
 
-#: custompayment/templates/custompayment/order_detail.html:67
+#: custompayment/templates/custompayment/order_detail.html:74
 msgid "You must have a billing address to complete your order"
 msgstr ""
 
-#: custompayment/templates/custompayment/order_detail.html:109
+#: custompayment/templates/custompayment/order_detail.html:116
 msgid "Status :"
 msgstr ""
 
-#: custompayment/templates/custompayment/order_detail.html:110
-msgid "Selling contract(FR)"
-msgstr ""
-
-#: custompayment/templates/custompayment/order_detail.html:111
-msgid "Selling contract(EN)"
-msgstr ""
-
-#: custompayment/templates/custompayment/order_detail.html:113
+#: custompayment/templates/custompayment/order_detail.html:118
 msgid "Billing(FR)"
 msgstr ""
 
-#: custompayment/templates/custompayment/order_detail.html:114
+#: custompayment/templates/custompayment/order_detail.html:119
 msgid "Billing(EN)"
+msgstr ""
+
+#: custompayment/templates/custompayment/order_detail.html:121
+msgid "Selling contract(FR)"
+msgstr ""
+
+#: custompayment/templates/custompayment/order_detail.html:122
+msgid "Selling contract(EN)"
 msgstr ""
 
 #: custompayment/templates/custompayment/order_list.html:13
@@ -568,11 +576,9 @@ msgstr "SIRET"
 msgid "Capital"
 msgstr "Capital social"
 
-#: pdfinvoce/printing.py:69 publications/models.py:57
-#: publications/templates/publications/comment_detail.html:26
-#: publications/templates/publications/publication_detail.html:86
-msgid "Status"
-msgstr "Statut"
+#: pdfinvoce/printing.py:69
+msgid "Payment status"
+msgstr "Statut du payment"
 
 #: pdfinvoce/printing.py:96
 #, python-format
@@ -674,6 +680,12 @@ msgstr ""
 #: publications/models.py:56
 msgid "Resume"
 msgstr ""
+
+#: publications/models.py:57
+#: publications/templates/publications/comment_detail.html:26
+#: publications/templates/publications/publication_detail.html:86
+msgid "Status"
+msgstr "Statut"
 
 #: publications/models.py:58
 msgid "Update status date"
