@@ -1,0 +1,65 @@
+[
+{
+  "model": "publications.licence",
+  "pk": 1,
+  "fields": {
+    "short_name": "CC0 1.0",
+    "full_name": "Creative Commons 0 1.0 Universal",
+    "url": "https://creativecommons.org/publicdomain/zero/1.0/legalcode"
+  }
+},
+{
+  "model": "publications.licence",
+  "pk": 2,
+  "fields": {
+    "short_name": "CC BY 4.0",
+    "full_name": "Creative Commons Attribution 4.0 International Public License",
+    "url": "https://creativecommons.org/licenses/by/4.0/legalcode"
+  }
+},
+{
+  "model": "publications.licence",
+  "pk": 3,
+  "fields": {
+    "short_name": "CC BY-SA 4.0",
+    "full_name": "Creative Commons Attribution-ShareAlike 4.0 International Public License",
+    "url": "https://creativecommons.org/licenses/by-sa/4.0/legalcode"
+  }
+},
+{
+  "model": "publications.licence",
+  "pk": 4,
+  "fields": {
+    "short_name": "CC BY-ND 4.0",
+    "full_name": "Creative Commons Attribution-NoDerivatives 4.0 International Public License",
+    "url": "https://creativecommons.org/licenses/by-nd/4.0/legalcode"
+  }
+},
+{
+  "model": "publications.licence",
+  "pk": 5,
+  "fields": {
+    "short_name": "CC BY-NC 4.0",
+    "full_name": "Creative Commons Attribution-NonCommercial 4.0 International Public License",
+    "url": "https://creativecommons.org/licenses/by-nc/4.0/legalcode"
+  }
+},
+{
+  "model": "publications.licence",
+  "pk": 6,
+  "fields": {
+    "short_name": "CC BY-NC-SA 4.0",
+    "full_name": "Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License",
+    "url": "https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode"
+  }
+},
+{
+  "model": "publications.licence",
+  "pk": 7,
+  "fields": {
+    "short_name": "CC BY-NC-ND 4.0",
+    "full_name": "Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International Public License",
+    "url": "https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode"
+  }
+}
+]
