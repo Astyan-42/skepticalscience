@@ -71,7 +71,8 @@ def generate_invoice(token, language):
     doc = SimpleInvoice(invoice_path, constants=international_pyinvoice)
     # get the order and payment
     order = Order.objects.get(token=token)
-    payment = order.get_payment()
+    #payment = order.get_payment()
+    payment = order.payment
     # set the invoice related data
     if payment.status == 'confirmed' or payment.status == 'refunded':
         doc.is_paid = True

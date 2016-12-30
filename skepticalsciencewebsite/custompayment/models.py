@@ -137,60 +137,8 @@ class Price(models.Model):
         return str(self.gross)+' '+str(self.currency)
 
 
-class Order(models.Model):
-
-    token = models.CharField(_('token'), max_length=36, unique=True, null=True, blank=True)
-    status = models.CharField(_('order status'), max_length=32, choices=ORDER_CHOICES, default=NEW)
-    creation_date = models.DateTimeField(_('created'), auto_now_add=True)
-    last_status_change = models.DateTimeField(_('last status change'), auto_now=True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('buyer'))
-    discount = models.ForeignKey(Discount, verbose_name=_('discount code'), null=True, blank=True)
-    billing_address = models.ForeignKey(Address, verbose_name=_('billing address'), null=True, blank=True)
-    item = models.OneToOneField(Item, verbose_name=_('item'))
-    # to delete, put the order in price
-    price = models.ForeignKey(Price, verbose_name=_('price'), related_name='order', null=True, blank=True)
-    history = HistoricalRecords()
-
-    def save(self, *args, **kwargs):
-        if not self.token:
-            self.token = str(uuid4())
-        return super(Order, self).save(*args, **kwargs)
-
-    def change_status(self, status):
-        if status != self.status:
-            self.status = status
-            self.save()
-
-    def can_add_payment(self):
-        return not self.payments.filter(Q(status='preauth') | Q(status='confirmed') | Q(status='refunded')).exists()
-
-    def can_be_cancelled(self):
-        if self.payments.filter(status='confirmed').exists():
-            payment = self.payments.get(status='confirmed')
-            t_delta = timezone.now() - payment.modified
-            if t_delta < datetime.timedelta(days=REFUND_DAYS):
-                return True
-            else:
-                return False
-
-    def get_payment(self):
-        if self.payments.filter(status='confirmed').exists():
-            payment = self.payments.get(status='confirmed')
-            return payment
-        else:
-            return None
-
-    def clean(self):
-        if self.discount is not None:
-            if self.discount.discount_for != self.item.name:
-                raise ValidationError({'discount': ('The discount code is not for this type of item')})
-
-    def __str__(self):
-        return self.token
-
-
 class Payment(BasePayment):
-    order = models.ForeignKey(Order, related_name='payments')
+    # order = models.ForeignKey(Order, related_name='payments')
     invoice_nb = models.IntegerField(_("Invoice number"), unique_for_month=True, null=True, blank=True, default=None)
     invoice_date = models.DateTimeField(_("Invoice date"), null=True, blank=True, default=None)
 
@@ -208,14 +156,6 @@ class Payment(BasePayment):
         yield PurchasedItem(name=item.name, sku=str(item.sku),
                             quantity=1, price=Decimal(default_price), currency='EUR')
 
-    # def change_status(self, status, message=''):
-    #     if status == 'confirmed':
-    #         self.invoice_date = datetime.datetime.now()
-    #         latest_nb = Payment.objects.filter(invoice_date_year=self.invoice_date.year,
-    #                                            invoice_date_month=self.invoice_date.month).order_by('-invoice_nb')[0]
-    #         self.invoice_nb = (latest_nb or 0) + 1
-    #     super(Payment, self).change_status(status, message)
-
     @transaction.atomic
     def save(self, **kwargs):
         # create a invoice_nb if needed
@@ -229,11 +169,70 @@ class Payment(BasePayment):
                 self.invoice_date = tmp_invoice_date
             else:
                 if latest_nb[0].token != self.token:  # so weird it pass in save two times when confirm
-                    print(latest_nb[0], latest_nb[0].invoice_nb)
                     self.invoice_nb = latest_nb[0].invoice_nb + 1
                     self.invoice_date = tmp_invoice_date
         return super(Payment, self).save(**kwargs)
 
     def __str__(self):
-        return self.order.__str__()
+        return self.token.__str__()
+
+
+class Order(models.Model):
+
+    token = models.CharField(_('token'), max_length=36, unique=True, null=True, blank=True)
+    status = models.CharField(_('order status'), max_length=32, choices=ORDER_CHOICES, default=NEW)
+    creation_date = models.DateTimeField(_('created'), auto_now_add=True)
+    last_status_change = models.DateTimeField(_('last status change'), auto_now=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('buyer'))
+    discount = models.ForeignKey(Discount, verbose_name=_('discount code'), null=True, blank=True)
+    billing_address = models.ForeignKey(Address, verbose_name=_('billing address'), null=True, blank=True,
+                                        on_delete=models.CASCADE)
+    item = models.OneToOneField(Item, verbose_name=_('item'), on_delete=models.CASCADE)
+    # to delete, put the order in price
+    price = models.ForeignKey(Price, verbose_name=_('price'), related_name='order', null=True,
+                              blank=True, on_delete=models.CASCADE)
+    payment = models.OneToOneField(Payment, verbose_name=_('Payment'), related_name='order',
+                                   null=True, blank=True, default=None, on_delete=models.CASCADE)
+    history = HistoricalRecords()
+
+    def save(self, *args, **kwargs):
+        if not self.token:
+            self.token = str(uuid4())
+        return super(Order, self).save(*args, **kwargs)
+
+    def change_status(self, status):
+        if status != self.status:
+            self.status = status
+            self.save()
+
+    def can_add_payment(self):
+        return not self.payment
+
+    def can_be_cancelled(self):
+        if self.payment is not None and self.payment.status == 'confirmed':
+            t_delta = timezone.now() - self.payment.invoice_date
+            if t_delta < datetime.timedelta(days=REFUND_DAYS):
+                return True
+            else:
+                return False
+
+    def clean(self):
+        if self.discount is not None:
+            if self.discount.discount_for != self.item.name:
+                raise ValidationError({'discount': ('The discount code is not for this type of item')})
+
+    def delete(self, using=None, keep_parents=False):
+        if self.billing_address:
+            self.billing_address.delete()
+        if self.item:
+            self.item.delete()
+        if self.price:
+            self.price.delete()
+        if self.payment:
+            self.payment.delete()
+        super(Order, self).delete(using, keep_parents)
+
+    def __str__(self):
+        return self.token
+
 

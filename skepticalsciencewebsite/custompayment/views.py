@@ -284,7 +284,8 @@ def start_payment(request, token, variant):
     order = get_object_or_404(Order, token=token)
     if order.user != request.user:
         return HttpResponseForbidden()
-    if order.payments.filter(status='waiting').exists():
+    #if order.payments.filter(status='waiting').exists():
+    if order.payment is not None and order.payment.status == 'waiting':
         return redirect('payment', token=token)
     variant_choices = settings.CHECKOUT_PAYMENT_CHOICES
     if variant not in [code for code, dummy_name in variant_choices]:
@@ -306,11 +307,14 @@ def start_payment(request, token, variant):
                 'customer_ip_address': get_ip(request)}
     with transaction.atomic():
         order.change_status('payment-pending')
-        payment, created = Payment.objects.get_or_create(variant=variant, status='waiting',
-                                                         order=order, defaults=defaults)
+        if order.payment is None:
+            payment = Payment(variant=variant, status='waiting', **defaults)
+            payment.save()
+            order.payment = payment
+            order.save()
         try:
             # why we get the data from the form ? Change the status to input with the dummy provider
-            form = payment.get_form(data=request.POST or None)
+            form = order.payment.get_form(data=request.POST or None)
         except RedirectNeeded as redirect_to:
             # redirection on success or faillure
             return redirect(str(redirect_to))
@@ -318,23 +322,28 @@ def start_payment(request, token, variant):
             # logger.exception('Error communicating with the payment gateway')
             messages.error(request,
                            _('Oops, it looks like we were unable to contact the selected payment service'))
-            payment.change_status('error')
+            order.payment.change_status('error')
             return redirect('payment', token=token)
     # template to use before the default template
     template = 'custompayment/method/%s.html' % variant
     return TemplateResponse(request, [template, 'custompayment/method/default.html'],
-                            {'form': form, 'payment': payment})
+                            {'form': form, 'payment': order.payment})
 
 
 def cancer_order(request, token):
     order = get_object_or_404(Order, token=token)
     if order.user != request.user:
         return HttpResponseForbidden()
-    if order.can_be_cancelled():
+    if order.can_be_cancelled():  # can_be_cancelled check the timedeta and the status
         with transaction.atomic():
-            payment = order.payments.get(status='confirmed')
+            payment = order.payment
             payment.refund()
-            #everything else is done in signal
-            return redirect('detail_order', token=token)
+        return redirect('detail_order', token=token)
     else:
         return HttpResponseForbidden()
+
+
+# def delete_order(request, token):
+#     order = get_object_or_404(Order, token=token)
+#     if order.user != request.user:
+#         return HttpResponseForbidden()
