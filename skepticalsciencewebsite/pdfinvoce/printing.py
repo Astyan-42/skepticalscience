@@ -74,8 +74,8 @@ def generate_invoice(token, language):
     #payment = order.get_payment()
     payment = order.payment
     # set the invoice related data
-    if payment.status == 'confirmed' or payment.status == 'refunded':
-        doc.is_paid = True
+    # if payment.status == 'confirmed' or payment.status == 'refunded':
+    #     doc.is_paid = True
     doc.invoice_info = InvoiceInfo(payment.invoice_date.strftime("%Y/%m-")+str(payment.invoice_nb),
                                    payment.invoice_date.strftime("%Y/%m/%d"),
                                    invoice_status=payment.get_status_display())
