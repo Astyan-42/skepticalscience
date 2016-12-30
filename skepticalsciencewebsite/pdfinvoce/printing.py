@@ -66,15 +66,18 @@ def generate_invoice(token, language):
         PAID: _('PAID'),
         PROVIDER_ID: _('SIRET'),
         CAPITAL: _('Capital'),
+        INVOICE_STATUS: _('Status')
     }
     doc = SimpleInvoice(invoice_path, constants=international_pyinvoice)
     # get the order and payment
     order = Order.objects.get(token=token)
     payment = order.get_payment()
     # set the invoice related data
-    doc.is_paid = True
+    if payment.status == 'confirmed' or payment.status == 'refunded':
+        doc.is_paid = True
     doc.invoice_info = InvoiceInfo(payment.invoice_date.strftime("%Y/%m-")+str(payment.invoice_nb),
-                                   payment.invoice_date.strftime("%Y/%m/%d"))
+                                   payment.invoice_date.strftime("%Y/%m/%d"),
+                                   invoice_status=payment.get_status_display())
     # set provider data
     doc.service_provider_info = eagal_provider
     # set the client related data
@@ -89,10 +92,8 @@ def generate_invoice(token, language):
     price = order.price
     doc.add_item(Item(item.name , str(item), 1, price.net, price.currency))
     doc.set_item_tax_rate(price.tax_percent)
-
     # translation to do
-    endsentence=_("Email: %(email)s <br/>Please contact us if you have any questions.")%{'email': 'test@test.com'}
-    doc.set_bottom_tip(endsentence)
+    doc.set_bottom_tip(_("Email: %(email)s <br/>Please contact us if you have any questions.")%{'email': 'test@test.com'})
 
     doc.finish()
     return doc, invoice_path

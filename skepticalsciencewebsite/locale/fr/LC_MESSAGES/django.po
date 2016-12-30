@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-28 22:12+0000\n"
+"POT-Creation-Date: 2016-12-30 09:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,152 +42,162 @@ msgstr ""
 msgid "Proceed to payment"
 msgstr ""
 
-#: custompayment/models.py:21 customuser/views.py:27
+#: custompayment/models.py:22 customuser/views.py:28
 msgid "Scientist"
 msgstr ""
 
-#: custompayment/models.py:22 custompayment/models.py:143
+#: custompayment/models.py:23 custompayment/models.py:144
 msgid "created"
 msgstr ""
 
-#: custompayment/models.py:23
+#: custompayment/models.py:24
 msgid "first name"
 msgstr ""
 
-#: custompayment/models.py:24
+#: custompayment/models.py:25
 msgid "last name"
 msgstr ""
 
-#: custompayment/models.py:25
+#: custompayment/models.py:26
 msgid "company or organization"
 msgstr ""
 
-#: custompayment/models.py:26 custompayment/models.py:27
+#: custompayment/models.py:27 custompayment/models.py:28
 msgid "address"
 msgstr ""
 
-#: custompayment/models.py:28
+#: custompayment/models.py:29
 msgid "city"
 msgstr ""
 
-#: custompayment/models.py:29
+#: custompayment/models.py:30
 msgid "district"
 msgstr ""
 
-#: custompayment/models.py:30
+#: custompayment/models.py:31
 msgid "postal code"
 msgstr ""
 
-#: custompayment/models.py:31 custompayment/models.py:45
+#: custompayment/models.py:32 custompayment/models.py:46
 msgid "country"
 msgstr ""
 
-#: custompayment/models.py:32
+#: custompayment/models.py:33
 msgid "state or province"
 msgstr ""
 
-#: custompayment/models.py:33
+#: custompayment/models.py:34
 msgid "phone number"
 msgstr ""
 
-#: custompayment/models.py:46
+#: custompayment/models.py:47
 msgid "GDP per inhabitant"
 msgstr ""
 
-#: custompayment/models.py:47
+#: custompayment/models.py:48
 msgid "Can pay"
 msgstr ""
 
-#: custompayment/models.py:55
+#: custompayment/models.py:56
 msgid "item name"
 msgstr ""
 
-#: custompayment/models.py:56
+#: custompayment/models.py:57
 msgid "SKU"
 msgstr ""
 
-#: custompayment/models.py:67
+#: custompayment/models.py:68
 #: custompayment/templates/custompayment/order_detail.html:29
 #: customuser/templates/customuser/detail_user.html:10
 #: pdfinvoce/printing.py:43 sciences/models.py:19
 msgid "Name"
 msgstr "Nom"
 
-#: custompayment/models.py:68 custompayment/models.py:146
+#: custompayment/models.py:69 custompayment/models.py:147
 msgid "discount code"
 msgstr ""
 
-#: custompayment/models.py:69 custompayment/models.py:148
+#: custompayment/models.py:70 custompayment/models.py:149
 msgid "item"
 msgstr ""
 
-#: custompayment/models.py:70
+#: custompayment/models.py:71
 msgid "type"
 msgstr ""
 
-#: custompayment/models.py:71
+#: custompayment/models.py:72
 msgid "value"
 msgstr ""
 
-#: custompayment/models.py:72
+#: custompayment/models.py:73
 msgid "starting"
 msgstr ""
 
-#: custompayment/models.py:73
+#: custompayment/models.py:74
 msgid "ending"
 msgstr ""
 
-#: custompayment/models.py:81
+#: custompayment/models.py:82
 msgid "currency"
 msgstr ""
 
-#: custompayment/models.py:82
+#: custompayment/models.py:83
 msgid "default price"
 msgstr ""
 
-#: custompayment/models.py:84
+#: custompayment/models.py:85
 msgid "country reduction"
 msgstr ""
 
-#: custompayment/models.py:86
+#: custompayment/models.py:87
 msgid "scientist score"
 msgstr ""
 
-#: custompayment/models.py:87 custompayment/models.py:89
+#: custompayment/models.py:88 custompayment/models.py:90
 msgid "scientist reduction"
 msgstr ""
 
-#: custompayment/models.py:91
+#: custompayment/models.py:92
 msgid "percentage of tax"
 msgstr ""
 
-#: custompayment/models.py:92
+#: custompayment/models.py:93
 msgid "taxes"
 msgstr ""
 
-#: custompayment/models.py:141
+#: custompayment/models.py:142
 msgid "token"
 msgstr ""
 
-#: custompayment/models.py:142
+#: custompayment/models.py:143
 msgid "order status"
 msgstr ""
 
-#: custompayment/models.py:144
+#: custompayment/models.py:145
 msgid "last status change"
 msgstr ""
 
-#: custompayment/models.py:145
+#: custompayment/models.py:146
 msgid "buyer"
 msgstr ""
 
-#: custompayment/models.py:147
+#: custompayment/models.py:148
 msgid "billing address"
 msgstr ""
 
-#: custompayment/models.py:150
+#: custompayment/models.py:151
 msgid "price"
 msgstr ""
+
+#: custompayment/models.py:194
+#, fuzzy
+#| msgid "Invoice date"
+msgid "Invoice number"
+msgstr "Date"
+
+#: custompayment/models.py:195 pdfinvoce/printing.py:40
+msgid "Invoice date"
+msgstr "Date"
 
 #: custompayment/templates/custompayment/address_form.html:8
 msgid "Billing Address"
@@ -275,18 +285,18 @@ msgstr ""
 msgid "Payment method"
 msgstr ""
 
-#: custompayment/views.py:303
+#: custompayment/views.py:304
 #, python-format
 msgid "Order %(order_number)s"
 msgstr ""
 
-#: custompayment/views.py:319
+#: custompayment/views.py:320
 msgid ""
 "Oops, it looks like we were unable to contact the selected payment service"
 msgstr ""
 
-#: customuser/forms.py:29 publications/forms.py:42 publications/forms.py:58
-#: publications/forms.py:95
+#: customuser/forms.py:29 publications/forms.py:44 publications/forms.py:60
+#: publications/forms.py:97
 #: templates/registration/password_change_form.html:13
 #: templates/registration/password_reset_confirm.html:12
 #: templates/registration/password_reset_form.html:15
@@ -428,7 +438,7 @@ msgstr ""
 msgid "Edit profile"
 msgstr ""
 
-#: customuser/views.py:29
+#: customuser/views.py:30
 msgid "Skeptic"
 msgstr ""
 
@@ -455,10 +465,6 @@ msgstr ""
 #: pdfinvoce/printing.py:39
 msgid "Invoice id"
 msgstr "Numéro"
-
-#: pdfinvoce/printing.py:40
-msgid "Invoice date"
-msgstr "Date"
 
 #: pdfinvoce/printing.py:41
 msgid "Invoice"
@@ -560,30 +566,34 @@ msgstr "SIRET"
 
 #: pdfinvoce/printing.py:68 templates/legal_notices.html:11
 msgid "Capital"
-msgstr ""
+msgstr "Capital social"
 
-#: pdfinvoce/printing.py:94
-#, fuzzy, python-format
-#| msgid ""
-#| "Email: %(email)s <br/>Don't hesitate to contact us for any questions."
+#: pdfinvoce/printing.py:69 publications/models.py:57
+#: publications/templates/publications/comment_detail.html:26
+#: publications/templates/publications/publication_detail.html:86
+msgid "Status"
+msgstr "Statut"
+
+#: pdfinvoce/printing.py:96
+#, python-format
 msgid "Email: %(email)s <br/>Please contact us if you have any questions."
-msgstr "Courriel: %(email)s <br/>Contactez nous si vous avez des questions"
+msgstr "Courriel: %(email)s <br/>Contactez-nous si vous avez des questions."
 
-#: publications/forms.py:73
+#: publications/forms.py:75
 msgid "Abort publication"
 msgstr ""
 
-#: publications/forms.py:113
+#: publications/forms.py:115
 #: publications/templates/publications/publication_detail.html:36
-#: publications/views.py:496
+#: publications/views.py:500
 msgid "Evaluate"
 msgstr ""
 
-#: publications/forms.py:127 publications/views.py:640
+#: publications/forms.py:129 publications/views.py:644
 msgid "Validate"
 msgstr ""
 
-#: publications/forms.py:142 publications/models.py:122
+#: publications/forms.py:144 publications/models.py:122
 #: publications/models.py:141
 #: publications/templates/publications/comment_detail.html:31
 msgid "Corrected"
@@ -663,12 +673,6 @@ msgstr ""
 
 #: publications/models.py:56
 msgid "Resume"
-msgstr ""
-
-#: publications/models.py:57
-#: publications/templates/publications/comment_detail.html:26
-#: publications/templates/publications/publication_detail.html:86
-msgid "Status"
 msgstr ""
 
 #: publications/models.py:58
@@ -900,39 +904,39 @@ msgstr ""
 msgid "Publications "
 msgstr ""
 
-#: publications/views.py:376
+#: publications/views.py:380
 msgid "Publication cancelled"
 msgstr ""
 
-#: publications/views.py:377
+#: publications/views.py:381
 msgid ""
 "This publication hasn't been validated. Be careful. We appreciate your help!"
 msgstr ""
 
-#: publications/views.py:380
+#: publications/views.py:384
 msgid "Publication is not finished"
 msgstr ""
 
-#: publications/views.py:381
+#: publications/views.py:385
 msgid ""
 "This publication haven't been validated yet. It could have some "
 "bias.                                       We appreciate your help!"
 msgstr ""
 
-#: publications/views.py:387
+#: publications/views.py:391
 msgid "Publication with bias"
 msgstr ""
 
-#: publications/views.py:388
+#: publications/views.py:392
 msgid ""
 "This publication contains some bias. Be careful. We appreciate your help!"
 msgstr ""
 
-#: publications/views.py:391
+#: publications/views.py:395
 msgid "Publication validated"
 msgstr ""
 
-#: publications/views.py:392
+#: publications/views.py:396
 msgid ""
 "This publication has been validated.                                      "
 "You can help us by trying to find more bias !"
