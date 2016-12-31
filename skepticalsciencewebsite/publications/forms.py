@@ -7,6 +7,7 @@ from django.contrib.auth import get_user_model
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit
 from crispy_forms.bootstrap import Field
+from skepticalsciencewebsite.utils import NoLinkClearableFileInput
 from publications.models import Publication, Comment, EstimatedImpactFactor, CommentReview
 from publications.constants import BOOLEAN_CHOICES, ABORTED, CORRECTION
 from sciences.forms import ScienceModelForm
@@ -48,7 +49,9 @@ class PublicationCreateForm(ScienceModelForm):
         fields = ["title", "resume", "pdf_creation", "source_creation", "first_author", "authors", "last_author",
                   "sciences", "licence"]
         widgets = {'sciences': Select2MultipleWidget,
-                   'resume': forms.Textarea()}
+                   'resume': forms.Textarea(),
+                   'pdf_creation': NoLinkClearableFileInput,
+                   'source_creation': NoLinkClearableFileInput,}
 
 
 class PublicationCorrectForm(forms.ModelForm):
@@ -62,7 +65,10 @@ class PublicationCorrectForm(forms.ModelForm):
     class Meta:
         model = Publication
         fields = ["resume", "pdf_final", "source_final"]
-        widgets = {'resume': forms.Textarea()}
+        widgets = {'resume': forms.Textarea(),
+                   'pdf_final': NoLinkClearableFileInput,
+                   'source_final': NoLinkClearableFileInput,}
+
 
 
 class PublicationAbortForm(forms.ModelForm):

@@ -1,5 +1,7 @@
-from django.core.exceptions import PermissionDenied
 from functools import update_wrapper
+from django.core.exceptions import PermissionDenied
+from django.forms import ClearableFileInput
+from django.utils.html import conditional_escape
 
 
 def same_user(user_field): # args of the decorator
@@ -30,5 +32,17 @@ def check_status(status, status_name):
     return decorator
 
 
+class NoLinkClearableFileInput(ClearableFileInput):
+    template_with_initial = (
+        '%(initial_text)s: %(initial)s '
+        '%(clear_template)s<br />%(input_text)s: %(input)s'
+    )
 
-
+    def get_template_substitution_values(self, value):
+        """
+        Return value-related substitutions.
+        """
+        return {
+            'initial': conditional_escape(str(value).split("/")[-1]),
+            'initial_url': conditional_escape(value.url),
+        }

@@ -101,7 +101,6 @@ class PublicationUpdate(UpdateView):
         :param form: the form
         :return: the form_valid function of the parent applied to the form
         """
-        print("haha")
         self.object = form.save(commit=False)
         return super(PublicationUpdate, self).form_valid(form)
 
