@@ -2,12 +2,13 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
+from django.core.exceptions import ValidationError
 # from simple_history.models import HistoricalRecords
 from sciences.models import Science
 from customuser.models import MinMaxFloat
 from publications.constants import *
 
-sendfile_storage = FileSystemStorage(location=settings.SENDFILE_ROOT)
+sendfile_storage = FileSystemStorage(location=settings.SENDFILE_ROOT, base_url=settings.SENDFILE_URL)
 # Create your models here.
 
 
@@ -45,13 +46,13 @@ class Publication(models.Model):
     last_author = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, related_name='last_author',
                                     verbose_name=_("Last author"))
     # the pdf file at the creation
-    pdf_creation = models.FileField(upload_to="pdf_creation/%Y/%m/%d", storage=sendfile_storage,
+    pdf_creation = models.FileField(upload_to="pdf_creation/%Y/%m/%d", blank=True, storage=sendfile_storage,
                                     verbose_name=_("Publication draft (PDF)"))
-    source_creation = models.FileField(upload_to="source_creation/%Y/%m/%d", storage=sendfile_storage,
+    source_creation = models.FileField(upload_to="source_creation/%Y/%m/%d", blank=True, storage=sendfile_storage,
                                        verbose_name=_("Publication draft (sources)"))
-    pdf_final = models.FileField(upload_to="pdf_final/%Y/%m/%d", storage=sendfile_storage, null=True, blank=True,
+    pdf_final = models.FileField(upload_to="pdf_final/%Y/%m/%d", null=True, blank=True, storage=sendfile_storage,
                                  verbose_name=_("Publication final (pdf)"))
-    source_final = models.FileField(upload_to="source_final/%Y/%m/%d", storage=sendfile_storage, null=True, blank=True,
+    source_final = models.FileField(upload_to="source_final/%Y/%m/%d", null=True, blank=True, storage=sendfile_storage,
                                     verbose_name=_("Publication final (sources)"))
     resume = models.CharField(max_length=1024, blank=False, verbose_name=_("Resume"))
     status = models.IntegerField(choices=PUBLICATION_STATUS, db_index=True, default=1, verbose_name=_('Status'))
@@ -67,6 +68,11 @@ class Publication(models.Model):
         authors = [self.first_author] + [author for author in self.authors.all()] + \
                   [author for author in [self.last_author] if author is not None]
         return authors
+
+    def clean(self, *args, **kwargs):
+        super(Publication, self).clean(*args, **kwargs)
+        if not self.pdf_creation or not self.source_creation:
+            raise ValidationError(_("You must have publications drafts files"))
 
     def __str__(self):
         return self.title

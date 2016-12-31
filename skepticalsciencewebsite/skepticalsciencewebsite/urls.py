@@ -17,13 +17,15 @@ from django.conf.urls import url, include
 from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
 from django.views.generic import TemplateView
+# from django.conf.urls.static import static
+# from skepticalsciencewebsite import settings
 
 
 # internationalization http://www.marinamele.com/taskbuster-django-tutorial/internationalization-localization-languages-time-zones
 
 urlpatterns = [
     url(r'^select2/', include('django_select2.urls')),
-]
+]  # + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += i18n_patterns(
     url(r'^admin/', admin.site.urls),

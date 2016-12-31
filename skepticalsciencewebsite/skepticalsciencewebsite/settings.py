@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'django_filters',
     'django_tables2',
     'sendfile',
-    'simple_history',
+    # 'simple_history',
     'django_cron',
     'django_countries',
     'analytical',
@@ -173,6 +173,10 @@ STATIC_URL = '/static/'
 SENDFILE_BACKEND = 'sendfile.backends.development'
 SENDFILE_ROOT = os.path.join(BASE_DIR, 'media')
 SENDFILE_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media_public')
+# MEDIA_URL = '/media_public/'
+
+
 
 # Registration settings
 REGISTRATION_OPEN = True                # If True, users can register
