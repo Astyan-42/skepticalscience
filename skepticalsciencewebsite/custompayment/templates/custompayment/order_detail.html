@@ -48,7 +48,7 @@
                 </div>
                 {% if order_detail.status == constants.NEW %}
                     <p class="text-info">{% trans 'By clicking on "Accept and Pay" you accept the' %}
-                        <a href="{% url 'payment' order_detail.token %}">{% trans "selling contract" %}</a>
+                        <a href="{% url 'selling_contract' %}">{% trans "selling contract" %}</a>
                         {% trans "and review your order information." %}
                     </p>
                     {% if order_detail.billing_address is None %}
@@ -123,8 +123,10 @@
                 {% endlanguage %}
                 <p><a href="{% url 'invoice' order_detail.token %}">{% trans "Billing(EN)" %}</a></p>
             {% endif %}
-            <p><a href="{% url 'address' order_detail.token %}">{% trans "Selling contract(FR)" %}</a></p>
-            <p><a href="{% url 'address' order_detail.token %}">{% trans "Selling contract(EN)" %}</a></p>
+            {% language "fr" %}
+                <p><a href="{% url 'selling_contract' %}">{% trans "Selling contract(FR)" %}</a></p>
+            {% endlanguage %}
+            <p><a href="{% url 'selling_contract' %}">{% trans "Selling contract(EN)" %}</a></p>
             {% if order_detail.status == constants.NEW %}
                 <hr>
                 {% crispy form %}

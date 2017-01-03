@@ -13,18 +13,24 @@ html, body {
 
 #main {
   #overflow:auto;
-  padding-bottom: 220px; /* this needs to be bigger than footer height*/
+  padding-bottom: 200px; /* this needs to be bigger than footer height*/
 }
 
 .navbar-footer {
   color: #ffffff;
   position: relative;
-  margin-top: -182px; /* negative value of footer height */
-  height: 182px;
+  margin-top: -169px; /* negative value of footer height */
+  height: 169px;
   clear: both;
   padding-top :20px;
 }
 
 .partone-footer {
+    font-size: 14px;
     text-align: center;
+}
+
+.parttwo-footer {
+    text-align: center;
+    font-size: 12px
 }

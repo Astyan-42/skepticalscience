@@ -40,5 +40,6 @@ urlpatterns += i18n_patterns(
     url(r'^$', TemplateView.as_view(template_name='index.html'), name="index"),
     url(r'^legal_notices$', TemplateView.as_view(template_name='legal_notices.html'), name="legal_notices"),
     url(r'^tos$', TemplateView.as_view(template_name='tos.html'), name="tos"),
+    url(r'^selling_contract$', TemplateView.as_view(template_name='selling_contract.html'), name="selling_contract"),
     prefix_default_language=False,
 )

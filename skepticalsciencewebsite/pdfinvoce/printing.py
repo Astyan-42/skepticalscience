@@ -90,7 +90,7 @@ def generate_invoice(token):
     doc.add_item(Item(item.name , str(item), 1, price.net, price.currency))
     doc.set_item_tax_rate(price.tax_percent)
     # translation to do
-    doc.set_bottom_tip(_("Email: %(email)s <br/>Please contact us if you have any questions.")%{'email': 'test@test.com'})
+    doc.set_bottom_tip(_("Email: %(email)s <br/>Please contact us if you have any questions.")%{'email': 'tests@tests.com'})
 
     doc.finish()
     return doc, invoice_path

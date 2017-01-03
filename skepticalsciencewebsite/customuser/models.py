@@ -37,7 +37,7 @@ class User(AbstractUser):
                                                            inverse_match=True,
                                                            flags=re.IGNORECASE)])
     email = models.EmailField(unique=True, verbose_name=_("Email Address"))
-    # is_active to True during the test to don't have the email registration
+    # is_active to True during the tests to don't have the email registration
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     first_name = models.CharField(max_length=255, blank=True, verbose_name=_("First Name"))

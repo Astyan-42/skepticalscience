@@ -64,23 +64,20 @@
                                 <li class="divider"></li>
                                 <li><a href="{% url 'publication_to_review' %}">{% trans "Reviewers needed" %}</a></li>
                                 <li><a href="{% url 'publication_to_evaluate' %}">{% trans "Evaluations needed" %}</a></li>
+
                             {% endif %}
                         {% endif %}
+                        <li class="divider"></li>
+                        <li><a href="{% url 'publication_list' %}">{% trans "Templates" %}</a></li>
                       </ul>
                     </li>
                     {% if user.is_authenticated %}
                         <li>
-                          <a href="{% url 'list_order' %}">{% trans "Order History" %}</a>
+                          <a href="{% url 'list_order' %}">{% trans "Orders" %}</a>
                         </li>
                     {% endif %}
                     <li>
                       <a href="{% url 'faq' %}">{% trans "F.A.Q" %}</a>
-                    </li>
-                    <li>
-                      <a href="#">{% trans "TOS" %}</a>
-                    </li>
-                    <li>
-                      <a href="#">{% trans "Commercial agreement" %}</a>
                     </li>
                   </ul>
 
@@ -135,24 +132,40 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="partone-footer">
-                                <a href="#">legal notice (FR)</a> - <a href="#">legal notice (EN)</a>
+                                {% trans "legal notices" %}
+                                    {% language "fr" %}
+                                        <a href="{% url 'legal_notices' %}">(FR)</a> -
+                                    {% endlanguage %}
+                                 <a href="{% url 'legal_notices' %}">(EN)</a>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="partone-footer">
-                                <a href="#">terms of service (FR)</a> - <a href="#">terms of service (EN)</a>
+                                {% trans "terms of service" %}
+                                    {% language "fr" %}
+                                        <a href="{% url 'tos' %}">(FR)</a> -
+                                    {% endlanguage %}
+                                 <a href="{% url 'tos' %}">(EN)</a>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="partone-footer">
-                                <a href="#">selling contract (FR)</a> - <a href="#">selling contract (EN)</a>
+                                {% trans "selling contract" %}
+                                    {% language "fr" %}
+                                        <a href="{% url 'selling_contract' %}">(FR)</a> -
+                                    {% endlanguage %}
+                                 <a href="{% url 'selling_contract' %}">(EN)</a>
                             </div>
                         </div>
                     </div>
-                        <hr>
-                        <p class="partone-footer">Website under AGPLv3 by Eagal Information SARL -
-                            User contributions licensed under various creative commons licences -
-                            <a target="_blank" href="https://github.com/Astyan-42/skepticalscience">Source code</a></p>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <hr class="parttwo-footer">
+                            <p class="parttwo-footer">{% trans "Website under AGPLv3 by Eagal Information SARL" %} -
+                                {% trans "User contributions licensed under various creative commons licences" %} -
+                                <a target="_blank" href="https://github.com/Astyan-42/skepticalscience">{% trans "Source code" %}</a></p>
+                        </div>
+                    </div>
            </div>
         {% endblock footer %}
     </div>
