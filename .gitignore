@@ -117,3 +117,5 @@ Supprimerait skepticalsciencewebsite/publications/migrations/
 Supprimerait skepticalsciencewebsite/sciences/migrations/0001_initial.py
 Supprimerait status.odt
 /skepticalsciencewebsite/invoice.pdf
+/skepticalsciencewebsite/htmlcov/
+/common_issue

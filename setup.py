@@ -67,7 +67,7 @@ setup(
     install_requires=['django', 'django-bootstrap3', 'django-registration', 'django-select2', 'django-sendfile',
                       'django_tables2', 'django-filter', 'django-crispy-forms', 'django-simple-history', 'django_cron',
                       'django-analytical', 'django-payments', 'django-countries', 'django-cookie-law', 'reportlab',
-                      'PyInvoice'],
+                      'PyInvoice', 'coverage', 'mock'],
 
     # List additional groups of dependencies here (e.g. development dependencies).
     # You can install these using the following syntax, for example:
