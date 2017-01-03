@@ -12,7 +12,7 @@ from custompayment.models import Payment, Order, Item
 #         item = Item(name="publication", sku=1)
 #         item.save()
 #         user = User.objects.create(username="testuser", password="azerty123", phd=True, first_name="Jesus",
-#                                     middle_name="Our Savior", last_name="Raptor", email="testpub1@test.com")
+#                                     middle_name="Our Savior", last_name="Raptor", email="testpub1@tests.com")
 #         order = Order(item=item, user=user)
 #         order.save()
 #         defaults = {'total': Decimal(120),
@@ -33,7 +33,7 @@ from custompayment.models import Payment, Order, Item
 #         self.payment.save()
 #
 #     def test_change_status(self):
-#         # unable to test status change or status_change don't work
+#         # unable to tests status change or status_change don't work
 #         self.payment.change_status('preauth')
 #         order = Order.objects.get(pk=self.payment.order.pk)
 #         print(order.status)

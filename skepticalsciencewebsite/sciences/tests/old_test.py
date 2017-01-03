@@ -19,14 +19,14 @@ class ScienceTestCase(TestCase):
 
     def test_affiliation(self):
         """
-        Get the two object of the database and test if there is one accessible from the other one
+        Get the two object of the database and tests if there is one accessible from the other one
         and the first one must not be accessible from the second one
         """
         dataanalysis = Science.objects.get(name="DataAnalysis")
         computerscience = Science.objects.get(name="ComputerScience")
-        # test computer_science is a primary_science
+        # tests computer_science is a primary_science
         self.assertEqual(computerscience.primary_science, True)
-        # test dataanalysis is a subscience of computerscience
+        # tests dataanalysis is a subscience of computerscience
         self.assertEqual(computerscience.sub_science.all()[0], dataanalysis)
-        # test dataanalysis have no subscience
+        # tests dataanalysis have no subscience
         self.assertEqual(len(dataanalysis.sub_science.all()), 0)

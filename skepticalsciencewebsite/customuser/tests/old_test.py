@@ -18,7 +18,7 @@ class UserTestCase(TestCase):
 
     def test_saving(self):
         """
-        Get and test the user we store
+        Get and tests the user we store
         """
         jesus = User.objects.get(username="testuser")
         self.assertEqual(jesus.phd, True)
@@ -33,5 +33,5 @@ class UserTestCase(TestCase):
         Test if non wanted name are banned
         """
         userres = User.objects.create(username="Skeptic 42", password="azerty123", phd=True, first_name="Jesus",
-                                      middle_name="Our Savior", last_name="Raptor", email="testbanusername@test.com")
+                                      middle_name="Our Savior", last_name="Raptor", email="testbanusername@tests.com")
         self.assertRaises(ValidationError, userres.full_clean)

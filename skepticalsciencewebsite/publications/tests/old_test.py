@@ -20,9 +20,9 @@ class PublicationTestCase(TestCase):
         Store an user
         """
         jesus = User.objects.create(username="testuser", password="azerty123", phd=True, first_name="Jesus",
-                                    middle_name="Our Savior", last_name="Raptor", email="testpub1@test.com")
+                                    middle_name="Our Savior", last_name="Raptor", email="testpub1@tests.com")
         fsm = User.objects.create(username="testuser2", password="azerty123", phd=True, first_name="Flying",
-                                  middle_name="Spaghetti", last_name="Monster", email="testpub2@test.com")
+                                  middle_name="Spaghetti", last_name="Monster", email="testpub2@tests.com")
         l = Licence.objects.create(short_name="lol", full_name="lol", url="http://google.com")
         Publication.objects.create(editor=jesus, title="lol", first_author=jesus, last_author=fsm, resume="lol",
                                    licence=l)
@@ -36,15 +36,15 @@ class CascadeTestCase(TestCase):
 
     def setUp(self):
         self.jesus = User.objects.create(username="testuser", password="azerty123", phd=True, first_name="Jesus",
-                                    middle_name="Our Savior", last_name="Raptor", email="testcasc1@test.com")
+                                    middle_name="Our Savior", last_name="Raptor", email="testcasc1@tests.com")
         self.fsm = User.objects.create(username="testuser2", password="azerty123", phd=True, first_name="Flying",
-                                       middle_name="Spaghetti", last_name="Monster", email="testcasc2@test.com")
+                                       middle_name="Spaghetti", last_name="Monster", email="testcasc2@tests.com")
         self.rael = User.objects.create(username="testuser3", password="azerty123", phd=True, first_name="Rael",
-                                        last_name="ET", email="testcasc3@test.com")
+                                        last_name="ET", email="testcasc3@tests.com")
         self.ipu = User.objects.create(username="testuser4", password="azerty123", phd=True, first_name="Invisible",
-                                       middle_name="Pink", last_name="Unicorn", email="testcasc4@test.com")
+                                       middle_name="Pink", last_name="Unicorn", email="testcasc4@tests.com")
         self.ft = User.objects.create(username="testuser5", password="azerty123", phd=True, first_name="Flying",
-                                      last_name="Teapot", email="testcasc5@test.com")
+                                      last_name="Teapot", email="testcasc5@tests.com")
         l = Licence.objects.create(short_name="lol", full_name="lol", url="http://google.com")
         self.publication = Publication.objects.create(editor=self.jesus, title="lol", first_author=self.jesus,
                                                       resume="lol", licence=l)
