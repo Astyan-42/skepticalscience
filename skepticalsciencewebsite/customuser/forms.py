@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 from registration.forms import RegistrationFormTermsOfService
 from django.utils.translation import ugettext_lazy as _
 from django_select2.forms import Select2MultipleWidget
@@ -29,6 +30,16 @@ class CustomUserUpdateForm(ScienceModelForm):
         self.helper.form_id = 'id-userupdateForm'
         self.helper.add_input(Submit('submit', _('Submit')))
 
+    def save(self, commit=True):
+        data = super(CustomUserUpdateForm, self).save(commit=False)
+        if self.cleaned_data["phd_image"]:
+            imgpath = str(self.cleaned_data["phd_image"])
+            if imgpath.split('/')[0] != "PHDs":
+                data.phd_update_date = timezone.now()
+        if commit:
+            data.save()
+        return data
+
     class Meta:
         model = get_user_model()
         fields = ["email", "first_name", "middle_name", "last_name", "phd_image", "country", "workplace", "description",
@@ -38,3 +49,4 @@ class CustomUserUpdateForm(ScienceModelForm):
                    'description': forms.Textarea(),
                    'phd_image':NoLinkClearableFileInput,
                    }
+
