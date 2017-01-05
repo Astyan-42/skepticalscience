@@ -71,7 +71,6 @@ class User(AbstractUser):
                                  verbose_name=_("Reviewer score"))
 
     def get_full_name(self):
-        full_name = self.last_name+" "+self.middle_name+" "+self.first_name
-        if full_name == "  ":
-            full_name = ""
+        full_name = str(self.last_name)+" "+str(self.middle_name)+" "+str(self.first_name)
+        full_name = ' '.join(full_name.split())
         return full_name
