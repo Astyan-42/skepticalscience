@@ -7,14 +7,11 @@ class TopicTestCase(TestCase):
 
     def test__str__(self):
         topic = mock.Mock(spec=Topic)
-        topic.name = "test name"
-        self.assertEqual(Topic.__str__(topic), "test name")
+        self.assertEqual(Topic.__str__(topic), topic.name)
 
 
 class QandATestCase(TestCase):
 
     def test__str__(self):
         qanda = mock.Mock(spec=QandA)
-        qanda.question = "test question"
-        qanda.answer = "test answer"
-        self.assertEqual(QandA.__str__(qanda), "test question")
+        self.assertEqual(QandA.__str__(qanda), qanda.question)
