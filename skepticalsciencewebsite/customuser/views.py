@@ -20,7 +20,7 @@ class UserDetailView(DetailView):
     template_name = 'customuser/detail_user.html'
     fields = ["first_name", "middle_name", "last_name", "phd", "country", "workplace", "description",
               "job_title", "sciences", "skeptic_score", "mean_publication_score", "mean_impact_factor",
-              "estimator_score"]
+              "estimator_score", "phd_in"]
 
     def get_context_data(self, **kwargs):
         context = super(UserDetailView, self).get_context_data(**kwargs)

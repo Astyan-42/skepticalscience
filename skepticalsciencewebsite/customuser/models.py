@@ -1,10 +1,14 @@
 from django.db import models
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
 from sciences.models import Science
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import ugettext_lazy as _
 from django.core.validators import RegexValidator
 import re
 # Create your models here.
+
+sendfile_storage = FileSystemStorage(location=settings.SENDFILE_ROOT, base_url=settings.SENDFILE_URL)
 
 
 class MinMaxFloat(models.FloatField):
@@ -43,12 +47,12 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=255, blank=True, verbose_name=_("First Name"))
     middle_name = models.CharField(max_length=255, blank=True, verbose_name=_("Middle Name"))
     last_name = models.CharField(max_length=255, blank=True, verbose_name=_("Last Name"))
-    phd = models.BooleanField(default=False, verbose_name=_("PHD"))
     country = models.CharField(max_length=255, blank=True, verbose_name=_("Country"))
     workplace = models.CharField(max_length=255, blank=True, verbose_name=_("Workplace"))
     description = models.CharField(max_length=1024, blank=True, verbose_name=_("Personal description"))
     job_title = models.CharField(max_length=255, blank=True, verbose_name=_("Job title"))
-    sciences = models.ManyToManyField(Science, blank=True, symmetrical=False, verbose_name=_("Sciences"))
+    sciences = models.ManyToManyField(Science, blank=True, symmetrical=False, verbose_name=_("Sciences liked"),
+                                      related_name="sciences_liked")
     # finding biais in publication : or number of valid biais foud and number of ivalid biais found ?
     valid_bias_found = models.IntegerField(default=0, verbose_name=_("Valid bias found"))
     invalid_bias_found = models.IntegerField(default=0, verbose_name=_("Invalid bias found"))
@@ -69,6 +73,23 @@ class User(AbstractUser):
     comments_not_evaluated = models.IntegerField(default=0, verbose_name=_("Comments not evaluated"))
     reviewer_score = MinMaxFloat(min_value=0.0, max_value=1.0, default=None, null=True, blank=True,
                                  verbose_name=_("Reviewer score"))
+    phd = models.BooleanField(default=False, verbose_name=_("PHD"))
+    phd_image = models.ImageField(upload_to="PHDs/%Y/%m/%d", null=True, blank=True, storage=sendfile_storage,
+                                  verbose_name=_("PHD"))
+    phd_comment = models.CharField(max_length=1024, blank=True, verbose_name=_("PHD comment"))
+    phd_update_date = models.DateTimeField(blank=True, null=True, verbose_name=_('PHD update date'))
+    phd_rate_date = models.DateTimeField(blank=True, null=True, verbose_name=_('PHD rate date'))
+    phd_in = models.ManyToManyField(Science, blank=True, symmetrical=False, verbose_name=_("PHD in"),
+                                    related_name="phd_sciences")
+
+    def to_rate(self):
+        return (self.phd_rate_date is None or self.phd_rate_date <= self.phd_update_date) and (self.phd_image is not None and self.phd is False)
+
+    def print_phd_sciences(self):
+        return self.phd
+
+    def print_phd_non_accepted(self):
+        return self.phd_rate_date is not None and self.phd == False
 
     def get_full_name(self):
         full_name = str(self.last_name)+" "+str(self.middle_name)+" "+str(self.first_name)

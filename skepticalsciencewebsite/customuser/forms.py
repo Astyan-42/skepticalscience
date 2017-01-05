@@ -4,6 +4,7 @@ from registration.forms import RegistrationFormTermsOfService
 from django.utils.translation import ugettext_lazy as _
 from django_select2.forms import Select2MultipleWidget
 from sciences.forms import ScienceModelForm
+from skepticalsciencewebsite.utils import NoLinkClearableFileInput
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
@@ -30,8 +31,10 @@ class CustomUserUpdateForm(ScienceModelForm):
 
     class Meta:
         model = get_user_model()
-        fields = ["email", "first_name", "middle_name", "last_name", "phd", "country", "workplace", "description",
+        fields = ["email", "first_name", "middle_name", "last_name", "phd_image", "country", "workplace", "description",
                   "job_title", "sciences"]
         # widgets = {'sciences': Select2MultipleWidget(attrs={'class': 'form-control'})}
         widgets = {'sciences': Select2MultipleWidget,
-                   'description': forms.Textarea()}
+                   'description': forms.Textarea(),
+                   'phd_image':NoLinkClearableFileInput,
+                   }
