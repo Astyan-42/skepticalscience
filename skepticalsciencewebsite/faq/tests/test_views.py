@@ -1,9 +1,7 @@
-import mock
 from django.test import RequestFactory
 from django.test import TestCase
 from skepticalsciencewebsite.utils import setup_view
 from faq.views import FAQView
-from faq.models import Topic, QandA
 
 
 class TestFAQView(TestCase):
