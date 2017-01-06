@@ -11,8 +11,10 @@
 
 {% block content %}
     <h1> {% trans "check user PHD" %}</h1>
+    <img src="{% url 'phd_image' user_detail.pk %}">
+    <h5><strong>{% trans "Billing name" %}</strong></h5>
+            <p class="text-indent">{{ address_name }}</p>
 
-    {{ user_detail.phd_image }}
     <div class="row">
         <hr>
         {% crispy form %}

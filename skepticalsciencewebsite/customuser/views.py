@@ -7,6 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from django_tables2 import SingleTableView, RequestConfig
+from sendfile import sendfile
 from customuser.models import User
 from customuser.forms import CustomUserUpdateForm, CheckPHDForm
 from customuser.filters import UserFilter
@@ -14,6 +15,13 @@ from customuser.tables import UserTable
 from customuser.utils import get_scientific_account_address_name
 from custompayment.constants import SCIENTIST_ACCOUNT
 # Create your views here.
+
+
+@login_required
+@staff_member_required
+def get_phd_image(request, pk):
+    dl = get_object_or_404(User, pk=pk)
+    return sendfile(request, dl.phd_image.path)
 
 
 class UserDetailView(DetailView):
@@ -92,6 +100,8 @@ class UserPHDTableView(SingleTableView):
         return context
 
 
+
+
 @method_decorator(staff_member_required, name='dispatch')
 @method_decorator(login_required, name='dispatch')
 class PHDValidation(UpdateView):
@@ -148,3 +158,4 @@ class PHDValidationView(View):
     def post(request, *args, **kwargs):
         view = PHDValidation.as_view()
         return view(request, *args, **kwargs)
+
