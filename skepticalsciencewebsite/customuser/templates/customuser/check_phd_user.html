@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% load staticfiles %}
+{% load bootstrap3 %}
+{% load crispy_forms_tags %}
+
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/table2.css' %}" />
+{% endblock %}
+
+{% block content %}
+    <h1> {% trans "check user PHD" %}</h1>
+
+    {{ user_detail.phd_image }}
+    <div class="row">
+        <hr>
+        {% crispy form %}
+        {{ form.media.js }}
+    </div>
+{% endblock %}

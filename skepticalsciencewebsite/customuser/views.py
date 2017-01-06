@@ -1,4 +1,4 @@
-from django.views.generic import UpdateView, DetailView
+from django.views.generic import UpdateView, DetailView, View
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
@@ -8,9 +8,10 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from django_tables2 import SingleTableView, RequestConfig
 from customuser.models import User
-from customuser.forms import CustomUserUpdateForm
+from customuser.forms import CustomUserUpdateForm, CheckPHDForm
 from customuser.filters import UserFilter
 from customuser.tables import UserTable
+from customuser.utils import get_scientific_account_address_name
 from custompayment.constants import SCIENTIST_ACCOUNT
 # Create your views here.
 
@@ -89,3 +90,61 @@ class UserPHDTableView(SingleTableView):
         context = super(UserPHDTableView, self).get_context_data()
         context[self.context_filter_name] = self.filter
         return context
+
+
+@method_decorator(staff_member_required, name='dispatch')
+@method_decorator(login_required, name='dispatch')
+class PHDValidation(UpdateView):
+    form_class = CheckPHDForm
+    context_object_name = "user_detail"
+    model = User
+    template_name = "customuser/check_phd_user.html"
+
+    def get_object(self, queryset=None):
+        obj, created = User.objects.get_or_create(pk=self.kwargs["pk"])
+        return obj
+
+    def get_context_data(self, **kwargs):
+        context = super(PHDValidation, self).get_context_data(**kwargs)
+        context["address_name"] = get_scientific_account_address_name(pk=self.kwargs["pk"])
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy("phd_ask_list")
+
+
+@method_decorator(staff_member_required, name='dispatch')
+@method_decorator(login_required, name='dispatch')
+class PHDDisplay(DetailView):
+    context_object_name = "user_detail"
+    model = User
+    object = None
+    template_name = "customuser/check_phd_user.html"
+
+    def get(self, request, *args, **kwargs):
+        self.object = get_object_or_404(User, pk=kwargs["pk"])
+        context = self.get_context_data(object=self.object)
+        return self.render_to_response(context)
+
+    def get_context_data(self, **kwargs):
+        context = super(PHDDisplay, self).get_context_data(**kwargs)
+        context["form"] = CheckPHDForm()
+        # for the address get the item then get the order and get the addess
+        context["address_name"] = get_scientific_account_address_name(pk=self.kwargs["pk"])
+        return context
+
+
+@method_decorator(staff_member_required, name='dispatch')
+@method_decorator(login_required, name='dispatch')
+class PHDValidationView(View):
+    # template_name = "customuser/check_phd_user.html"
+
+    @staticmethod
+    def get(request, *args, **kwargs):
+        view = PHDDisplay.as_view()
+        return view(request, *args, **kwargs)
+
+    @staticmethod
+    def post(request, *args, **kwargs):
+        view = PHDValidation.as_view()
+        return view(request, *args, **kwargs)

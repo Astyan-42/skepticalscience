@@ -54,8 +54,8 @@ class CustomUserUpdateForm(ScienceModelForm):
 class CheckPHDForm(ScienceModelForm):
 
     def __init__(self, *args, **kwargs):
-        kwargs['science_field'] = 'phd_in'
-        super(CheckPHDForm, self).__init__(*args, **kwargs)
+        # kwargs['science_field'] = 'phd_in'
+        super(CheckPHDForm, self).__init__(science_field='phd_in', *args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.form_id = 'id-checkphdForm'
         self.helper.add_input(Submit('submit', _('Submit')))
