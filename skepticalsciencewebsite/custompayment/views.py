@@ -164,8 +164,10 @@ class DiscountOrderUpdate(UpdateView):
 class OrderDisplay(DetailView):
     context_object_name = "order_detail"
     model = Order
-    fields = ["status", "creation_date", "last_status_change", "user", "discount", "billing_address", "item"]
+    # fields useless ?
+    # fields = ["status", "creation_date", "last_status_change", "user", "discount", "billing_address", "item"]
     object = None
+    # no need for template because name of template similar to context_object_name
 
     def get(self, request, *args, **kwargs):
         self.object = get_object_or_404(Order, token=kwargs["token"])

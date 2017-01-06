@@ -362,8 +362,8 @@ class PublicationDisplay(DetailView):
     context_object_name = "publication_detail"
     model = Publication
     # template_name = 'publications/publication_detail.html'
-    fields = ["title", "sciences", "resume", "status", "licence", "publication_score", "estimated_impact_factor",
-              "pdf_creation", "source_creation", "pdf_final", "source_final"]
+    # fields = ["title", "sciences", "resume", "status", "licence", "publication_score", "estimated_impact_factor",
+    #           "pdf_creation", "source_creation", "pdf_final", "source_final"]
     kwargs = None
     request = None
 
@@ -549,8 +549,9 @@ def leave_reviewer_view(request, publication_id):
 class CommentDisplay(DetailView):
     context_object_name = "comment_detail"
     model = Comment
-    fields = ["publication", "author", "author_fake_pseudo", "creation_date", "comment_type", "seriousness",
-              "content", "title", "validated", "corrected", "licence"]
+    # fields useless
+    # fields = ["publication", "author", "author_fake_pseudo", "creation_date", "comment_type", "seriousness",
+    #          "content", "title", "validated", "corrected", "licence"]
     request = None
     kwargs = None
 

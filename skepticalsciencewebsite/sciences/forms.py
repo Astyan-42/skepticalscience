@@ -30,8 +30,8 @@ class ScienceModelForm(forms.ModelForm):
     """
 
     def __init__(self, *args, **kwargs):
+        science_field = kwargs.pop("science_field", "sciences")
         super(ScienceModelForm, self).__init__(*args, **kwargs)
         sciences = Science.objects.filter(primary_science=True)
         choices = _science_choices(sciences)
-        science_field = kwargs.get("science_field", "sciences")
         self.fields[science_field].choices = choices
