@@ -95,6 +95,7 @@ class PublicationAbortForm(forms.ModelForm):
 
 
 class CommentForm(forms.ModelForm):
+    prefix = 'comment'
 
     def __init__(self, *args, **kwargs):
         super(CommentForm, self).__init__(*args, **kwargs)
@@ -109,6 +110,7 @@ class CommentForm(forms.ModelForm):
 
 
 class EstimatedImpactFactorForm(forms.ModelForm):
+    prefix = 'impact_factor'
 
     def __init__(self, *args, **kwargs):
         super(EstimatedImpactFactorForm, self).__init__(*args, **kwargs)

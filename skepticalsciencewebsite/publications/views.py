@@ -497,10 +497,20 @@ class PublicationDetailView(View):
 
     @staticmethod
     def post(request, *args, **kwargs):
-        if request.POST["submit"].lower() == _("Evaluate").lower():
+        def get_prefix(query):
+            key = ''
+            for key, value in query.items():
+                if key != 'submit' and key != 'csrfmiddlewaretoken':
+                    break
+            l_prefix = key.split('-')[0]
+            return l_prefix
+        prefix = get_prefix(request.POST)
+        if prefix == 'impact_factor':
             view = EstimatedImpactFactorInterest.as_view()
-        else:
+        elif prefix == 'comment':
             view = PublicationInterest.as_view()
+        else:
+            raise ObjectDoesNotExist
         return view(request, *args, **kwargs)
 
 
