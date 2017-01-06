@@ -50,3 +50,26 @@ class CustomUserUpdateForm(ScienceModelForm):
                    'phd_image':NoLinkClearableFileInput,
                    }
 
+
+class CheckPHDForm(ScienceModelForm):
+
+    def __init__(self, *args, **kwargs):
+        kwargs['science_field'] = 'phd_in'
+        super(CheckPHDForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_id = 'id-checkphdForm'
+        self.helper.add_input(Submit('submit', _('Submit')))
+
+    # on save change the date
+    def save(self, commit=True):
+        data = super(CheckPHDForm, self).save(commit=False)
+        data.phd_rate_date = timezone.now()
+        if commit:
+            data.save()
+        return data
+
+    class Meta:
+        model = get_user_model()
+        fields = ["phd", "phd_comment", "phd_in"]
+        widgets = {'phd_in': Select2MultipleWidget,
+                   }

@@ -33,4 +33,5 @@ class ScienceModelForm(forms.ModelForm):
         super(ScienceModelForm, self).__init__(*args, **kwargs)
         sciences = Science.objects.filter(primary_science=True)
         choices = _science_choices(sciences)
-        self.fields["sciences"].choices = choices
+        science_field = kwargs.get("science_field", "sciences")
+        self.fields[science_field].choices = choices
