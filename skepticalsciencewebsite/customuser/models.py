@@ -81,8 +81,9 @@ class User(AbstractUser):
     phd_rate_date = models.DateField(blank=True, null=True, verbose_name=_('PHD rate date'))
     phd_in = models.ManyToManyField(Science, blank=True, symmetrical=False, verbose_name=_("PHD in"),
                                     related_name="phd_sciences")
+    phd_to_rate = models.BooleanField(default=False, verbose_name=_('PHD to rate'))
 
-    def to_rate(self):
+    def get_to_rate(self):
         return (self.phd_rate_date is None or self.phd_rate_date <= self.phd_update_date) and (self.phd_image is not None and self.phd is False)
 
     def print_phd_sciences(self):
@@ -95,3 +96,7 @@ class User(AbstractUser):
         full_name = str(self.last_name)+" "+str(self.middle_name)+" "+str(self.first_name)
         full_name = ' '.join(full_name.split())
         return full_name
+
+    def save(self, *args, **kwargs):
+        self.phd_to_rate = self.get_to_rate()
+        return super(User, self).save(*args, **kwargs)

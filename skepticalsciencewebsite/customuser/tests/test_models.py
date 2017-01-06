@@ -40,19 +40,19 @@ class UserTestCase(TestCase):
         user.phd_rate_date = timezone.now()
         self.assertEqual(User.print_phd_non_accepted(user), True)
 
-    def test_to_rate(self):
+    def test_get_to_rate(self):
         user = mock.Mock(spec=User)
         user.phd = False
         user.phd_image = mock.MagicMock(spec=File, name='FileMock')
         user.phd_rate_date = None
-        self.assertEqual(User.to_rate(user), True)
+        self.assertEqual(User.get_to_rate(user), True)
         user.phd_rate_date = timezone.now()
         user.phd_update_date = timezone.now()
-        self.assertEqual(User.to_rate(user), True)
+        self.assertEqual(User.get_to_rate(user), True)
         user.phd_update_date = timezone.now()
         user.phd_rate_date = timezone.now()
-        self.assertEqual(User.to_rate(user), False)
+        self.assertEqual(User.get_to_rate(user), False)
         user.phd_rate_date = timezone.now()
         user.phd_update_date = timezone.now()
         user.phd = True
-        self.assertEqual(User.to_rate(user), False)
+        self.assertEqual(User.get_to_rate(user), False)

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% load staticfiles %}
+{% load bootstrap3 %}
+{% load render_table from django_tables2 %}
+
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/table2.css' %}" />
+{% endblock %}
+
+{% block content %}
+    <h1>{% trans "User waiting for PHD validation" %}</h1>
+    {% render_table table %}
+{% endblock %}
