@@ -22,6 +22,15 @@ class CustomUserUpdateFormTestCase(TestCase):
         form = CustomUserUpdateForm(data=form_data, files=form_files)
         self.assertTrue(form.is_valid())
 
+    def test_invalid(self):
+        # should be invalid because no email enter
+        form_data = {'email': '', 'submit': 'Submit', 'workplace': '', 'job_title': 'r',
+                     'first_name': 'Azfd', 'description': '', 'middle_name': 'dsqvc',
+                     'last_name': 'fqsv', 'country': ''}
+        form_files = {'phd_image': self.image}
+        form = CustomUserUpdateForm(data=form_data, files=form_files)
+        self.assertFalse(form.is_valid())
+
     def test_save_new_file(self):
         form_data = {'email': 'v@v.com', 'submit': 'Submit', 'workplace': '', 'job_title': 'r',
                      'first_name': 'Azfd', 'description': '', 'middle_name': 'dsqvc',

@@ -34,16 +34,31 @@ class TestUserUpdateView(TestCase):
         super(TestUserUpdateView, cls).setUpClass()
         cls.user = User.objects.create_user(username="testuser", password="azerty123", email="test@tests.com")
         cls.user.save()
+        cls.url = reverse("edit_profile")
 
     def test_show_page_response_code(self):
         assert self.client.login(username="testuser", password="azerty123")
-        url = reverse("edit_profile")
-        resp = self.client.get(url)
+        resp = self.client.get(self.url)
         self.assertEqual(resp.status_code, 200)
 
-    def test_send_data_response_code(self): # don't work like wanted
+    def test_object(self):
         assert self.client.login(username="testuser", password="azerty123")
-        url = reverse("edit_profile")
-        resp = self.client.post(url, {'first_name': 'john'}, follow=True)
-        print(resp.template_name) # stay on the template of edit_profile, I would like to have the template of view_profile after redirection
+        resp = self.client.get(self.url)
+        self.assertEqual(resp.context_data['object'], self.user)
+
+    def test_send_data_response_code(self):
+        assert self.client.login(username="testuser", password="azerty123")
+        # nimp is not process (normal behaviour don't need test
+        resp = self.client.post(self.url, {'first_name': 'john', 'nimp': 'lol', 'email': "test@tests.com"}, follow=True)
+        self.assertEqual(resp.template_name, ["customuser/detail_user.html"])
         self.assertEqual(resp.status_code, 200)
+
+    def test_send_wrong_data_response_code(self):
+        assert self.client.login(username="testuser", password="azerty123")
+        resp = self.client.post(self.url, {'first_name': 'john'})
+        self.assertEqual(resp.template_name, ["customuser/update_user.html"])
+        self.assertEqual(resp.status_code, 200)
+
+    def test_not_connected(self):
+        resp = self.client.get(self.url)
+        self.assertEqual(resp.status_code, 302)
