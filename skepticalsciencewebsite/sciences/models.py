@@ -16,7 +16,7 @@ class Science(models.Model):
     :param sub_science: a list of sub sciences for chemistry => (proteomic, quantic chemistry, ...)
     :type sub_science: list
     """
-    name = models.CharField(verbose_name=_("Name"), max_length=255, unique=True)
+    name = models.CharField(verbose_name=_("Name"), max_length=255, unique=True, db_index=True)
     description = models.CharField(verbose_name=_("Description"), max_length=2048, unique=True)
     primary_science = models.BooleanField(default=False)
     sub_science = models.ManyToManyField("self", blank=True, symmetrical=False)

@@ -10,12 +10,14 @@ from customuser.views import UserDetailView, UserUpdateView
 
 class TestUserDetailView(TestCase):
 
-    def setUp(self):
+    @classmethod
+    def setUpClass(cls):
+        super(TestUserDetailView, cls).setUpClass()
         user = User.objects.create_user(username="testuser", password="azerty123", email="test@tests.com")
         user.save()
         request = RequestFactory().get('/fake-path/')
         view = UserDetailView.as_view()
-        self.response = view(request, pk=user.pk)
+        cls.response = view(request, pk=user.pk)
 
     def test_response_code(self):
         self.assertEqual(self.response.status_code, 200)
@@ -25,3 +27,23 @@ class TestUserDetailView(TestCase):
         self.assertEqual(self.response.context_data['order'], SCIENTIST_ACCOUNT)
 
 
+class TestUserUpdateView(TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        super(TestUserUpdateView, cls).setUpClass()
+        cls.user = User.objects.create_user(username="testuser", password="azerty123", email="test@tests.com")
+        cls.user.save()
+
+    def test_show_page_response_code(self):
+        assert self.client.login(username="testuser", password="azerty123")
+        url = reverse("edit_profile")
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+
+    def test_send_data_response_code(self): # don't work like wanted
+        assert self.client.login(username="testuser", password="azerty123")
+        url = reverse("edit_profile")
+        resp = self.client.post(url, {'first_name': 'john'}, follow=True)
+        print(resp.template_name) # stay on the template of edit_profile, I would like to have the template of view_profile after redirection
+        self.assertEqual(resp.status_code, 200)

@@ -39,8 +39,6 @@ class UserUpdateView(UpdateView):
     """
     model = get_user_model()
     form_class = CustomUserUpdateForm
-    # fields = ["email", "first_name", "middle_name", "last_name", "phd", "country", "workplace", "description",
-    #           "job_title", "sciences"]
     template_name = 'customuser/update_user.html'
 
     def get_object(self, queryset=None):

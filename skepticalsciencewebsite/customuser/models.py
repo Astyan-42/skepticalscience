@@ -39,7 +39,7 @@ class User(AbstractUser):
                                                            message=_("please enter a valid username \
                                                            (not skepic, author, researcher)"),
                                                            inverse_match=True,
-                                                           flags=re.IGNORECASE)])
+                                                           flags=re.IGNORECASE)], db_index=True)
     email = models.EmailField(unique=True, verbose_name=_("Email Address"))
     # is_active to True during the tests to don't have the email registration
     is_active = models.BooleanField(default=True)

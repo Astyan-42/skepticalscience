@@ -190,7 +190,7 @@ class Order(models.Model):
     item = models.OneToOneField(Item, verbose_name=_('item'), on_delete=models.CASCADE)
     # to delete, put the order in price
     price = models.ForeignKey(Price, verbose_name=_('price'), related_name='order', null=True,
-                              blank=True, on_delete=models.CASCADE)
+                              blank=True, on_delete=models.CASCADE) # OnetoOne ?
     payment = models.OneToOneField(Payment, verbose_name=_('Payment'), related_name='order',
                                    null=True, blank=True, default=None, on_delete=models.CASCADE)
     # history = HistoricalRecords()
@@ -225,7 +225,7 @@ class Order(models.Model):
     def clean(self):
         if self.discount is not None:
             if self.discount.discount_for != self.item.name:
-                raise ValidationError({'discount': ('The discount code is not for this type of item')})
+                raise ValidationError({'discount': _('The discount code is not for this type of item')})
 
     def delete(self, using=None, keep_parents=False):
         print('lol')
