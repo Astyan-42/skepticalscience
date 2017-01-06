@@ -8,8 +8,7 @@ class UserTable(tables.Table):
     """
     a table to represent a list of publication
     """
-    # temporary use the futur view of the publication
-    link = tables.LinkColumn("view_profile", text="user", kwargs={"pk" : A('pk')}, orderable=False)
+    link = tables.LinkColumn("user_phd", text="user", kwargs={"pk" : A('pk')}, orderable=False)
 
     class Meta:
         model = User

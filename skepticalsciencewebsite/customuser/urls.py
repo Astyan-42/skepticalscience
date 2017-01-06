@@ -8,4 +8,5 @@ urlpatterns = [url(r'^register/$', RegistrationView.as_view(form_class=CustomUse
                url(r'^edit_profile/$', UserUpdateView.as_view(), name='edit_profile'),
                url(r'^user_profile/(?P<pk>\d)', UserDetailView.as_view(), name='view_profile'),
                url(r'^phd_ask_list/$', UserPHDTableView.as_view(), name='phd_ask_list'),
+               url(r'^user_phd/(?P<pk>\d)', UserDetailView.as_view(), name='user_phd'),
 ]

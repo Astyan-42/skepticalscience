@@ -1,6 +1,7 @@
 from django.views.generic import UpdateView, DetailView
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import get_user_model
@@ -59,6 +60,7 @@ class UserUpdateView(UpdateView):
         return reverse_lazy('view_profile', args=(self.request.session['_auth_user_id'],))
 
 
+@method_decorator(staff_member_required, name='dispatch')
 @method_decorator(login_required, name='dispatch')
 class UserPHDTableView(SingleTableView):
     model = User
