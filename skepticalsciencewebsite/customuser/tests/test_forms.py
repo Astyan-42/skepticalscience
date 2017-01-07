@@ -2,12 +2,13 @@ from io import BytesIO
 from PIL import Image
 from django.test import TestCase
 from django.core.files.uploadedfile import InMemoryUploadedFile
-from customuser.forms import CustomUserUpdateForm
+from customuser.forms import CustomUserUpdateForm, CheckPHDForm
 
 
 class CustomUserUpdateFormTestCase(TestCase):
 
     def setUp(self):
+        # setUpClass not possible, test fail because of the file when setUpClass is used
         im = Image.new(mode='RGB', size=(200, 200))  # create a new image using PIL
         im_io = BytesIO()  # a BytesIO object for saving image
         im.save(im_io, 'JPEG')  # save the image to im_io
@@ -49,3 +50,17 @@ class CustomUserUpdateFormTestCase(TestCase):
     #     form = CustomUserUpdateForm(data=form_data, files=form_files)
     #     data = form.save()
     #     self.assertIsNotNone(data.phd_update_date)
+
+
+class CheckPHDFormTestCase(TestCase):
+
+    def test_valid(self):
+        form_data = {'phd': 'False', 'submit': 'Submit', 'phd_comment': ''}
+        form = CheckPHDForm(data=form_data)
+        self.assertTrue(form.is_valid())
+
+    def test_save(self):
+        form_data = {'phd': 'False', 'submit': 'Submit', 'phd_comment': ''}
+        form = CheckPHDForm(data=form_data)
+        data = form.save()
+        self.assertIsNotNone(data.phd_rate_date)

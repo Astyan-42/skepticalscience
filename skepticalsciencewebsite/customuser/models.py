@@ -84,7 +84,9 @@ class User(AbstractUser):
     phd_to_rate = models.BooleanField(default=False, verbose_name=_('PHD to rate'))
 
     def get_to_rate(self):
-        return (self.phd_rate_date is None or self.phd_rate_date <= self.phd_update_date) and (self.phd_image is not None and self.phd is False)
+        return (self.phd_update_date is not None) and \
+               (self.phd_rate_date is None or self.phd_rate_date <= self.phd_update_date) and \
+               (self.phd_image is not None and self.phd is False)
 
     def print_phd_sciences(self):
         return self.phd

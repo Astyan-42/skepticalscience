@@ -1,4 +1,5 @@
 import mock
+from io import BytesIO
 from django.test import TestCase
 from django.utils import timezone
 from django.core.files import File
@@ -56,3 +57,13 @@ class UserTestCase(TestCase):
         user.phd_update_date = timezone.now()
         user.phd = True
         self.assertEqual(User.get_to_rate(user), False)
+
+    def test_save(self):
+        # don't use mock here because too bothering
+        user = User.objects.create_user(username="testuser", password="azerty123", email="test@tests.com")
+        user.phd_image = File(BytesIO(), name='lol')
+        user.phd_rate_date = None
+        user.phd_update_date = timezone.now()
+        user.phd_to_rate = False
+        user.save()
+        self.assertEqual(user.phd_to_rate, True)
