@@ -76,7 +76,7 @@ class User(AbstractUser):
     phd = models.BooleanField(default=False, verbose_name=_("PHD"))
     phd_image = models.ImageField(upload_to="PHDs/%Y/%m/%d", null=True, blank=True, storage=sendfile_storage,
                                   verbose_name=_("PHD"))
-    phd_comment = models.CharField(max_length=1024, blank=True, verbose_name=_("PHD comment"))
+    phd_comment = models.CharField(max_length=1024, null=True, blank=False, verbose_name=_("PHD comment"))
     phd_update_date = models.DateTimeField(blank=True, null=True, verbose_name=_('PHD update date'))
     phd_rate_date = models.DateTimeField(blank=True, null=True, verbose_name=_('PHD rate date'))
     phd_in = models.ManyToManyField(Science, blank=True, symmetrical=False, verbose_name=_("PHD in"),

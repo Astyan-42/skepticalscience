@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 from django.core.files import File
 from customuser.models import User
 from custompayment.constants import SCIENTIST_ACCOUNT
-from customuser.views import UserDetailView, UserPHDTableView
+from customuser.views import UserDetailView
 
 
 class TestUserDetailView(TestCase):
@@ -146,3 +146,17 @@ class TestUserPHDTableView(TestCase):
         self.assertEqual(resp.context_data['filter'].data, {'phd_to_rate': True})
 
 
+class TestPHDValidationViewGet(TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        super(TestPHDValidationViewGet, cls).setUpClass()
+        cls.user = User.objects.create_superuser(username="testuser", password="azerty123", email="test@tests.com")
+        # all of this to get one anwers in the query
+        cls.user.phd_image = File(BytesIO(), name='lol')
+        cls.user.phd_rate_date = None
+        cls.user.phd_update_date = timezone.now()
+        cls.user.save()
+
+    def test_get_context_data(self):
+        pass

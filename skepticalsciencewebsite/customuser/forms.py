@@ -1,8 +1,9 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.utils import timezone
-from registration.forms import RegistrationFormTermsOfService
+from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
+from registration.forms import RegistrationFormTermsOfService
 from django_select2.forms import Select2MultipleWidget
 from sciences.forms import ScienceModelForm
 from skepticalsciencewebsite.utils import NoLinkClearableFileInput
@@ -14,6 +15,12 @@ class CustomUserForm(RegistrationFormTermsOfService):
     """
     Registration for, using, username and email (password is automaticaly add)
     """
+    def __init__(self, *args, **kwargs):
+        super(CustomUserForm, self).__init__(*args, **kwargs)
+        url = reverse('tos')
+        self.fields['tos'].label = _(u'I have read and agree to the %(beginurl)s Terms of Service %(endurl)s')%\
+                         {'beginurl': "<a href='"+url+"'>", 'endurl': '</a>'}
+
     class Meta:
         model = get_user_model()
         fields = ["username", "email"]

@@ -129,11 +129,6 @@ class PHDDisplay(DetailView):
     object = None
     template_name = "customuser/check_phd_user.html"
 
-    def get(self, request, *args, **kwargs):
-        self.object = get_object_or_404(User, pk=kwargs["pk"])
-        context = self.get_context_data(object=self.object)
-        return self.render_to_response(context)
-
     def get_context_data(self, **kwargs):
         context = super(PHDDisplay, self).get_context_data(**kwargs)
         context["form"] = CheckPHDForm()
