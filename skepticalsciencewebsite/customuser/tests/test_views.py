@@ -1,11 +1,12 @@
 from io import BytesIO
+from django.utils import timezone
 from django.test import TestCase
 from django.test import RequestFactory
 from django.core.urlresolvers import reverse
 from django.core.files import File
 from customuser.models import User
 from custompayment.constants import SCIENTIST_ACCOUNT
-from customuser.views import UserDetailView
+from customuser.views import UserDetailView, UserPHDTableView
 
 
 class TestUserDetailView(TestCase):
@@ -66,11 +67,9 @@ class TestUserUpdateView(TestCase):
 
 class TestGetPHDImage(TestCase):
 
-    @classmethod
-    def setUpClass(cls):
-        super(TestGetPHDImage, cls).setUpClass()
-        cls.user = User.objects.create_superuser(username="testuser", password="azerty123", email="test@tests.com")
-        cls.user.save()
+    def setUp(self):
+        self.user = User.objects.create_superuser(username="testuser", password="azerty123", email="test@tests.com")
+        self.user.save()
 
     def test_get_phd_image_empty(self):
         assert self.client.login(username="testuser", password="azerty123")
@@ -98,3 +97,52 @@ class TestGetPHDImage(TestCase):
         url = reverse("phd_image", kwargs={'pk':self.user.pk})
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 302)
+
+
+class TestUserPHDTableView(TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        super(TestUserPHDTableView, cls).setUpClass()
+        cls.user = User.objects.create_superuser(username="testuser", password="azerty123", email="test@tests.com")
+        # all of this to get one anwers in the query
+        cls.user.phd_image = File(BytesIO(), name='lol')
+        cls.user.phd_rate_date = None
+        cls.user.phd_update_date = timezone.now()
+        cls.user.save()
+        cls.user2 = User.objects.create_user(username="testuser2", password="azerty123", email="test2@tests.com")
+        cls.user2.save()
+
+    def test_connection_status_code_superuser(self):
+        assert self.client.login(username="testuser", password="azerty123")
+        url = reverse("phd_ask_list")
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+
+    def test_connection_status_code_simpleuser(self):
+        assert self.client.login(username="testuser2", password="azerty123")
+        url = reverse("phd_ask_list")
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 302)
+
+    def test_connection_status_code_unconnected(self):
+        url = reverse("phd_ask_list")
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 302)
+
+    def test_get_queryset(self):
+        assert self.client.login(username="testuser", password="azerty123")
+        url = reverse("phd_ask_list")
+        resp = self.client.get(url)
+        self.assertEqual(list(resp.context_data['object_list'])[0], self.user)
+
+    # def test_get_table(self):
+    #     # should be done
+
+    def test_context_filter_name(self):
+        assert self.client.login(username="testuser", password="azerty123")
+        url = reverse("phd_ask_list")
+        resp = self.client.get(url)
+        self.assertEqual(resp.context_data['filter'].data, {'phd_to_rate': True})
+
+
