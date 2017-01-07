@@ -100,8 +100,6 @@ class UserPHDTableView(SingleTableView):
         return context
 
 
-
-
 @method_decorator(staff_member_required, name='dispatch')
 @method_decorator(login_required, name='dispatch')
 class PHDValidation(UpdateView):

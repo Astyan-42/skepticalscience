@@ -1,11 +1,11 @@
-import mock
+from io import BytesIO
 from django.test import TestCase
 from django.test import RequestFactory
 from django.core.urlresolvers import reverse
-from skepticalsciencewebsite.utils import setup_view
+from django.core.files import File
 from customuser.models import User
 from custompayment.constants import SCIENTIST_ACCOUNT
-from customuser.views import UserDetailView, UserUpdateView
+from customuser.views import UserDetailView
 
 
 class TestUserDetailView(TestCase):
@@ -61,4 +61,40 @@ class TestUserUpdateView(TestCase):
 
     def test_not_connected(self):
         resp = self.client.get(self.url)
+        self.assertEqual(resp.status_code, 302)
+
+
+class TestGetPHDImage(TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        super(TestGetPHDImage, cls).setUpClass()
+        cls.user = User.objects.create_superuser(username="testuser", password="azerty123", email="test@tests.com")
+        cls.user.save()
+
+    def test_get_phd_image_empty(self):
+        assert self.client.login(username="testuser", password="azerty123")
+        url = reverse("phd_image", kwargs={'pk':self.user.pk})
+        with self.assertRaises(ValueError):
+            self.client.get(url)
+
+    def test_get_phd_image_filled(self):
+        self.user.phd_image = File(BytesIO(), name='lol')
+        self.user.save()
+        assert self.client.login(username="testuser", password="azerty123")
+        url = reverse("phd_image", kwargs={'pk':self.user.pk})
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+
+    def test_not_connected(self):
+        url = reverse("phd_image", kwargs={'pk':self.user.pk})
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 302)
+
+    def test_not_super_user(self):
+        user = User.objects.create_user(username="testuser2", password="azerty123", email="test2@tests.com")
+        user.save()
+        assert self.client.login(username="testuser2", password="azerty123")
+        url = reverse("phd_image", kwargs={'pk':self.user.pk})
+        resp = self.client.get(url)
         self.assertEqual(resp.status_code, 302)
