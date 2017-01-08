@@ -56,7 +56,7 @@ class TestUserUpdateView(TestCase):
 
     def test_send_wrong_data_response_code(self):
         assert self.client.login(username="testuser", password="azerty123")
-        resp = self.client.post(self.url, {'first_name': 'john'})
+        resp = self.client.post(self.url, {'first_name': 'john'}, follow=True)
         self.assertEqual(resp.template_name, ["customuser/update_user.html"])
         self.assertEqual(resp.status_code, 200)
 
@@ -167,6 +167,7 @@ class TestPHDValidationViewGet(TestCase):
         self.assertIsNotNone(resp.context_data['form'])
         self.assertEqual(resp.context_data['object'], self.user)
         self.assertEqual(resp.context_data['address_name'], 'Unknowned')
+        self.assertEqual(resp.context_data["user_detail"], self.user)
 
     def test_connection_status_code_superuser(self):
         assert self.client.login(username="testuser", password="azerty123")
@@ -190,26 +191,25 @@ class TestPHDValidationViewPost(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_superuser(username="testuser", password="azerty123", email="test@tests.com")
-        # all of this to get one anwers in the query
         self.user.phd_image = File(BytesIO(), name='lol')
         self.user.phd_rate_date = None
         self.user.phd_update_date = timezone.now()
         self.user.save()
 
-    def get_test_post_success(self):
+    def test_post_success(self):
         assert self.client.login(username="testuser", password="azerty123")
         url = reverse("user_phd", kwargs={'pk': self.user.pk})
-        resp = self.client.post(url, {'phd_comment' : 'test'})
+        resp = self.client.post(url, {'phd_comment': 'test', 'phd': True}, follow=True)
         self.assertEqual(resp.status_code, 200)
-        self.assertEqual(resp.template_name, ["customuser/lis_user_phd.html"])
+        self.assertEqual(resp.template_name, ['customuser/list_user_phd.html', 'customuser/user_list.html'])
 
-    def get_test_post_fail(self):
+    def test_post_fail(self):
         assert self.client.login(username="testuser", password="azerty123")
         url = reverse("user_phd", kwargs={'pk': self.user.pk})
-        resp = self.client.post(url, {'phd' : 'True'})
+        resp = self.client.post(url, {'phd' : 'True'}, follow=True)
         self.assertEqual(resp.status_code, 200)
-        self.assertEqual(resp.template_name, ["customuser/lis_user_phd.html"])
-        print(self.user.phd)
-
-
-
+        self.assertEqual(resp.template_name, ["customuser/check_phd_user.html"])
+        self.assertEqual(resp.context_data["address_name"], 'Unknowned')
+        self.assertIsNotNone(resp.context_data["form"])
+        self.assertEqual(resp.context_data["user_detail"], self.user)
+        self.assertEqual(resp.context_data['object'], self.user)
