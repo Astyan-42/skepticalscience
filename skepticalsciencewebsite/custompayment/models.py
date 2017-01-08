@@ -174,7 +174,7 @@ class Payment(BasePayment):
         return super(Payment, self).save(**kwargs)
 
     def __str__(self):
-        return self.token.__str__()
+        return self.token
 
 
 class Order(models.Model):
@@ -228,7 +228,6 @@ class Order(models.Model):
                 raise ValidationError({'discount': _('The discount code is not for this type of item')})
 
     def delete(self, using=None, keep_parents=False):
-        print('lol')
         if self.billing_address:
             self.billing_address.delete()
         if self.item:
