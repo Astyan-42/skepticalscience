@@ -109,7 +109,7 @@ class PHDValidation(UpdateView):
     template_name = "customuser/check_phd_user.html"
 
     def get_object(self, queryset=None):
-        obj, created = User.objects.get_or_create(pk=self.kwargs["pk"])
+        obj = User.objects.get(pk=self.kwargs["pk"])
         return obj
 
     def get_context_data(self, **kwargs):

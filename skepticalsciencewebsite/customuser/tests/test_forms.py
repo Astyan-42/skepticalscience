@@ -55,12 +55,12 @@ class CustomUserUpdateFormTestCase(TestCase):
 class CheckPHDFormTestCase(TestCase):
 
     def test_valid(self):
-        form_data = {'phd': 'False', 'submit': 'Submit', 'phd_comment': ''}
+        form_data = {'phd': 'False', 'submit': 'Submit', 'phd_comment': 'test'}
         form = CheckPHDForm(data=form_data)
         self.assertTrue(form.is_valid())
 
     def test_save(self):
-        form_data = {'phd': 'False', 'submit': 'Submit', 'phd_comment': ''}
+        form_data = {'phd': 'False', 'submit': 'Submit', 'phd_comment': 'test'}
         form = CheckPHDForm(data=form_data)
         data = form.save()
         self.assertIsNotNone(data.phd_rate_date)

@@ -157,6 +157,59 @@ class TestPHDValidationViewGet(TestCase):
         cls.user.phd_rate_date = None
         cls.user.phd_update_date = timezone.now()
         cls.user.save()
+        cls.user2 = User.objects.create_user(username="testuser2", password="azerty123", email="test2@tests.com")
+        cls.user2.save()
 
     def test_get_context_data(self):
-        pass
+        assert self.client.login(username="testuser", password="azerty123")
+        url = reverse("user_phd", kwargs={'pk':self.user.pk})
+        resp = self.client.get(url)
+        self.assertIsNotNone(resp.context_data['form'])
+        self.assertEqual(resp.context_data['object'], self.user)
+        self.assertEqual(resp.context_data['address_name'], 'Unknowned')
+
+    def test_connection_status_code_superuser(self):
+        assert self.client.login(username="testuser", password="azerty123")
+        url = reverse("user_phd", kwargs={'pk':self.user.pk})
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+
+    def test_connection_status_code_simpleuser(self):
+        assert self.client.login(username="testuser2", password="azerty123")
+        url = reverse("user_phd", kwargs={'pk':self.user.pk})
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 302)
+
+    def test_connection_status_code_unconnected(self):
+        url = reverse("user_phd", kwargs={'pk':self.user.pk})
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 302)
+
+
+class TestPHDValidationViewPost(TestCase):
+
+    def setUp(self):
+        self.user = User.objects.create_superuser(username="testuser", password="azerty123", email="test@tests.com")
+        # all of this to get one anwers in the query
+        self.user.phd_image = File(BytesIO(), name='lol')
+        self.user.phd_rate_date = None
+        self.user.phd_update_date = timezone.now()
+        self.user.save()
+
+    def get_test_post_success(self):
+        assert self.client.login(username="testuser", password="azerty123")
+        url = reverse("user_phd", kwargs={'pk': self.user.pk})
+        resp = self.client.post(url, {'phd_comment' : 'test'})
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.template_name, ["customuser/lis_user_phd.html"])
+
+    def get_test_post_fail(self):
+        assert self.client.login(username="testuser", password="azerty123")
+        url = reverse("user_phd", kwargs={'pk': self.user.pk})
+        resp = self.client.post(url, {'phd' : 'True'})
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.template_name, ["customuser/lis_user_phd.html"])
+        print(self.user.phd)
+
+
+
