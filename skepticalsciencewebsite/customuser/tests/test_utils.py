@@ -3,7 +3,7 @@ from django.test import TestCase
 from customuser.utils import get_scientific_account_address_name
 
 
-class UserTestCase(TestCase):
+class GetScientificAccountAddressNameTestCase(TestCase):
     # need to do the address thing
 
     def test_empty_address_name(self):
