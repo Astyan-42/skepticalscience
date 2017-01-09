@@ -100,7 +100,7 @@ class Reviewer(models.Model):
     """
     scientist = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_("Reviewer"))
     publication = models.ForeignKey(Publication, verbose_name=_("Publication"))
-    actif = models.BooleanField(default=True, verbose_name=_("Actif"))
+    actif = models.BooleanField(default=True, verbose_name=_("Activated"))
     # history = HistoricalRecords()
 
     class Meta:
@@ -117,7 +117,7 @@ class Comment(models.Model):
     publication = models.ForeignKey(Publication, verbose_name=_("Publication"))
     author = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_("Author"))
     # fake pseudo when reviewer must be reviewer (fake pseudo given automatically between: Reviewer, Scientist, Skeptic)
-    author_fake_pseudo = models.CharField(max_length=100, default=None, blank=True, verbose_name=_('Fake Pseudo'))
+    author_fake_pseudo = models.CharField(max_length=100, default=None, blank=True, verbose_name=_('Alias'))
     creation_date = models.DateTimeField(auto_now_add=True, verbose_name=_('Date created'))
     comment_type = models.IntegerField(choices=COMMENT_ON, db_index=True, verbose_name=_("Comment type"))
     seriousness = models.IntegerField(choices=SERIOUSNESS_STATUS, db_index=True, blank=True, null=True,
@@ -127,7 +127,7 @@ class Comment(models.Model):
     validated = models.IntegerField(choices=VALIDATION_STATUS, default=2, verbose_name=_("Validation"))
     corrected = models.BooleanField(default=False, verbose_name=_("Corrected"))
     corrected_date = models.DateTimeField(null=True, blank=True, default=None, verbose_name=_('Date corrected'))
-    licence = models.ForeignKey(Licence, verbose_name=_("Licence"))
+    licence = models.ForeignKey(Licence, verbose_name=_("License"))
 
     def __str__(self):
         return self.title

@@ -8,6 +8,6 @@ class UserTestCase(TestCase):
 
     def test_empty_address_name(self):
         res = get_scientific_account_address_name(pk=1)
-        self.assertEqual(res, 'Unknowned')
+        self.assertEqual(res, 'Unknown')
 
 

@@ -18,7 +18,7 @@
                 <h2>Detail</h2>
                 {% if order_detail.status == constants.FULLY_PAID %}
                     <p>{% trans "This order has been paid on " %}{{ order_detail.last_status_change }}</p>
-                    <!--<p><a href="{% url 'address' order_detail.token %}">{% trans "View the bill" %}</a></p>-->
+                    <!--<p><a href="{% url 'address' order_detail.token %}">{% trans "View invoice" %}</a></p>-->
                 {% elif order_detail.status == constants.CANCELLED %}
                     <p>{% trans "This order has been cancelled on " %}{{ order_detail.last_status_change }}</p>
                 {% endif %}
@@ -47,10 +47,14 @@
                     </table>
                 </div>
                 {% if order_detail.status == constants.NEW %}
-                    <p class="text-info">{% trans 'By clicking on "Accept and Pay" you accept the' %}
-                        <a href="{% url 'selling_contract' %}">{% trans "selling contract" %}</a>
+                    <p class="text-info">{% trans 'By clicking on "Accept and Pay" and the validation checkbox you accept the' %}
+                        <a href="{% url 'selling_contract' %}">{% trans "conditions of sell" %}</a>
                         {% trans "and review your order information." %}
                     </p>
+                     {% crispy accept_contract %}
+                     {{ accept_contract.media.js }}
+
+                    {{ accept_contract.accepted.value }}
                     {% if order_detail.billing_address is None %}
                         <div class="btn btn-primary disabled">{% trans "Accept and pay" %}</div>
                     {% else %}
@@ -62,7 +66,7 @@
                 {% if order_detail.payment.status == 'confirmed' %}
                     <!-- verify date too-->
                     <a href="{% url 'cancel_order' order_detail.token %}">
-                        <div class="btn btn-default">{% trans 'Cancel order and get refund' %}</div>
+                        <div class="btn btn-default">{% trans 'Cancel order and request a refund' %}</div>
                     </a>
                 {% elif order_detail.payment is None or order_detail.payment.status != 'confirmed' and order_detail.payment.status != 'refunded' %}
                     <a href="{% url 'delete_order' order_detail.token %}">
@@ -74,7 +78,7 @@
         <div class="col-md-3">
             <h2>{% trans "Billing address" %}</h2>
             {% if order_detail.billing_address is None %}
-                <p class="text-danger">{% trans "You must have a billing address to complete your order" %}</p>
+                <p class="text-danger">{% trans "You must enter a billing address to complete your order" %}</p>
                 <a href="{% url 'address' order_detail.token %}"><div class="btn btn-primary">Create the address</div></a>
             {% else %}
                 <p>{{ order_detail.billing_address.billing_name }}</p>
@@ -119,14 +123,14 @@
             <p><b>{% trans "Status :" %}</b>{{ order_detail.get_status_display }}</p>
             {% if order_detail.status == constants.PAYMENT_PENDING or order_detail.status == constants.FULLY_PAID or order_detail.status == constants.CANCELLED %}
                 {% language "fr" %}
-                    <p><a href="{% url 'invoice' order_detail.token %}">{% trans "Billing(FR)" %}</a></p>
+                    <p><a href="{% url 'invoice' order_detail.token %}">{% trans "Invoice(FR)" %}</a></p>
                 {% endlanguage %}
-                <p><a href="{% url 'invoice' order_detail.token %}">{% trans "Billing(EN)" %}</a></p>
+                <p><a href="{% url 'invoice' order_detail.token %}">{% trans "Invoice(EN)" %}</a></p>
             {% endif %}
             {% language "fr" %}
-                <p><a href="{% url 'selling_contract' %}">{% trans "Selling contract(FR)" %}</a></p>
+                <p><a href="{% url 'selling_contract' %}">{% trans "Conditions of sell(FR)" %}</a></p>
             {% endlanguage %}
-            <p><a href="{% url 'selling_contract' %}">{% trans "Selling contract(EN)" %}</a></p>
+            <p><a href="{% url 'selling_contract' %}">{% trans "Conditions of sell(EN)" %}</a></p>
             {% if order_detail.status == constants.NEW %}
                 <hr>
                 {% crispy form %}

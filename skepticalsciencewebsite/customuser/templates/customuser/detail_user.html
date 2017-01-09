@@ -70,6 +70,8 @@
         {% if user_detail.print_phd_non_accepted %}
             <p class="text-danger">{% trans "Your PHD didn't get accepted, please send us a" %} <a href="{% url 'edit_profile' %}">
                 {% trans "better quality image" %}.
+                <br>
+                {% trans "Your image didn't get accepted because" %} :{{ user_detail.phd_comment }}
             </a></p>
         {% endif %}
     {% endif %}

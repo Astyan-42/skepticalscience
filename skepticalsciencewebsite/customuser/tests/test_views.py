@@ -166,7 +166,7 @@ class TestPHDValidationViewGet(TestCase):
         resp = self.client.get(url)
         self.assertIsNotNone(resp.context_data['form'])
         self.assertEqual(resp.context_data['object'], self.user)
-        self.assertEqual(resp.context_data['address_name'], 'Unknowned')
+        self.assertIsNotNone(resp.context_data['address_name'])
         self.assertEqual(resp.context_data["user_detail"], self.user)
 
     def test_connection_status_code_superuser(self):
@@ -209,7 +209,7 @@ class TestPHDValidationViewPost(TestCase):
         resp = self.client.post(url, {'phd' : 'True'}, follow=True)
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.template_name, ["customuser/check_phd_user.html"])
-        self.assertEqual(resp.context_data["address_name"], 'Unknowned')
+        self.assertIsNotNone(resp.context_data["address_name"])
         self.assertIsNotNone(resp.context_data["form"])
         self.assertEqual(resp.context_data["user_detail"], self.user)
         self.assertEqual(resp.context_data['object'], self.user)
