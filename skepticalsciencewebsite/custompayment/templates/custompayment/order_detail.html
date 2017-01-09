@@ -51,27 +51,13 @@
                         <a href="{% url 'selling_contract' %}">{% trans "conditions of sell" %}</a>
                         {% trans "and review your order information." %}
                     </p>
-                     {% crispy accept_contract %}
-                     {{ accept_contract.media.js }}
 
-                    {{ accept_contract.accepted.value }}
                     {% if order_detail.billing_address is None %}
                         <div class="btn btn-primary disabled">{% trans "Accept and pay" %}</div>
                     {% else %}
-                        <a href="{% url 'payment' order_detail.token %}">
-                            <div class="btn btn-primary">{% trans "Accept and pay" %}</div>
-                        </a>
+                        {% crispy accept_contract %}
+                        {{ accept_contract.media.js }}
                     {% endif %}
-                {% endif %}
-                {% if order_detail.payment.status == 'confirmed' %}
-                    <!-- verify date too-->
-                    <a href="{% url 'cancel_order' order_detail.token %}">
-                        <div class="btn btn-default">{% trans 'Cancel order and request a refund' %}</div>
-                    </a>
-                {% elif order_detail.payment is None or order_detail.payment.status != 'confirmed' and order_detail.payment.status != 'refunded' %}
-                    <a href="{% url 'delete_order' order_detail.token %}">
-                        <div class="btn btn-default">{% trans 'delete the order' %}</div>
-                    </a>
                 {% endif %}
             </div>
         </div>
@@ -135,6 +121,16 @@
                 <hr>
                 {% crispy form %}
                 {{ form.media.js }}
+            {% endif %}
+            {% if order_detail.payment.status == 'confirmed' %}
+                    <!-- verify date too-->
+                    <a href="{% url 'cancel_order' order_detail.token %}">
+                        <div class="btn btn-default">{% trans 'Cancel order and request a refund' %}</div>
+                    </a>
+                {% elif order_detail.payment is None or order_detail.payment.status != 'confirmed' and order_detail.payment.status != 'refunded' %}
+                    <a href="{% url 'delete_order' order_detail.token %}">
+                        <div class="btn btn-default">{% trans 'delete the order' %}</div>
+                    </a>
             {% endif %}
         </div>
     </div>

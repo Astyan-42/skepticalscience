@@ -21,7 +21,7 @@ from skepticalsciencewebsite.utils import same_user, check_status
 from customuser.constants import *
 from publications.models import Publication
 from custompayment.models import Order, Payment, Address, Item, CountryPayment, Price
-from custompayment.forms import PaymentMethodsForm, AddressForm, DiscountOrderForm
+from custompayment.forms import PaymentMethodsForm, AddressForm, DiscountOrderForm, AcceptSellingForm
 from custompayment.tables import OrderTable
 from custompayment.filters import OrderFilter
 from custompayment.constants import *
@@ -152,6 +152,7 @@ class DiscountOrderUpdate(UpdateView):
         context = super(DiscountOrderUpdate, self).get_context_data(**kwargs)
         # seems to be only called when bug
         # constants needed !!!
+        context["accept_contract"] = AcceptSellingForm()
         context["constants"] = PAYMENT_CONSTANTS_TEMPLATE
         context["order_detail"].discount = self.get_object().discount
         return add_price_to_context(context)
@@ -177,6 +178,7 @@ class OrderDisplay(DetailView):
     @same_user('user')
     def get_context_data(self, **kwargs):
         context = super(OrderDisplay, self).get_context_data(**kwargs)
+        context["accept_contract"] = AcceptSellingForm()
         context["form"] = DiscountOrderForm()
         context["constants"] = PAYMENT_CONSTANTS_TEMPLATE
         return add_price_to_context(context)
@@ -192,8 +194,12 @@ class OrderDetailView(View):
 
     @staticmethod
     def post(request, *args, **kwargs):
-        view = DiscountOrderUpdate.as_view()
-        return view(request, *args, **kwargs)
+        if request.POST["submit"].lower() == _("Apply").lower():
+            view = DiscountOrderUpdate.as_view()
+            return view(request, *args, **kwargs)
+        else:
+            print(kwargs)
+            return redirect('payment', kwargs['token'])
 
 
 @method_decorator(login_required, name='dispatch')

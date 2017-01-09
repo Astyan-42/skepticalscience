@@ -182,7 +182,7 @@ class Order(models.Model):
     token = models.CharField(_('token'), max_length=36, unique=True, null=True, blank=True)
     status = models.CharField(_('order status'), max_length=32, choices=ORDER_CHOICES, default=NEW)
     creation_date = models.DateTimeField(_('created'), auto_now_add=True)
-    last_status_change = models.DateTimeField(_('last status change'), auto_now=True)
+    last_status_change = models.DateTimeField(_('last status update'), auto_now=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('buyer'))
     discount = models.ForeignKey(Discount, verbose_name=_('discount code'), null=True, blank=True)
     billing_address = models.ForeignKey(Address, verbose_name=_('billing address'), null=True, blank=True,
@@ -225,7 +225,7 @@ class Order(models.Model):
     def clean(self):
         if self.discount is not None:
             if self.discount.discount_for != self.item.name:
-                raise ValidationError({'discount': _('The discount code is not for this type of item')})
+                raise ValidationError({'discount': _('This discount code does not apply to this item')})
 
     def delete(self, using=None, keep_parents=False):
         if self.billing_address:

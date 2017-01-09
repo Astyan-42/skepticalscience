@@ -51,7 +51,7 @@ class DiscountOrderForm(forms.ModelForm):
             self.add_error('discount', forms.ValidationError(_("This discount code hasn't started yet")))
             return False
         elif today > discount.ending_date:
-            self.add_error('discount', forms.ValidationError(_("This discount code is over")))
+            self.add_error('discount', forms.ValidationError(_("This discount code has ended")))
             return False
         return True
 
@@ -71,3 +71,13 @@ class PaymentMethodsForm(forms.Form):
         self.helper = FormHelper(self)
         self.helper.form_id = 'id_paymentmethodForm'
         self.helper.add_input(Submit('submit', _('Proceed to payment')))
+
+
+class AcceptSellingForm(forms.Form):
+    accepted = forms.BooleanField(label="Accept the conditions of sell", initial=False)
+
+    def __init__(self, *args, **kwargs):
+        super(AcceptSellingForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_id = 'id_acceptsellingForm'
+        self.helper.add_input(Submit('submit', _('Accept and pay')))
