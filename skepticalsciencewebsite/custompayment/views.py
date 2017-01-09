@@ -2,6 +2,7 @@ from decimal import Decimal
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404, redirect
 from django.http import Http404, HttpResponseForbidden
+from django.core.exceptions import PermissionDenied
 from django.template.response import TemplateResponse
 from django.conf import settings
 from django.db import transaction
@@ -37,9 +38,12 @@ class BillingAddressUpdate(UpdateView):
 
     def get_object(self, queryset=None):
         order = Order.objects.get(token=self.kwargs["token"])
+        if order.user != self.request.user:
+            raise PermissionDenied
         if order.billing_address is None:
             if Address.objects.filter(scientist=self.request.user).exists():
                 obj = Address.objects.filter(scientist=self.request.user).order_by("-creation_date")[0]
+                # attribute no pk to create a new object while save
                 obj.pk = None
             else:
                 obj = Address(scientist=self.request.user)
@@ -198,7 +202,6 @@ class OrderDetailView(View):
             view = DiscountOrderUpdate.as_view()
             return view(request, *args, **kwargs)
         else:
-            print(kwargs)
             return redirect('payment', kwargs['token'])
 
 

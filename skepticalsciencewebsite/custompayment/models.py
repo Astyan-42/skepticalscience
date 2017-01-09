@@ -186,7 +186,7 @@ class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('buyer'))
     discount = models.ForeignKey(Discount, verbose_name=_('discount code'), null=True, blank=True)
     billing_address = models.ForeignKey(Address, verbose_name=_('billing address'), null=True, blank=True,
-                                        on_delete=models.CASCADE)
+                                        related_name='order', on_delete=models.CASCADE)
     item = models.OneToOneField(Item, verbose_name=_('item'), on_delete=models.CASCADE)
     # to delete, put the order in price
     price = models.ForeignKey(Price, verbose_name=_('price'), related_name='order', null=True,
