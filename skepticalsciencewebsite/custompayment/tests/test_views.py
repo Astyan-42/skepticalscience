@@ -1,10 +1,10 @@
 import datetime
 from django.utils import timezone
 from django.test import TestCase
-from django.test import RequestFactory
 from django.core.urlresolvers import reverse
 from django.contrib.auth import get_user_model
 from custompayment.models import Order, Address, Item, CountryPayment, Discount, Price
+from custompayment.constants import SCIENTIST_ACCOUNT
 
 
 class BillingAddressUpdateTestCase(TestCase):
@@ -184,3 +184,45 @@ class OrderOwnedTableViewTestCase(TestCase):
         resp = self.client.get(self.url)
         self.assertEqual(len(list(resp.context_data['object_list'])), 1)
 
+
+class CreateOrderTestCase(TestCase):
+
+    def setUp(self):
+        User = get_user_model()
+        self.user = User.objects.create_user(username="testuser", password="azerty123", email="test@tests.com")
+        self.user.save()
+        self.user2 = User.objects.create_user(username="testuser2", password="azerty123", email="test2@tests.com")
+        self.user2.save()
+        self.url_scientist_account = reverse('create_order', kwargs={'name': SCIENTIST_ACCOUNT, 'sku': self.user.pk})
+        #self.url_publication = reverse('create_order', kwargs={'name': PUBLICATION, 'sku': self.publication.pk})
+
+    def test_not_logged(self):
+        resp = self.client.get(self.url_scientist_account, follow=True)
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.template_name, 'registration/login.html')
+
+    # def test_cannot_create_publication_order_user(self):
+    #     pass
+    #
+    # def test_cannot_create_publication_order_item(self):
+    #     pass
+    #
+    # def test_can_create_publication_order(self):
+    #     pass
+
+    def test_cannot_create_scientist_account_order_user(self):
+        assert self.client.login(username="testuser2", password="azerty123")
+        resp = self.client.get(self.url_scientist_account)
+        self.assertEqual(resp.status_code, 403)
+
+    def test_cannot_create_scientist_account_order_item(self):
+        assert self.client.login(username="testuser", password="azerty123")
+        Item.objects.create(name=SCIENTIST_ACCOUNT, sku=self.user.pk)
+        resp = self.client.get(self.url_scientist_account)
+        self.assertEqual(resp.status_code, 403)
+
+    def test_can_create_cientist_account_order(self):
+        assert self.client.login(username="testuser", password="azerty123")
+        resp = self.client.get(self.url_scientist_account, follow=True)
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.template_name, ['custompayment/order_detail.html'])

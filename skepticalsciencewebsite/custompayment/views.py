@@ -343,7 +343,7 @@ def start_payment(request, token, variant):
 
 
 @login_required
-def cancer_order(request, token):
+def cancel_order(request, token):
     order = get_object_or_404(Order, token=token)
     if order.user != request.user:
         return HttpResponseForbidden()
