@@ -151,3 +151,36 @@ class OrderDetailViewTestCase(TestCase):
         self.assertEqual(resp.template_name, 'custompayment/payment.html')
 
 
+class OrderOwnedTableViewTestCase(TestCase):
+
+    def setUp(self):
+        User = get_user_model()
+        self.user = User.objects.create_user(username="testuser", password="azerty123", email="test@tests.com")
+        self.user.save()
+        self.item = Item(name='scientist-account', sku=self.user.pk)
+        self.item.save()
+        self.order = Order(status='new', user=self.user, item=self.item)
+        self.order.save()
+        self.user2 = User.objects.create_user(username="testuser2", password="azerty123", email="test2@tests.com")
+        self.user2.save()
+        self.item2 = Item(name='scientist-account', sku=self.user2.pk)
+        self.item2.save()
+        self.order2 = Order(status='new', user=self.user2, item=self.item2)
+        self.order2.save()
+        self.url = reverse('list_order')
+
+    def test_not_logged(self):
+        resp = self.client.get(self.url)
+        self.assertEqual(resp.status_code, 302)
+
+    def test_get_template(self):
+        assert self.client.login(username="testuser", password="azerty123")
+        resp = self.client.get(self.url)
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.template_name, ['custompayment/order_list.html', 'custompayment/order_list.html'])
+
+    def test_get_queryset(self):
+        assert self.client.login(username="testuser", password="azerty123")
+        resp = self.client.get(self.url)
+        self.assertEqual(len(list(resp.context_data['object_list'])), 1)
+
