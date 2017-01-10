@@ -147,15 +147,13 @@ class DiscountOrderUpdate(UpdateView):
     template_name = "custompayment/order_detail.html"
 
     def get_object(self, queryset=None):
-        obj, created = Order.objects.get_or_create(token=self.kwargs["token"])
+        obj = Order.objects.get(token=self.kwargs["token"])
         return obj
 
     @same_user('user')
     def get_context_data(self, **kwargs):
         """ done in case of form invalid"""
         context = super(DiscountOrderUpdate, self).get_context_data(**kwargs)
-        # seems to be only called when bug
-        # constants needed !!!
         context["accept_contract"] = AcceptSellingForm()
         context["constants"] = PAYMENT_CONSTANTS_TEMPLATE
         context["order_detail"].discount = self.get_object().discount
@@ -235,6 +233,7 @@ class OrderOwnedTableView(SingleTableView):
         return context
 
 
+@login_required
 def create_order(request, name, sku):
 
     def can_create_publication_order(request, sku):
@@ -272,6 +271,7 @@ def create_order(request, name, sku):
     return redirect('detail_order', token=order.token)
 
 
+@login_required
 def payment_choice(request, token):
     order = get_object_or_404(Order, token=token)
     if order.user != request.user:
@@ -291,6 +291,7 @@ def payment_choice(request, token):
     return HttpResponseForbidden()
 
 
+@login_required
 def start_payment(request, token, variant):
     order = get_object_or_404(Order, token=token)
     if order.user != request.user:
@@ -341,6 +342,7 @@ def start_payment(request, token, variant):
                             {'form': form, 'payment': order.payment})
 
 
+@login_required
 def cancer_order(request, token):
     order = get_object_or_404(Order, token=token)
     if order.user != request.user:
@@ -354,6 +356,7 @@ def cancer_order(request, token):
         return HttpResponseForbidden()
 
 
+@login_required
 def delete_order(request, token):
     order = get_object_or_404(Order, token=token)
     if order.user != request.user:
