@@ -1,0 +1,1312 @@
+[
+{
+  "model": "sciences.science",
+  "pk": 1,
+  "fields": {
+    "name": "Particle physics",
+    "description": "Particle physics",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 2,
+  "fields": {
+    "name": "Atomic physics",
+    "description": "Atomic physics",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 3,
+  "fields": {
+    "name": "Molecular physics",
+    "description": "Molecular physics",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 4,
+  "fields": {
+    "name": "Optical physics",
+    "description": "Optical physics",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 5,
+  "fields": {
+    "name": "Condensed matter physics",
+    "description": "Condensed matter physics",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 6,
+  "fields": {
+    "name": "Astrophysics",
+    "description": "Astrophysics",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 7,
+  "fields": {
+    "name": "Cosmology",
+    "description": "Cosmology",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 8,
+  "fields": {
+    "name": "Physics",
+    "description": "Physics",
+    "primary_science": true,
+    "sub_science": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ]
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 9,
+  "fields": {
+    "name": "Analytical chemistry",
+    "description": "Analytical chemistry",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 10,
+  "fields": {
+    "name": "Biochemistry",
+    "description": "Biochemistry",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 11,
+  "fields": {
+    "name": "Inorganic chemistry",
+    "description": "Inorganic chemistry",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 12,
+  "fields": {
+    "name": "Materials chemistry",
+    "description": "Materials chemistry",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 13,
+  "fields": {
+    "name": "Neurochemistry",
+    "description": "Neurochemistry",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 14,
+  "fields": {
+    "name": "Nuclear chemistry",
+    "description": "Nuclear chemistry",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 15,
+  "fields": {
+    "name": "Organic chemistry",
+    "description": "Organic chemistry",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 16,
+  "fields": {
+    "name": "Physical chemistry",
+    "description": "Physical chemistry",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 17,
+  "fields": {
+    "name": "Theoretical chemistry",
+    "description": "Theoretical chemistry",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 18,
+  "fields": {
+    "name": "Chemistry",
+    "description": "Chemistry",
+    "primary_science": true,
+    "sub_science": [
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17
+    ]
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 19,
+  "fields": {
+    "name": "Behavioural ecology",
+    "description": "Behavioural ecology",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 20,
+  "fields": {
+    "name": "Cognitive ecology",
+    "description": "Cognitive ecology",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 21,
+  "fields": {
+    "name": "Social ecology",
+    "description": "Social ecology",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 22,
+  "fields": {
+    "name": "Coevolution",
+    "description": "Coevolution",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 23,
+  "fields": {
+    "name": "Biogeography",
+    "description": "Biogeography",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 24,
+  "fields": {
+    "name": "Molecular ecology",
+    "description": "Molecular ecology",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 25,
+  "fields": {
+    "name": "Human ecology",
+    "description": "Human ecology",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 26,
+  "fields": {
+    "name": "Ecology",
+    "description": "Ecology",
+    "primary_science": true,
+    "sub_science": [
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25
+    ]
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 27,
+  "fields": {
+    "name": "Oceanography",
+    "description": "Oceanography",
+    "primary_science": true,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 28,
+  "fields": {
+    "name": "Planetary geology",
+    "description": "Planetary geology",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 29,
+  "fields": {
+    "name": "Economic geology",
+    "description": "Economic geology",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 30,
+  "fields": {
+    "name": "Engineering geology",
+    "description": "Engineering geology",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 31,
+  "fields": {
+    "name": "Hydrology",
+    "description": "Hydrology",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 32,
+  "fields": {
+    "name": "Geology",
+    "description": "Geology",
+    "primary_science": true,
+    "sub_science": [
+      28,
+      29,
+      30,
+      31
+    ]
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 33,
+  "fields": {
+    "name": "Paleoclimatology",
+    "description": "Paleoclimatology",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 34,
+  "fields": {
+    "name": "Historical climatology",
+    "description": "Historical climatology",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 35,
+  "fields": {
+    "name": "Urban climatology",
+    "description": "Urban climatology",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 36,
+  "fields": {
+    "name": "Climatology",
+    "description": "Climatology",
+    "primary_science": true,
+    "sub_science": [
+      33,
+      34,
+      35
+    ]
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 37,
+  "fields": {
+    "name": "Hydrometeorology",
+    "description": "Hydrometeorology",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 38,
+  "fields": {
+    "name": "Meteorology",
+    "description": "Meteorology",
+    "primary_science": true,
+    "sub_science": [
+      37
+    ]
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 39,
+  "fields": {
+    "name": "Theoretical astronomy",
+    "description": "Theoretical astronomy",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 40,
+  "fields": {
+    "name": "Observational astronomy",
+    "description": "Observational astronomy",
+    "primary_science": false,
+    "sub_science": [
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48
+    ]
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 41,
+  "fields": {
+    "name": "Astronomy",
+    "description": "Astronomy",
+    "primary_science": true,
+    "sub_science": [
+      39,
+      40
+    ]
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 42,
+  "fields": {
+    "name": "Radio astronomy",
+    "description": "Radio astronomy",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 43,
+  "fields": {
+    "name": "Infrared astronomy",
+    "description": "Infrared astronomy",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 44,
+  "fields": {
+    "name": "Optical astronomy",
+    "description": "Optical astronomy",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 45,
+  "fields": {
+    "name": "Ultraviolet astronomy",
+    "description": "Ultraviolet astronomy",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 46,
+  "fields": {
+    "name": "X-ray astronomy",
+    "description": "X-ray astronomy",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 47,
+  "fields": {
+    "name": "Gamma-ray astronomy",
+    "description": "Gamma-ray astronomy",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 48,
+  "fields": {
+    "name": "Astrometry",
+    "description": "Astrometry",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 49,
+  "fields": {
+    "name": "Microbiology",
+    "description": "Microbiology",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 50,
+  "fields": {
+    "name": "Anatomy",
+    "description": "Anatomy",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 51,
+  "fields": {
+    "name": "Neurology",
+    "description": "Neurology",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 52,
+  "fields": {
+    "name": "Neuroscience",
+    "description": "Neuroscience",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 53,
+  "fields": {
+    "name": "Immunology",
+    "description": "Immunology",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 54,
+  "fields": {
+    "name": "Genetics",
+    "description": "Genetics",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 55,
+  "fields": {
+    "name": "Physiology",
+    "description": "Physiology",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 56,
+  "fields": {
+    "name": "Pathology",
+    "description": "Pathology",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 57,
+  "fields": {
+    "name": "Biophysics",
+    "description": "Biophysics",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 58,
+  "fields": {
+    "name": "Ophthalmology",
+    "description": "Ophthalmology",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 59,
+  "fields": {
+    "name": "Biology",
+    "description": "Biology",
+    "primary_science": true,
+    "sub_science": [
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58
+    ]
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 60,
+  "fields": {
+    "name": "Ethology",
+    "description": "Ethology",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 61,
+  "fields": {
+    "name": "Zoology",
+    "description": "Zoology",
+    "primary_science": true,
+    "sub_science": [
+      60
+    ]
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 62,
+  "fields": {
+    "name": "Botany",
+    "description": "Botany",
+    "primary_science": true,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 63,
+  "fields": {
+    "name": "Anthropology",
+    "description": "Anthropology",
+    "primary_science": true,
+    "sub_science": [
+      64,
+      65,
+      66
+    ]
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 64,
+  "fields": {
+    "name": "Sociocultural anthropology",
+    "description": "Sociocultural anthropology",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 65,
+  "fields": {
+    "name": "Biological anthropology",
+    "description": "Biological anthropology",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 66,
+  "fields": {
+    "name": "Linguistic anthropology",
+    "description": "Linguistic anthropology",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 67,
+  "fields": {
+    "name": "Archaeology",
+    "description": "Archaeology",
+    "primary_science": true,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 68,
+  "fields": {
+    "name": "Microeconomics",
+    "description": "Microeconomics",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 69,
+  "fields": {
+    "name": "Macroeconomics",
+    "description": "Macroeconomics",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 70,
+  "fields": {
+    "name": "Economics",
+    "description": "Economics",
+    "primary_science": true,
+    "sub_science": [
+      68,
+      69
+    ]
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 71,
+  "fields": {
+    "name": "Historical linguistics",
+    "description": "Historical linguistics",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 72,
+  "fields": {
+    "name": "Sociolinguistics",
+    "description": "Sociolinguistics",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 73,
+  "fields": {
+    "name": "Developmental linguistics",
+    "description": "Developmental linguistics",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 74,
+  "fields": {
+    "name": "Neurolinguistics",
+    "description": "Neurolinguistics",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 75,
+  "fields": {
+    "name": "Linguistics",
+    "description": "Linguistics",
+    "primary_science": true,
+    "sub_science": [
+      71,
+      72,
+      73,
+      74
+    ]
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 76,
+  "fields": {
+    "name": "Social psychology",
+    "description": "Social psychology",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 77,
+  "fields": {
+    "name": "Neuropsychology",
+    "description": "Neuropsychology",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 78,
+  "fields": {
+    "name": "Anomalistic psychology",
+    "description": "Anomalistic psychology",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 79,
+  "fields": {
+    "name": "Clinical psychology",
+    "description": "Clinical psychology",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 80,
+  "fields": {
+    "name": "Psychology",
+    "description": "Psychology",
+    "primary_science": true,
+    "sub_science": [
+      76,
+      77,
+      78,
+      79
+    ]
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 81,
+  "fields": {
+    "name": "Sociology",
+    "description": "Sociology",
+    "primary_science": true,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 82,
+  "fields": {
+    "name": "Zoogeography",
+    "description": "Zoogeography",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 83,
+  "fields": {
+    "name": "Physical geography",
+    "description": "Physical geography",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 84,
+  "fields": {
+    "name": "Human geography",
+    "description": "Human geography",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 85,
+  "fields": {
+    "name": "Integrated geography",
+    "description": "Integrated geography",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 86,
+  "fields": {
+    "name": "Geomatics",
+    "description": "Geomatics",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 87,
+  "fields": {
+    "name": "Regional geography",
+    "description": "Regional geography",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 88,
+  "fields": {
+    "name": "Geography",
+    "description": "Geography",
+    "primary_science": true,
+    "sub_science": [
+      82,
+      83,
+      84,
+      85,
+      86,
+      87
+    ]
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 89,
+  "fields": {
+    "name": "Historiology",
+    "description": "Historiology",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 90,
+  "fields": {
+    "name": "Historiography",
+    "description": "Historiography",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 91,
+  "fields": {
+    "name": "History",
+    "description": "History",
+    "primary_science": true,
+    "sub_science": [
+      89,
+      90
+    ]
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 92,
+  "fields": {
+    "name": "Logic",
+    "description": "Logic",
+    "primary_science": true,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 93,
+  "fields": {
+    "name": "Statistics",
+    "description": "Statistics",
+    "primary_science": false,
+    "sub_science": [
+      98
+    ]
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 94,
+  "fields": {
+    "name": "Abstract algebra",
+    "description": "Abstract algebra",
+    "primary_science": false,
+    "sub_science": [
+      99
+    ]
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 95,
+  "fields": {
+    "name": "Geometry",
+    "description": "Geometry",
+    "primary_science": false,
+    "sub_science": [
+      100,
+      101
+    ]
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 96,
+  "fields": {
+    "name": "Computational mathematics",
+    "description": "Computational mathematics",
+    "primary_science": false,
+    "sub_science": [
+      102,
+      103,
+      104,
+      105
+    ]
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 97,
+  "fields": {
+    "name": "Mathematics",
+    "description": "Mathematics",
+    "primary_science": true,
+    "sub_science": [
+      93,
+      94,
+      95,
+      96
+    ]
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 98,
+  "fields": {
+    "name": "Probability theory",
+    "description": "Probability theory",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 99,
+  "fields": {
+    "name": "Group theory",
+    "description": "Group theory",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 100,
+  "fields": {
+    "name": "Euclidean geometry",
+    "description": "Euclidean geometry",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 101,
+  "fields": {
+    "name": "Number theory",
+    "description": "Number theory",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 102,
+  "fields": {
+    "name": "Graph theory",
+    "description": "Graph theory",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 103,
+  "fields": {
+    "name": "Computer algebra",
+    "description": "Computer algebra",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 104,
+  "fields": {
+    "name": "Symbolic computation",
+    "description": "Symbolic computation",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 105,
+  "fields": {
+    "name": "Cryptography",
+    "description": "Cryptography",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 106,
+  "fields": {
+    "name": "Computer science",
+    "description": "Computer science",
+    "primary_science": true,
+    "sub_science": [
+      107,
+      108,
+      109,
+      110,
+      111,
+      112,
+      113,
+      114
+    ]
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 107,
+  "fields": {
+    "name": "Theoretical computer science",
+    "description": "Theoretical computer science",
+    "primary_science": false,
+    "sub_science": [
+      115,
+      116,
+      117,
+      118,
+      119
+    ]
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 108,
+  "fields": {
+    "name": "Artificial intelligence",
+    "description": "Artificial intelligence",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 109,
+  "fields": {
+    "name": "Computer architecture",
+    "description": "Computer architecture",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 110,
+  "fields": {
+    "name": "Computer security",
+    "description": "Computer security",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 111,
+  "fields": {
+    "name": "Computational science",
+    "description": "Computational science",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 112,
+  "fields": {
+    "name": "Computer network",
+    "description": "Computer network",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 113,
+  "fields": {
+    "name": "Distributed computing",
+    "description": "Distributed computing",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 114,
+  "fields": {
+    "name": "Software engineering",
+    "description": "Software engineering",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 115,
+  "fields": {
+    "name": "Theory of computation",
+    "description": "Theory of computation",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 116,
+  "fields": {
+    "name": "Coding theory",
+    "description": "Coding theory",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 117,
+  "fields": {
+    "name": "Information theory",
+    "description": "Information theory",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 118,
+  "fields": {
+    "name": "Formal methods",
+    "description": "Formal methods",
+    "primary_science": false,
+    "sub_science": []
+  }
+},
+{
+  "model": "sciences.science",
+  "pk": 119,
+  "fields": {
+    "name": "Programming language theory",
+    "description": "Programming language theory",
+    "primary_science": false,
+    "sub_science": []
+  }
+}
+]
