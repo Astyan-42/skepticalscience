@@ -70,7 +70,6 @@ class PublicationCorrectForm(forms.ModelForm):
                    'source_final': NoLinkClearableFileInput,}
 
 
-
 class PublicationAbortForm(forms.ModelForm):
     abort = forms.BooleanField()
 
