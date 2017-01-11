@@ -71,7 +71,7 @@ class PublicationCorrectForm(forms.ModelForm):
 
 
 class PublicationAbortForm(forms.ModelForm):
-    abort = forms.BooleanField()
+    abort = forms.BooleanField(required=False)
 
     def __init__(self, *args, **kwargs):
         super(PublicationAbortForm, self).__init__(*args, **kwargs)

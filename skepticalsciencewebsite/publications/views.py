@@ -162,7 +162,6 @@ class PublicationAbortUpdate(UpdateView):
     model = Publication
     name = "Abort publication"
     form_class = PublicationAbortForm
-    success_url = reverse_lazy("index")
     template_name = 'publications/publication_edit_form.html'
     object = None
     request = None
