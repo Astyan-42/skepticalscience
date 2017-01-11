@@ -255,3 +255,46 @@ class TestPublicationAbort(TestCase):
         resp = self.client.post(self.url, {"abort": False}, follow=True)
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.template_name, ['publications/publication_detail.html'])
+
+
+class TestPublicationTableView(TestCase):
+
+    def setUp(self):
+        User = get_user_model()
+        self.user = User.objects.create_user(username="testuser", password="azerty123", email="test@tests.com",
+                                             first_name='fname', last_name='lname')
+        self.user2 = User.objects.create_user(username="testuser2", password="azerty123", email="test2@tests.com")
+        # add permission to a user
+        self.licence = Licence.objects.create(short_name="CC0")
+        self.licence.save()
+        permission = Permission.objects.get(name='Can change publication')
+        self.user.user_permissions.add(permission)
+        self.science = Science.objects.create(name='lol', description="zef", primary_science=True)
+        self.science.save()
+        self.publication = Publication.objects.create(title="title", editor=self.user, resume="resume",
+                                                      pdf_creation=File(BytesIO(b"\x00\x01"), name='lol'),
+                                                      source_creation=File(BytesIO(b"\x00\x01"), name='lol2'),
+                                                      first_author=self.user, licence=self.licence,
+                                                      status=CORRECTION)
+        self.publication.sciences.add(self.science)
+        self.publication.save()
+        self.url = reverse("publication_list")
+
+    def test_get(self):
+        resp = self.client.get(self.url)
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.template_name, ['publications/publication_list.html', 'publications/publication_list.html'])
+        self.assertEqual(len(resp.context_data['object_list']), 1)
+
+    def test_get_filter(self):
+        resp = self.client.get(self.url, {"title": "title"})
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.template_name, ['publications/publication_list.html', 'publications/publication_list.html'])
+        self.assertEqual(len(resp.context_data['object_list']), 1)
+
+    def test_get_filter_nores(self):
+        resp = self.client.get(self.url, {"title": "zdfc"})
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.template_name, ['publications/publication_list.html', 'publications/publication_list.html'])
+        self.assertEqual(len(resp.context_data['object_list']), 0)
+
