@@ -221,7 +221,7 @@ class CreateOrderTestCase(TestCase):
         resp = self.client.get(self.url_scientist_account)
         self.assertEqual(resp.status_code, 403)
 
-    def test_can_create_cientist_account_order(self):
+    def test_can_create_scientist_account_order(self):
         assert self.client.login(username="testuser", password="azerty123")
         resp = self.client.get(self.url_scientist_account, follow=True)
         self.assertEqual(resp.status_code, 200)
