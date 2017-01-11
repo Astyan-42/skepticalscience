@@ -87,11 +87,11 @@ class EstimatedImpactFactor(models.Model):
     publication = models.ForeignKey(Publication, verbose_name=_('Publication'))
     estimated_impact_factor = MinMaxFloat(min_value=0.0, max_value=1000.0, verbose_name=_("Estimated impact factor"))
 
-    class Meta:
-        unique_together = ('estimator', 'publication')
-
     def __str__(self):
         return self.estimator.get_full_name()
+
+    class Meta:
+        unique_together = ('estimator', 'publication')
 
 
 class Reviewer(models.Model):
@@ -147,12 +147,11 @@ class CommentReview(models.Model):
     corrected = models.BooleanField(default=False, verbose_name=_("Corrected"))
     reason_correction = models.CharField(max_length=8192, blank=False, verbose_name=_("Reason of (in)correction"))
 
-    class Meta:
-        unique_together = ('reviewer', 'comment')
-
     def __str__(self):
         return self.comment.title
 
+    class Meta:
+        unique_together = ('reviewer', 'comment')
     # def clean(self):
     #     to put in the form valid
     #     if self.reviewer.publication != self.comment.publication:
