@@ -1403,15 +1403,15 @@ msgstr ""
 
 #: templates/selling_contract.html:7
 msgid "Selling contract"
-msgstr ""
+msgstr "Conditions générale de vente"
 
 #: templates/tos.html:10
 msgid "Terms"
-msgstr ""
+msgstr "Conditions"
 
 #: templates/tos.html:12
 msgid "By accessing the website at "
-msgstr ""
+msgstr "En accédant à ce site web à "
 
 #: templates/tos.html:13
 msgid ""
@@ -1426,6 +1426,16 @@ msgid ""
 "            are protected by applicable copyright and trademark law.\n"
 "        "
 msgstr ""
+"\n"
+"            , vous acceptez de respecter ces conditions d'utilisation,\n"
+"            ainsi que les lois et régulations, et acceptez de "
+"respecter\n"
+"            toutes lois applicables. Si vous n'êtes pas "
+"d'accord avec ces conditions,\n"
+"            vous n'avez pas le droit d'utiliser ce site web. Le "
+"contenu de ce site web\n"
+"            est protégé par le droit d'auteur.\n"
+"        "
 
 #: templates/tos.html:24
 msgid ""
@@ -1441,18 +1451,25 @@ msgid ""
 "            following of the Code de la propriété intellectuelle.\n"
 "        "
 msgstr ""
+"\n"
+"            Nous vous informons que toutes reproduction totale ou partielle "
+"partielle, par quelque procédé que ce soit\n"
+"            de ce site, des logos, des images pouvant y figurer est soumise "
+"aux règle de la licence spécifique au contenu tout non respect de la "
+"licence constituerait une contrefaçon sanctionnée par les "
+"articles L 335-2 et suivants du Code de la propriété intellectuelle."
 
 #: templates/tos.html:33
 msgid "Disclamer"
-msgstr ""
+msgstr "Limitation de responsabilité"
 
 #: templates/tos.html:35
 msgid "The materials on"
-msgstr ""
+msgstr "Le contenu sur"
 
 #: templates/tos.html:36
 msgid "'s website are provided on an 'as is' basis."
-msgstr ""
+msgstr "le site web sont fournis 'tel quel'."
 
 #: templates/tos.html:37
 msgid ""
@@ -1466,10 +1483,19 @@ msgid ""
 "            intellectual property or other violation of rights.\n"
 "        "
 msgstr ""
+"\n"
+"            Ne donne aucune garantie, explicite ou implicite, et décline"
+"toutes autres\n"
+"            garantie, sans limitation, incluant les "
+"conditions\n"
+"            de commercialisation, d'aptitude à un usage particulier, ou de "
+"non respect de\n"
+"            la propriété intellectuelle et autres violation de droit.\n"
+"        "
 
 #: templates/tos.html:45
 msgid "Further"
-msgstr ""
+msgstr "Aussi"
 
 #: templates/tos.html:46
 msgid ""
@@ -1481,14 +1507,21 @@ msgid ""
 "            materials or on any sites linked to this site.\n"
 "        "
 msgstr ""
+"\n"
+"            ne garantit ni ne fait aucune déclaration concernant "
+"l'exactitude, les resultats probables,\n"
+"            ou la fiabilité de l'utilisation des documents sur son site Web ou "
+"autrement liés à ces\n"
+"            matériaux ou sur tout site lié à ce site.\n"
+"        "
 
 #: templates/tos.html:53
 msgid "Limitations"
-msgstr ""
+msgstr "Limitations"
 
 #: templates/tos.html:55
 msgid "In no event shall"
-msgstr ""
+msgstr "En aucun cas"
 
 #: templates/tos.html:56
 msgid ""
@@ -1500,14 +1533,21 @@ msgid ""
 "            arising out of the use or inability to use the materials on\n"
 "        "
 msgstr ""
+"\n"
+"            ou ses fournisseurs sont responsables de tout dommage (y compris "
+"les dommages\n"
+"            pour perte de données ou de profit, ou en raison d'une interruption "
+"d'activité)\n"
+"            découlant de l'utilisation ou l'incapacité d'utiliser les matériaux sur\n"
+"        "
 
 #: templates/tos.html:61
 msgid "'s website, even if"
-msgstr ""
+msgstr " site web, même si"
 
 #: templates/tos.html:61
 msgid "or a"
-msgstr ""
+msgstr "ou un"
 
 #: templates/tos.html:62
 msgid ""
@@ -1521,39 +1561,53 @@ msgid ""
 "            these limitations may not apply to you.\n"
 "        "
 msgstr ""
+"\n"
+"            représentant autorisé a été informé oralement ou par écrit "
+"de la possibilité\n"
+"            de tels dommages. Étant donné que certaines juridictions n'autorisent "
+"pas les limitations sur les garanties implicites,\n"
+"            ou les limitations de responsabilité pour les dommages consécutifs ou "
+"accessoires,\n"
+"            ces limitations peuvent ne pas s'appliquer à vous.\n"
+"        "
 
 #: templates/tos.html:70
 msgid "Accuracy of materials"
-msgstr ""
+msgstr "Exactitude des contenus"
 
 #: templates/tos.html:72
 msgid "The materials appearing on"
-msgstr ""
+msgstr "Le contenu apparaissant sur"
 
 #: templates/tos.html:73
 msgid ""
 "'s website could include technical, typographical, or photographic errors."
 msgstr ""
+"le site web peut inclure des erreurs techniques, typographique ou photographique"
 
 #: templates/tos.html:74
 msgid ""
 "does not warrant that any of the materials on its website are accurate, "
 "complete or current."
 msgstr ""
+"ne garanti pas que les contenus sur ce site web sont justes, "
+"complet ou actuel."
 
 #: templates/tos.html:75
 msgid ""
 "may make changes to the materials contained on its website at any time "
 "without notice. However"
 msgstr ""
+"peut apporter des modifications aux documents contenus sur son site Web à tout moment "
+"sans préavis. Toutefois"
 
 #: templates/tos.html:76
 msgid "does not make any commitment to update the materials."
-msgstr ""
+msgstr "ne s'engage pas à mettre à jour les documents."
 
 #: templates/tos.html:79
 msgid "Links"
-msgstr ""
+msgstr "Liens"
 
 #: templates/tos.html:81
 msgid ""
@@ -1564,14 +1618,20 @@ msgid ""
 "link does not imply endorsement by\n"
 "        "
 msgstr ""
+"\n"
+"            n'a pas revu tous les sites liés à son site et n'est pas "
+"responsable\n"
+"            du contenu d'un tel site lié. L'inclusion de tout lien "
+"n'implique pas l'approbation par\n"
+"        "
 
 #: templates/tos.html:85
 msgid "of the site. Use of any such linked website is at the user's own risk."
-msgstr ""
+msgstr "de ce site. L'utilisation d'un tel site Web relié est à ses risques et périls."
 
 #: templates/tos.html:88
 msgid "Modifications"
-msgstr ""
+msgstr "Modifications"
 
 #: templates/tos.html:90
 msgid ""
@@ -1583,10 +1643,17 @@ msgid ""
 "        of these terms of service.\n"
 "        "
 msgstr ""
+"\n"
+"        peut réviser ces conditions de service pour son site Web à tout moment "
+"sans préavis.\n"
+"        En utilisant ce site Web, vous acceptez d'être lié par la "
+"version actuelle\n"
+"        de ces conditions de service.\n"
+"        "
 
 #: templates/tos.html:97
 msgid "Governing Law"
-msgstr ""
+msgstr "Droit applicable"
 
 #: templates/tos.html:99
 msgid ""
@@ -1597,21 +1664,14 @@ msgid ""
 "courts in that country.\n"
 "        "
 msgstr ""
+"\n"
+"            Ces conditions générales sont régies et interprétées "
+"conformément aux lois de la France\n"
+"            et vous vous soumettez irrévocablement à la juridiction exclusive "
+"des tribunaux de ce pays.\n"
+"        "
 
 #: templates/tos.html:108
-#, fuzzy
-#| msgid ""
-#| "\n"
-#| "                collects information about you when you create your "
-#| "Account. Information with an asterisk is mandatory.\n"
-#| "                 This information enables us to carry out operations "
-#| "relating to customer management,\n"
-#| "                 operations relating to prospecting, preparation of "
-#| "business statistics,\n"
-#| "                 management of requests for access rights, correction and "
-#| "opposition,\n"
-#| "                 management of bills and litigation.\n"
-#| "            "
 msgid ""
 "\n"
 "            collects information about you when you create your Account. "
@@ -1625,14 +1685,16 @@ msgid ""
 "        "
 msgstr ""
 "\n"
-"               recueille des informations vous concernant lors de la "
-"création de votre Compte. Les informations accompagnées d’un astérisque sont "
-"obligatoires.\n"
-"               Ces informations nous permettent d’effectuer les opérations "
-"relatives à la gestion des clients, \n"
-"des opérations relatives à la prospection, à l’élaboration de statistiques, "
-"de gestion des droit d’accès dont la rectification et l'opposition, ainsi "
-"que la gestion des impayés et des contentieux.            "
+"                recueille des informations vous concernant lors de la "
+"création de votre Compte. Les informations obligatoires sont accompagnées "
+"d’un astérisque.\n"
+"                 Ces informations nous permettent d’effectuer les opérations "
+"relatives à la gestion client,\n"
+"                 des opérations relatives à la prospection, à la création de "
+"statistiques,\n"
+"                 de gestion des droit d’accès,\n"
+"                 ainsi que la gestion des impayés et des contentieux.\n"
+"            "
 
 #: templates/tos.html:117
 msgid ""
@@ -1645,6 +1707,13 @@ msgid ""
 "HTTPS).\n"
 "        "
 msgstr ""
+"\n"
+"                Nous nous sommes engagés à assurer la sécurité des données à "
+"caractère personnel via des procédures strictes au sein de notre "
+"entreprise.  Pour les données collectées \"en ligne\", les communications "
+"sur la partie cliente sont cryptées entre le poste  de l'internaute et nos "
+"serveurs (via  HTTPS).\n"
+"            "
 
 #: templates/tos.html:124
 msgid ""
@@ -1659,3 +1728,14 @@ msgid ""
 "profile page.\n"
 "        "
 msgstr ""
+"\n"
+"                Conformément aux dispositions de la Loi Informatique et "
+"Libertés du 6 janvier 1978\n"
+"                (modifiée par la loi du 6 août 2004 relative à la protection "
+"des personnes physiques à l'égard des traitements de données à caractère "
+"personnel)\n"
+"                 vous bénéficiez d'un droit d'accès, de rectification ou "
+"d'opposition sur vos données personnelles collectées.\n"
+"                Ces droits peuvent être exercés en vous rendant sur la page "
+"Account/Edit profile.\n"
+"            "
