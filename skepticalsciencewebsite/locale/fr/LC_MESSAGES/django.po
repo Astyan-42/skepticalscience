@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-08 23:24+0000\n"
+"POT-Creation-Date: 2017-01-14 00:08+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,7 +22,7 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: custompayment/forms.py:33
+#: custompayment/forms.py:33 custompayment/views.py:199
 msgid "Apply"
 msgstr ""
 
@@ -35,11 +35,16 @@ msgid "This discount code hasn't started yet"
 msgstr ""
 
 #: custompayment/forms.py:54
-msgid "This discount code is over"
+msgid "This discount code has ended"
 msgstr ""
 
 #: custompayment/forms.py:73
 msgid "Proceed to payment"
+msgstr ""
+
+#: custompayment/forms.py:83
+#: custompayment/templates/custompayment/order_detail.html:56
+msgid "Accept and pay"
 msgstr ""
 
 #: custompayment/models.py:22 customuser/views.py:41
@@ -184,7 +189,7 @@ msgid "order status"
 msgstr ""
 
 #: custompayment/models.py:185
-msgid "last status change"
+msgid "last status update"
 msgstr ""
 
 #: custompayment/models.py:186
@@ -206,7 +211,7 @@ msgid "Payment"
 msgstr "Statut du payment"
 
 #: custompayment/models.py:228
-msgid "The discount code is not for this type of item"
+msgid "This discount code does not apply to this item"
 msgstr ""
 
 #: custompayment/templates/custompayment/address_form.html:8
@@ -226,8 +231,10 @@ msgid "This order has been paid on "
 msgstr ""
 
 #: custompayment/templates/custompayment/order_detail.html:21
-msgid "View the bill"
-msgstr ""
+#, fuzzy
+#| msgid "Invoice"
+msgid "View invoice"
+msgstr "Facture"
 
 #: custompayment/templates/custompayment/order_detail.html:23
 msgid "This order has been cancelled on "
@@ -243,73 +250,72 @@ msgid "Price"
 msgstr ""
 
 #: custompayment/templates/custompayment/order_detail.html:50
-msgid "By clicking on \"Accept and Pay\" you accept the"
+msgid ""
+"By clicking on \"Accept and Pay\" and the validation checkbox you accept the"
 msgstr ""
 
 #: custompayment/templates/custompayment/order_detail.html:51
-#: templates/base.html:153
-msgid "selling contract"
+msgid "conditions of sell"
 msgstr ""
 
 #: custompayment/templates/custompayment/order_detail.html:52
 msgid "and review your order information."
 msgstr ""
 
-#: custompayment/templates/custompayment/order_detail.html:55
-#: custompayment/templates/custompayment/order_detail.html:58
-msgid "Accept and pay"
-msgstr ""
-
 #: custompayment/templates/custompayment/order_detail.html:65
-msgid "Cancel order and get refund"
-msgstr ""
-
-#: custompayment/templates/custompayment/order_detail.html:69
-msgid "delete the order"
-msgstr ""
-
-#: custompayment/templates/custompayment/order_detail.html:75
 msgid "Billing address"
 msgstr ""
 
-#: custompayment/templates/custompayment/order_detail.html:77
-msgid "You must have a billing address to complete your order"
+#: custompayment/templates/custompayment/order_detail.html:67
+msgid "You must enter a billing address to complete your order"
 msgstr ""
 
-#: custompayment/templates/custompayment/order_detail.html:119
+#: custompayment/templates/custompayment/order_detail.html:109
 msgid "Status :"
 msgstr ""
 
-#: custompayment/templates/custompayment/order_detail.html:122
-msgid "Billing(FR)"
+#: custompayment/templates/custompayment/order_detail.html:112
+#, fuzzy
+#| msgid "Invoice"
+msgid "Invoice(FR)"
+msgstr "Facture"
+
+#: custompayment/templates/custompayment/order_detail.html:114
+#, fuzzy
+#| msgid "Invoice"
+msgid "Invoice(EN)"
+msgstr "Facture"
+
+#: custompayment/templates/custompayment/order_detail.html:117
+msgid "Conditions of sell(FR)"
 msgstr ""
 
-#: custompayment/templates/custompayment/order_detail.html:124
-msgid "Billing(EN)"
+#: custompayment/templates/custompayment/order_detail.html:119
+msgid "Conditions of sell(EN)"
 msgstr ""
 
-#: custompayment/templates/custompayment/order_detail.html:127
-msgid "Selling contract(FR)"
+#: custompayment/templates/custompayment/order_detail.html:128
+msgid "Cancel order and request a refund"
 msgstr ""
 
-#: custompayment/templates/custompayment/order_detail.html:129
-msgid "Selling contract(EN)"
+#: custompayment/templates/custompayment/order_detail.html:132
+msgid "delete the order"
 msgstr ""
 
 #: custompayment/templates/custompayment/order_list.html:13
-msgid "My orders"
+msgid "Order history"
 msgstr ""
 
 #: custompayment/templates/custompayment/payment.html:8
 msgid "Payment method"
 msgstr ""
 
-#: custompayment/views.py:307
+#: custompayment/views.py:317
 #, python-format
 msgid "Order %(order_number)s"
 msgstr ""
 
-#: custompayment/views.py:326
+#: custompayment/views.py:336
 msgid ""
 "Oops, it looks like we were unable to contact the selected payment service"
 msgstr ""
@@ -320,7 +326,7 @@ msgid "I have read and agree to the %(beginurl)s Terms of Service %(endurl)s"
 msgstr ""
 
 #: customuser/forms.py:38 customuser/forms.py:68 publications/forms.py:45
-#: publications/forms.py:63 publications/forms.py:104
+#: publications/forms.py:63 publications/forms.py:103
 #: templates/registration/password_change_form.html:13
 #: templates/registration/password_reset_confirm.html:12
 #: templates/registration/password_reset_form.html:15
@@ -488,6 +494,10 @@ msgstr ""
 msgid "better quality image"
 msgstr ""
 
+#: customuser/templates/customuser/detail_user.html:74
+msgid "Your image didn't get accepted because"
+msgstr ""
+
 #: customuser/templates/customuser/list_user_phd.html:13
 msgid "Users waiting for PHD validation"
 msgstr ""
@@ -497,7 +507,7 @@ msgid "Edit profile"
 msgstr ""
 
 #: customuser/utils.py:10
-msgid "Unknowned"
+msgid "Unknown"
 msgstr ""
 
 #: customuser/views.py:43
@@ -650,20 +660,20 @@ msgstr "Statut du payment"
 msgid "Email: %(email)s <br/>Please contact us if you have any questions."
 msgstr "Courriel: %(email)s <br/>Contactez-nous si vous avez des questions."
 
-#: publications/forms.py:81
+#: publications/forms.py:80
 msgid "Abort publication"
 msgstr ""
 
-#: publications/forms.py:123
+#: publications/forms.py:122
 #: publications/templates/publications/publication_detail.html:36
 msgid "Evaluate"
 msgstr ""
 
-#: publications/forms.py:137 publications/views.py:655
+#: publications/forms.py:136 publications/views.py:661
 msgid "Validate"
 msgstr ""
 
-#: publications/forms.py:152 publications/models.py:128
+#: publications/forms.py:151 publications/models.py:128
 #: publications/models.py:147
 #: publications/templates/publications/comment_detail.html:31
 msgid "Corrected"
@@ -760,9 +770,7 @@ msgstr "Statut"
 msgid "Update status date"
 msgstr ""
 
-#: publications/models.py:62 publications/models.py:130
-#: publications/templates/publications/comment_detail.html:24
-#: publications/templates/publications/publication_detail.html:109
+#: publications/models.py:62
 msgid "Licence"
 msgstr ""
 
@@ -789,7 +797,7 @@ msgid "Reviewer"
 msgstr ""
 
 #: publications/models.py:103
-msgid "Actif"
+msgid "Activated"
 msgstr ""
 
 #: publications/models.py:118
@@ -797,7 +805,7 @@ msgid "Author"
 msgstr ""
 
 #: publications/models.py:120
-msgid "Fake Pseudo"
+msgid "Alias"
 msgstr ""
 
 #: publications/models.py:122
@@ -820,6 +828,12 @@ msgstr ""
 
 #: publications/models.py:129
 msgid "Date corrected"
+msgstr ""
+
+#: publications/models.py:130
+#: publications/templates/publications/comment_detail.html:24
+#: publications/templates/publications/publication_detail.html:109
+msgid "License"
 msgstr ""
 
 #: publications/models.py:140
@@ -989,42 +1003,41 @@ msgstr ""
 msgid "Publications "
 msgstr ""
 
-#: publications/views.py:380
+#: publications/views.py:386
 msgid "Publication cancelled"
 msgstr ""
 
-#: publications/views.py:381
-msgid ""
-"This publication hasn't been validated. Be careful. We appreciate your help!"
+#: publications/views.py:387
+msgid "This publication is not validated."
 msgstr ""
 
-#: publications/views.py:384
+#: publications/views.py:390
 msgid "Publication is not finished"
 msgstr ""
 
-#: publications/views.py:385
-msgid ""
-"This publication haven't been validated yet. It could have some "
-"bias.                                       We appreciate your help!"
-msgstr ""
-
 #: publications/views.py:391
-msgid "Publication with bias"
-msgstr ""
-
-#: publications/views.py:392
 msgid ""
-"This publication contains some bias. Be careful. We appreciate your help!"
+"This publication has not been validated yet. It could have some "
+"mistakes.                                       If you would like to help "
+"please participate in the peer review."
 msgstr ""
 
-#: publications/views.py:395
+#: publications/views.py:397
+msgid "Publication with errors"
+msgstr ""
+
+#: publications/views.py:398
+msgid "This publication contains some errors."
+msgstr ""
+
+#: publications/views.py:401
 msgid "Publication validated"
 msgstr ""
 
-#: publications/views.py:396
+#: publications/views.py:402
 msgid ""
 "This publication has been validated.                                      "
-"You can help us by trying to find more bias !"
+"You can still help us by trying to find more errors !"
 msgstr ""
 
 #: skepticalsciencewebsite/settings.py:146
@@ -1102,11 +1115,15 @@ msgid "Log in"
 msgstr ""
 
 #: templates/base.html:135
-msgid "legal notices"
+msgid "Legal Notices"
 msgstr ""
 
-#: templates/base.html:144
-msgid "terms of service"
+#: templates/base.html:144 templates/tos.html:9
+msgid "Terms of Service"
+msgstr ""
+
+#: templates/base.html:153
+msgid "Conditions of Sell"
 msgstr ""
 
 #: templates/base.html:164
@@ -1127,49 +1144,49 @@ msgstr "Page d'index"
 
 #: templates/legal_notices.html:7
 msgid "Legal notices"
-msgstr ""
+msgstr "Mentions légales"
 
 #: templates/legal_notices.html:8
 msgid "Legal information"
-msgstr ""
+msgstr "Informations légales"
 
 #: templates/legal_notices.html:10
 msgid "Company type"
-msgstr ""
+msgstr "Forme de la société"
 
 #: templates/legal_notices.html:12
 msgid "Licence number"
-msgstr ""
+msgstr "Numéro de licence"
 
 #: templates/legal_notices.html:14
 msgid "Head office"
-msgstr ""
+msgstr "Siège social"
 
 #: templates/legal_notices.html:16
 msgid "Website manager"
-msgstr ""
+msgstr "Responsable du site web"
 
 #: templates/legal_notices.html:17
 msgid "Publication manager"
-msgstr ""
+msgstr "Responsable de publication"
 
 #: templates/legal_notices.html:18
 msgid "Website host"
-msgstr ""
+msgstr "Hébergeur du site"
 
 #: templates/legal_notices.html:20
 msgid "Phone number"
-msgstr ""
+msgstr "Numéro de téléphone"
 
 #: templates/legal_notices.html:21
-msgid "From monday to friday, 9h-12h and 14h-17h (UTC+1)"
-msgstr ""
+msgid "Available from monday to friday, 9h-12h and 14h-17h (UTC+1)"
+msgstr "Disponible de lundi à vendredi, de 9h à 12h et de 14h à 17h (UTC+1)"
 
 #: templates/legal_notices.html:26 templates/tos.html:22
 msgid "intellectual Property"
-msgstr ""
+msgstr "Propriété intellectuelle"
 
-#: templates/legal_notices.html:28 templates/tos.html:24
+#: templates/legal_notices.html:28
 msgid ""
 "\n"
 "            We would like to inform you any reproduction or partial "
@@ -1177,87 +1194,124 @@ msgid ""
 "            whatsover of this site, the logos used, and the images that may "
 "appear therein\n"
 "            are subjected to the rules of the license specific to the "
-"content.  Any disrespect of the\n"
+"content.  Any disregard of the\n"
 "            license would constitute to an infringement sanctioned by the "
 "articles L 335-2 and the\n"
 "            following of the Code de la propriété intellectuelle.\n"
 "        "
 msgstr ""
+"\n"
+"            Nous vous informons que toutes reproduction totale ou partielle "
+"partielle, par quelque procédé que ce soit\n"
+"            de ce site, des logos, des images pouvant y figurer est soumise "
+"aux règle de la licence spécifique au contenu tout non respect de la "
+"licence             constituerait une contrefaçon sanctionnée par les "
+"articles L 335-2 et suivants du Code de la propriété intellectuelle."
 
 #: templates/legal_notices.html:37 templates/tos.html:105
 msgid "Protection of personal data"
-msgstr ""
+msgstr "Protection des données personnelles"
 
 #: templates/legal_notices.html:41
 msgid ""
 "\n"
 "                collects information about you when you create your Account. "
 "Information with an asterisk is mandatory.\n"
-"                 This information enables us to carry out operations "
+"                 Theses informations enables us to carry out operations "
 "relating to customer management,\n"
 "                 operations relating to prospecting, preparation of business "
 "statistics,\n"
-"                 management of requests for access rights, rectification and "
-"opposition,\n"
-"                 management of arrears and litigation.\n"
+"                 management of requests for access rights,\n"
+"                 management of bills and litigation.\n"
 "            "
 msgstr ""
+"\n"
+"                recueille des informations vous concernant lors de la "
+"création de votre Compte. Les informations obligatoires sont accompagnées "
+"d’un astérisque.\n"
+"                 Ces informations nous permettent d’effectuer les opérations "
+"relatives à la gestion client,\n"
+"                 des opérations relatives à la prospection, à la création de "
+"statistiques,\n"
+"                 de gestion des droit d’accès,\n"
+"                 ainsi que la gestion des impayés et des contentieux.\n"
+"            "
 
 #: templates/legal_notices.html:50
 msgid ""
 "\n"
-"                We are committed to ensuring the security of personal data "
-"through strict procedures within our company.\n"
+"                We are committed to ensuring the security of your personal "
+"data through strict procedures within our company.\n"
 "                 For the data collected \"online\", the communications on "
 "the client part are encrypted between\n"
 "                 the position of the user and our servers (secure zone "
 "HTTPS).\n"
 "            "
 msgstr ""
-
-#: templates/legal_notices.html:56
-msgid ""
 "\n"
-"                 do a lot of efforts to protect your personal data.\n"
+"                Nous nous sommes engagés à assurer la sécurité des données à "
+"caractère personnel via des procédures strictes au sein de notre "
+"entreprise.  Pour les données collectées \"en ligne\", les communications "
+"sur la partie cliente sont cryptées entre le poste  de l'internaute et nos "
+"serveurs (via  HTTPS).\n"
 "            "
-msgstr ""
 
-#: templates/legal_notices.html:61
+#: templates/legal_notices.html:57
 msgid ""
 "\n"
 "                In accordance with the provisions of the Loi Informatique et "
 "Libertés of 6 January 1978\n"
 "                (as amended by the law of 6 August 2004 on the protection of "
 "individuals with regard to the processing of personal data)\n"
-"                you have rights to access, rectification or opposition to "
-"your personal data collected.\n"
+"                you have right to access, correct and delete your personal "
+"data collected.\n"
 "                These rights can be exercised by visiting the Account / Edit "
 "profile page.\n"
 "            "
 msgstr ""
+"\n"
+"                Conformément aux dispositions de la Loi Informatique et "
+"Libertés du 6 janvier 1978\n"
+"                (modifiée par la loi du 6 août 2004 relative à la protection "
+"des personnes physiques à l'égard des traitements de données à caractère "
+"personnel)\n"
+"                 vous bénéficiez d'un droit d'accès, de rectification ou "
+"d'opposition sur vos données personnelles collectées.\n"
+"                Ces droits peuvent être exercés en vous rendant sur la page "
+"Account/Edit profile.\n"
+"            "
 
-#: templates/legal_notices.html:69
-#, fuzzy
-#| msgid "Description"
+#: templates/legal_notices.html:65
 msgid "Mediation"
-msgstr "Description"
+msgstr "Médiation"
 
-#: templates/legal_notices.html:71
+#: templates/legal_notices.html:67
 msgid ""
 "\n"
 "            In accordance with Article L156-1 of the Consumer Code, the "
 "consumer is informed of the possibility\n"
 "             of using a conventional mediation procedure or any other "
 "alternative means of settling disputes\n"
-"             in case of dispute. The consumer is also informed of the "
-"existence of the platform put on line by\n"
+"             in the case of a dispute. The consumer is also informed of the "
+"existence of the platform put online by\n"
 "             the European Commission which aims to collect any complaints "
 "resulting from an online purchase\n"
-"             of European consumers and then forward the cases received to "
-"the competent national\n"
-"            mediators:\n"
+"             from European consumers and then forward the cases received to "
+"the competent national mediators:\n"
 "        "
 msgstr ""
+"\n"
+"            Conformément à l’article L156-1 du code de la consommation, le "
+"consommateur est informé de la possibilité\n"
+"             de recourir, en cas de contestation, à une procédure de "
+"médiation conventionnelle ou à tout autre mode alternatif\n"
+"             de règlement des différents. Le consommateur est également "
+"informé de l’existence de la plateforme mise en ligne par\n"
+"             la Commission européenne qui a pour objet de recueillir des "
+"réclamations issues d'achats en ligne\n"
+"             des consommateurs européens et de transmettre ensuite les cas "
+"reçus aux médiateurs nationaux compétents:\n"
+"        "
 
 #: templates/modifytable.html:63
 msgid "Previous"
@@ -1331,7 +1385,7 @@ msgid "Password reset failed"
 msgstr ""
 
 #: templates/registration/password_reset_done.html:5
-msgid "Email with password reset instructions has been sent."
+msgid "Email with instructions on how to reset your password has been sent."
 msgstr ""
 
 #: templates/registration/password_reset_email.html:2
@@ -1349,10 +1403,6 @@ msgstr ""
 
 #: templates/selling_contract.html:7
 msgid "Selling contract"
-msgstr ""
-
-#: templates/tos.html:9
-msgid "Terms of Service"
 msgstr ""
 
 #: templates/tos.html:10
@@ -1374,6 +1424,21 @@ msgid ""
 "            you are prohibited from using or accessing this site. The "
 "materials contained in this website\n"
 "            are protected by applicable copyright and trademark law.\n"
+"        "
+msgstr ""
+
+#: templates/tos.html:24
+msgid ""
+"\n"
+"            We would like to inform you any reproduction or partial "
+"representation by any means\n"
+"            whatsover of this site, the logos used, and the images that may "
+"appear therein\n"
+"            are subjected to the rules of the license specific to the "
+"content.  Any disrespect of the\n"
+"            license would constitute to an infringement sanctioned by the "
+"articles L 335-2 and the\n"
+"            following of the Code de la propriété intellectuelle.\n"
 "        "
 msgstr ""
 
@@ -1534,25 +1599,46 @@ msgid ""
 msgstr ""
 
 #: templates/tos.html:108
+#, fuzzy
+#| msgid ""
+#| "\n"
+#| "                collects information about you when you create your "
+#| "Account. Information with an asterisk is mandatory.\n"
+#| "                 This information enables us to carry out operations "
+#| "relating to customer management,\n"
+#| "                 operations relating to prospecting, preparation of "
+#| "business statistics,\n"
+#| "                 management of requests for access rights, correction and "
+#| "opposition,\n"
+#| "                 management of bills and litigation.\n"
+#| "            "
 msgid ""
 "\n"
 "            collects information about you when you create your Account. "
 "Information with an asterisk is mandatory.\n"
-"             This information enables us to carry out operations relating to "
-"customer management,\n"
+"             These informations enables us to carry out operations relating "
+"to customer management,\n"
 "             operations relating to prospecting, preparation of business "
 "statistics,\n"
-"             management of requests for access rights, rectification and "
-"opposition,\n"
-"             management of arrears and litigation.\n"
+"             management of requests for access rights,\n"
+"             management of bills and litigation.\n"
 "        "
 msgstr ""
+"\n"
+"               recueille des informations vous concernant lors de la "
+"création de votre Compte. Les informations accompagnées d’un astérisque sont "
+"obligatoires.\n"
+"               Ces informations nous permettent d’effectuer les opérations "
+"relatives à la gestion des clients, \n"
+"des opérations relatives à la prospection, à l’élaboration de statistiques, "
+"de gestion des droit d’accès dont la rectification et l'opposition, ainsi "
+"que la gestion des impayés et des contentieux.            "
 
 #: templates/tos.html:117
 msgid ""
 "\n"
-"                We are committed to ensuring the security of personal data "
-"through strict procedures within our company.\n"
+"                We are committed to ensuring the security of your personal "
+"data through strict procedures within our company.\n"
 "                 For the data collected \"online\", the communications on "
 "the client part are encrypted between\n"
 "                 the position of the user and our servers (secure zone "
@@ -1560,22 +1646,15 @@ msgid ""
 "        "
 msgstr ""
 
-#: templates/tos.html:123
-msgid ""
-"\n"
-"             do a lot of efforts to protect your personal data.\n"
-"        "
-msgstr ""
-
-#: templates/tos.html:128
+#: templates/tos.html:124
 msgid ""
 "\n"
 "            In accordance with the provisions of the Loi Informatique et "
 "Libertés of 6 January 1978\n"
 "             (as amended by the law of 6 August 2004 on the protection of "
 "individuals with regard to the processing of personal data)\n"
-"             you have rights to access, rectification or opposition to your "
-"personal data collected.\n"
+"             you have right to access, correct and delete your personal data "
+"collected.\n"
 "             These rights can be exercised by visiting the Account / Edit "
 "profile page.\n"
 "        "

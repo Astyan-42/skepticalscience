@@ -1,0 +1,17 @@
+django  ~= 1.10
+django-bootstrap3
+django-registration
+django-select2
+django-sendfile
+django_tables2
+django-filter
+django-crispy-forms
+django_cron
+django-analytical
+django-payments
+django-countries
+django-cookie-law
+reportlab
+# PyInvoice modified version
+coverage
+mock

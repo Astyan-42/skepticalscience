@@ -292,7 +292,7 @@ class TestPublicationTableView(TestCase):
         self.assertEqual(resp.template_name, ['publications/publication_list.html', 'publications/publication_list.html'])
         self.assertEqual(len(resp.context_data['object_list']), 1)
 
-    def test_get_filter_nores(self):
+    def test_get_filter_none(self):
         resp = self.client.get(self.url, {"title": "zdfc"})
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.template_name, ['publications/publication_list.html', 'publications/publication_list.html'])

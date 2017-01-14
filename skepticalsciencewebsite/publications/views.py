@@ -252,7 +252,8 @@ class PublicationSpecialTableView(SingleTableView):
     def fill_user_science(self):
         User = get_user_model()
         user = User.objects.get(pk=self.request.session['_auth_user_id'])
-        sciences = [sid.pk for sid in user.sciences.all()]
+        sciences = [sid.pk for sid in user.sciences.all()]+[sid.pk for sid in user.phd_in.all()]
+        sciences = list(set(sciences))
         self.filter_dict["sciences"] = sciences
 
     def get_queryset(self, **kwargs):
@@ -285,6 +286,12 @@ class PublicationToReviewTableView(PublicationSpecialTableView):
     """
     name = "to review"
     filter_dict = {'status': ADDING_PEER}
+
+    def fill_user_science(self):
+        User = get_user_model()
+        user = User.objects.get(pk=self.request.session['_auth_user_id'])
+        sciences = [sid.pk for sid in user.phd_in.all()]
+        self.filter_dict["sciences"] = sciences
 
 
 class PublicationInReviewTableView(PublicationSpecialTableView):
