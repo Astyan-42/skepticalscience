@@ -602,7 +602,7 @@ class CommentReviewValidationInterest(CreateView):
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.comment = Comment.objects.get(pk=self.kwargs["pk"])
-        publication = self.object.comment.publication.id
+        publication = self.object.comment.publication.pk
         author = self.request.user
         try:
             self.object.reviewer = Reviewer.objects.get(scientist=author, publication=publication, actif=True)

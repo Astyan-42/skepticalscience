@@ -5,11 +5,11 @@ from django.test import TestCase
 from django.test import RequestFactory
 from django.core.urlresolvers import reverse
 from django.contrib.auth import get_user_model
-from publications.models import Publication, Licence
+from publications.models import Publication, Licence, Comment, Reviewer, CommentReview
 from publications.views import can_be_leave_reviewer
 from django.contrib.auth.models import Permission
 from sciences.models import Science
-from publications.constants import WAITING_PAYMENT, CORRECTION, ADDING_PEER, PEER_REVIEW, FORM, EVALUATION
+from publications.constants import WAITING_PAYMENT, CORRECTION, ADDING_PEER, PEER_REVIEW, FORM, EVALUATION, MINOR
 
 
 class TestDownloadFile(TestCase):
@@ -419,6 +419,58 @@ class TestPublicationDetailView(TestCase):
 
 # become_reviewer_view and leave_reviewer_view are fine
 
+
 class TestCommentDetailView(TestCase):
 
-    pass
+    def setUp(self):
+        User = get_user_model()
+        self.user = User.objects.create_user(username="testuser", password="azerty123", email="test@tests.com",
+                                             first_name='fname', last_name='lname', phd=True)
+        self.user2 = User.objects.create_user(username="testuser2", password="azerty123", email="test2@tests.com")
+        # add permission to a user
+        self.licence = Licence.objects.create(short_name="CC0")
+        self.licence.save()
+        permission = Permission.objects.get(name='Can add comment review')
+        self.user.user_permissions.add(permission)
+        permission = Permission.objects.get(name='Can change comment review')
+        self.user.user_permissions.add(permission)
+        self.science = Science.objects.create(name='lol', description="zef", primary_science=True)
+        self.science.save()
+        self.user.save()
+        self.user.phd_in.add(self.science)
+        self.publication = Publication.objects.create(title="title", editor=self.user2, resume="resume",
+                                                      pdf_creation=File(BytesIO(b"\x00\x01"), name='lol'),
+                                                      source_creation=File(BytesIO(b"\x00\x01"), name='lol2'),
+                                                      first_author=self.user2, licence=self.licence,
+                                                      status=PEER_REVIEW)
+        self.publication.save()
+        self.publication.sciences.add(self.science)
+        self.comment = Comment(publication=self.publication, author=self.user, comment_type=FORM, content='fezf',
+                               title='efe', licence=self.licence, author_fake_pseudo='test')
+        self.comment.save()
+        self.reviewer = Reviewer(scientist=self.user, publication=self.publication, actif=True)
+        self.reviewer.save()
+        self.url = reverse("comment_view", kwargs={'pk': self.comment.pk})
+
+    def test_get_template(self):
+        # assert self.client.login(username="testuser", password="azerty123")
+        resp = self.client.get(self.url, follow=True)
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.template_name, ['publications/comment_detail.html'])
+
+    def test_validation_comment(self):
+        assert self.client.login(username="testuser", password="azerty123")
+        resp = self.client.post(self.url, {'valid': True, 'seriousness': MINOR, 'reason_validation': 'szfer',
+                                           'submit': 'Validate'}, follow=True)
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(len(resp.context_data['reviews']), 1)
+
+    def test_correction_comment(self):
+        cr = CommentReview(comment=self.comment, reviewer=self.reviewer, seriousness=MINOR, valid=True, reason_validation='d')
+        cr.save()
+        assert self.client.login(username="testuser", password="azerty123")
+        resp = self.client.post(self.url, {'corrected': True, 'reason_correction': 'szfer',
+                                           'submit': 'Corrected'}, follow=True)
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(len(resp.context_data['reviews']), 1)
+        self.assertEqual(resp.context_data['reviews'][0].corrected, True)
