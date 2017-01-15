@@ -6,9 +6,10 @@ from django.test import RequestFactory
 from django.core.urlresolvers import reverse
 from django.contrib.auth import get_user_model
 from publications.models import Publication, Licence
+from publications.views import can_be_leave_reviewer
 from django.contrib.auth.models import Permission
 from sciences.models import Science
-from publications.constants import WAITING_PAYMENT, CORRECTION, ADDING_PEER
+from publications.constants import WAITING_PAYMENT, CORRECTION, ADDING_PEER, PEER_REVIEW, FORM, EVALUATION
 
 
 class TestDownloadFile(TestCase):
@@ -341,3 +342,83 @@ class TestPublicationSpecialTableView(TestCase):
         self.assertEqual(resp.template_name, ['publications/publication_special_list.html', 'publications/publication_list.html'])
         # wtf the test don't work while it's work when using the website, mess up somehow because of science
         # self.assertEqual(len(resp.context_data['object_list']), 1)
+
+
+class TestCanBeLeaveReviewer(TestCase):
+
+    def test_become_true(self):
+        self.assertTrue(can_be_leave_reviewer(True, 2, 1, True, ADDING_PEER, "become"))
+
+    def test_become_false(self):
+        self.assertFalse(can_be_leave_reviewer(True, 4, 1, True, ADDING_PEER, "become"))
+
+    def test_leave_true(self):
+        self.assertTrue(can_be_leave_reviewer(True, 4, 1, True, ADDING_PEER, "leave"))
+
+    def test_leave_false(self):
+        self.assertFalse(can_be_leave_reviewer(True, 4, 1, True, PEER_REVIEW, "leave"))
+
+
+class TestPublicationDetailView(TestCase):
+
+    def setUp(self):
+        User = get_user_model()
+        self.user = User.objects.create_user(username="testuser", password="azerty123", email="test@tests.com",
+                                             first_name='fname', last_name='lname', phd=True)
+        self.user2 = User.objects.create_user(username="testuser2", password="azerty123", email="test2@tests.com")
+        # add permission to a user
+        self.licence = Licence.objects.create(short_name="CC0")
+        self.licence.save()
+        permission = Permission.objects.get(name='Can add estimated impact factor')
+        self.user.user_permissions.add(permission)
+        self.science = Science.objects.create(name='lol', description="zef", primary_science=True)
+        self.science.save()
+        self.user.save()
+        self.user.phd_in.add(self.science)
+        self.publication = Publication.objects.create(title="title", editor=self.user2, resume="resume",
+                                                      pdf_creation=File(BytesIO(b"\x00\x01"), name='lol'),
+                                                      source_creation=File(BytesIO(b"\x00\x01"), name='lol2'),
+                                                      first_author=self.user2, licence=self.licence,
+                                                      status=PEER_REVIEW)
+        self.publication.save()
+        self.publication.sciences.add(self.science)
+        self.url = reverse("publication_view", kwargs={'pk': self.publication.pk})
+
+    def test_get_template(self):
+        # assert self.client.login(username="testuser", password="azerty123")
+        resp = self.client.get(self.url, follow=True)
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.template_name, ['publications/publication_detail.html'])
+
+    def test_404(self):
+        url = reverse("publication_view", kwargs={'pk': self.publication.pk+1})
+        resp = self.client.get(url, follow=True)
+        self.assertEqual(resp.status_code, 404)
+
+    def test_post_comment(self):
+        assert self.client.login(username="testuser", password="azerty123")
+        resp = self.client.post(self.url, {'comment-author_fake_pseudo': '1234', 'comment-title': 'test',
+                                           'comment-comment_type': FORM, 'comment-content': 'f', 'submit': "Submit"},
+                                follow=True)
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(len(resp.context_data['comments']), 1)
+
+    def test_post_eif_fail(self):
+        assert self.client.login(username="testuser", password="azerty123")
+        resp = self.client.post(self.url, {'impact_factor-estimated_impact_factor': 30, 'submit': "Evaluate"},
+                                follow=True)
+        self.assertEqual(resp.status_code, 403)
+
+    def test_post_eif_success(self):
+        self.publication.status = EVALUATION
+        self.publication.save()
+        assert self.client.login(username="testuser", password="azerty123")
+        resp = self.client.post(self.url, {'impact_factor-estimated_impact_factor': 30, 'submit': "Evaluate"},
+                                follow=True)
+        self.assertEqual(resp.status_code, 200)
+
+# become_reviewer_view and leave_reviewer_view are fine
+
+class TestCommentDetailView(TestCase):
+
+    pass
